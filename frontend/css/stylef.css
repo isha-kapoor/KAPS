@@ -111,4 +111,188 @@ input[type=submit]{
       margin-left: 170px;
 }
 
+/*Farmer-Tables*/
+.Farmer-Requests-Status{
+  margin-left:auto;
+  margin-right:auto;
+  min-width: 400px;
+  border-radius: 8px 8px 0 0;
+  overflow: hidden;
+  box-shadow: 6px 6px 4px rgba(0, 0, 0, 0.2);
+}
+
+/*.Farmer-Requests-Status .status{
+border-bottom-style: solid;
+border-bottom-color: rgba(105, 156, 94, 0.8);
+}
+
+.Farmer-Requests-Status .status1{
+border-right-style: solid;
+border-right-color: rgba(105, 156, 94, 0.8);
+}
+
+.Farmer-Requests-Status .status2{
+text-align:center;
+}*/
+
+.Farmer-Requests-Status thead tr {
+  background-color: white;
+  color: black;
+  text-align: left;
+  font-size: 20px;
+  line-height: 30px;
+    /* border: 1px solid red; */
+}
+
+.Farmer-Requests-Status th {
+  /* border: 1px solid red; */
+   padding:10px 20px;
+   color: rgba(105, 156, 94, 0.8) ;
+   text-align: center;
+}
+
+.Farmer-Requests-Status tbody tr {
+  border-bottom: 1px solid grey;
+}
+
+.Farmer-Requests-Status tbody tr:last-of-type {
+  border-bottom: 1px solid grey;
+}
+
+.Farmer-Requests-Status tbody tr :hover {
+  cursor: pointer;
+}
+
+.Farmer-Requests-Status tr:hover{
+  background-color: rgb(224,225,222);
+  opacity: 0.85;
+}
+
+/*Navbar-Farmer-Profile*/
+.f-nav {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  background-color:#faf8f854;
+  height: 2.5rem;
+  margin-top: 20px;
+  align-items: center;
+
+}
+
+.f-nav li {
+  float: left;
+  color: rgba(105, 156, 94, 0.8) !important;
+  font-family:"Montserrat", Sans-Serif;
+  font-style: normal;
+  font-weight: bold;
+  font-size: 15px;
+  align-items: center;
+  border-right:8px solid #faf8f854;
+}
+
+.f-nav li:last-child {
+  border-right: none;
+}
+
+.f-nav li a {
+  display: block;
+  color: white;
+  text-align: center;
+  padding: 9px 16px;
+  text-decoration: none;
+  color: rgba(105, 156, 94, 0.8) !important;
+  font-family:"Montserrat", Sans-Serif;
+  font-style:normal;
+  font-weight: bold;
+  font-size: 15px;
+  align-items: center;
+  background-color:white;
+}
+
+.f-nav li a:hover {
+  background-color:white;
+  font-style: italic;
+}
+
+.f-nav .active{
+  background-color:white;
+  font-style: italic;
+  text-decoration:underline;
+}
+
+/*NFR-Personal Details*/
+
+.nfr{
+  margin-top: 20px;
+  margin-left: 500px;
+}
+
+.nfr label{
+  font-family: "Montserrat", Sans-Serif;
+    font-style: normal;
+    font-weight:600;
+    color: black;
+
+}
+
+.nfr input[type=text] {
+  width: 50%;
+  padding: 0;
+  margin: 0px 0;
+  box-sizing: border-box;
+  border: none;
+  border-bottom: 2px solid black;
+  font-family: "Montserrat", Sans-Serif;
+    font-style: normal;
+    font-weight:500;
+}
+
+.nfr input[type=submit]{
+  border: solid rgba(105, 156, 94, 0.8);
+  color: white;
+  font-family: "Montserrat", Sans-Serif;
+    font-style: normal;
+    font-weight:500;
+    width: 150px ;
+    border-radius: 40px;
+    background-color: rgba(105, 156, 94, 0.8) ;
+    margin-top: 30px;
+    margin-left: 170px;
+}
+
+/*Choose CC*/
+.choose-cc{
+  margin-top: 50px;
+  margin-left: 40px;
+  font-family: "Montserrat", Sans-Serif;
+  font-style: normal;
+  font-weight:500;
+}
+
+.choose-cc .select-cc {
+  width: 50%;
+  margin-left: 20px;
+  box-sizing: border-box;
+  border: none;
+  border-bottom: 2px solid black;
+  font-family: "Montserrat", Sans-Serif;
+    font-style: normal;
+    font-weight:500;
+}
+
+.choose-cc input[type=submit]{
+  border: solid rgba(105, 156, 94, 0.8);
+  color: white;
+  font-family: "Montserrat", Sans-Serif;
+    font-style: normal;
+    font-weight:500;
+    width: 150px ;
+    border-radius: 40px;
+    background-color: rgba(105, 156, 94, 0.8) ;
+    margin-top: 30px;
+    margin-left: 20px;
+}
+
 
