@@ -1,3 +1,55 @@
 .w3-sidebar-private{
   height:25% !important;
 }
+.w3-card{
+    width: 530px;
+    height: 400px;
+    margin-top:8rem;
+    margin-left: auto;
+    margin-right:auto;
+    background-color: white;
+    border-color: rgba(105, 156, 94, 0.8);
+    border-radius: 40px ;
+}
+
+.apply-padding{
+  margin-top:-1.5rem;
+}
+
+.text-primarys{
+  color: rgba(105, 156, 94, 0.8);
+}
+
+.apply-font{
+  font-size: 20px;
+}
+
+.apply-margin{
+  margin-bottom:1rem;
+}
+.card-text{
+  font-family:"Montserrat", Sans-Serif;
+  font-style: normal;
+  font-weight: bold;
+  font-size: 32px;
+  line-height: 39px;
+  color: rgba(105, 156, 94, 0.8);
+}
+#Quantity-needed::after{
+  content:"kg";
+}
+.button-add{
+  background: rgba(105, 156, 94, 0.8);
+  box-shadow: 0px 6px 4px rgba(0, 0, 0, 0.2);
+  border-radius: 40px;
+  color:white;
+  border: none;
+  font-family:"Montserrat", Sans-Serif;
+  font-style: normal;
+  font-weight: bold;
+  font-size: 24px;
+  line-height: 29px;
+  margin-left:auto;
+  margin-right: auto;
+  margin-top:0.5rem;
+}
