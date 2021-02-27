@@ -87,3 +87,41 @@
   -webkit-user-modify:read-write;
   border-bottom: 1px solid black
 }
+
+/* Registeration */
+.new-cc{
+  margin-top: 20px;
+  margin-left: 500px;
+}
+
+.new-cc label{
+  font-family: "Montserrat", Sans-Serif;
+    font-style: normal;
+    font-weight:600;
+    color: black;
+  }
+
+.new-cc input[type=text] {
+  width: 50%;
+  padding: 0;
+  margin: 0px 0;
+  box-sizing: border-box;
+  border: none;
+  border-bottom: 2px solid black;
+  font-family: "Montserrat", Sans-Serif;
+    font-style: normal;
+    font-weight:500;
+}
+
+.new-cc input[type=submit]{
+    border: solid rgba(105, 156, 94, 0.8);
+    color: white;
+    font-family: "Montserrat", Sans-Serif;
+    font-style: normal;
+    font-weight:500;
+    width: 150px ;
+    border-radius: 40px;
+    background-color: rgba(105, 156, 94, 0.8) ;
+    margin-top: 15px;
+    margin-left: 170px;
+}

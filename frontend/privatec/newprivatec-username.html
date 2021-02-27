@@ -3,9 +3,8 @@
 
 <head>
   <meta charset="utf-8">
-  <title>Closed Orders</title>
+  <title>Private Company Registeration</title>
   <link rel="stylesheet" href="../css/style.css">
-  <link rel="stylesheet" href="../css/stylecc.css">
   <link rel="stylesheet" href="../css/stylepc.css">
   <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
@@ -34,43 +33,19 @@
           <a class="nav-link" href="../navbar/contact.html">Contact Us</a>
         </li>
         </ul>
-        <ul class="navbar-nav ml-auto">
-          <li class="nav-item">
-            <a class="nav-link" href="../index.html">Logout</a>
-          </li>
-         </ul>
       </div>
     </nav>
-    <div class="w3-sidebar w3-light-white w3-bar-block move-down w3-sidebar-private" style="width:15%">
-        <a href="pcprofile.html" class="w3-bar-item  w3-button w3-hover-none w3-hover-text-green">My Profile</a>
-        <a href="RawCatolog.html" class="w3-bar-item  w3-button w3-hover-none  w3-hover-text-green">Raw Materials Catalogue</a>
-        <a href="AddReq.html" class="w3-bar-item  w3-button w3-hover-none w3-hover-text-green">Add Orders</a>
-        <a href="PendingReq.html" class="w3-bar-item  w3-button w3-hover-none w3-hover-text-green">Pending Orders</a>
-        <a href="ClosedReq.html" class="w3-bar-item  w3-button w3-hover-none w3-text-green w3-hover-text-green">Closed Orders</a>
-    </div>
-    <div class="move-down" style="margin-left:16%" >
-      <!-- style="margin-left:16%" -->
-
-        <section class="move-down">
-          <table class="farmer-req">
-              <thead>
-                  <tr>
-                    <th>Order<br>ID</th>
-                    <th>Order<br>Date</th>
-                    <th>Collection<br>Centre</th>
-                    <th>Waste<br>Needed</th>
-                    <th>Quantity<br>Needed</th>
-                    <th>Pickup<br>Date</th>
-                    <th>Amount<br>Paid</th>
-                  </tr>
-
-                </thead>
-                <tbody>
-
-                </tbody>
-          </table>
-        </section>
-      </div>
-
-  </body>
-  </html>
+    <form class="new-pc" method="get" action="pchome.html">
+    <label for="pc-username">Username</label>
+    <input type="text" id="pc-username" name="pc-username">
+    <br>
+    <label for="pc-password">Password</label>
+    <input type="text" id="pc-password" name="pc-password">
+    <br>
+    <label for="pc-confirm">Confirm password</label>
+    <input type="text" id="pc-confirm" name="pc-confirm">
+    <br>
+    <input type="submit" value="Submit Details">
+    </form>
+</body>
+</html>
