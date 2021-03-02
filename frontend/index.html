@@ -73,7 +73,7 @@
           <p class="identity"> Collection Centre</p>
           <p >looking to </p>
           <p class="motive"> process <strong class="colored"> waste</strong> </p>
-        </div> <a href="cc/home.html"> temp </a>
+        </div>
       </div>
       <div class="rectangle box-3">
         <div class="images">
@@ -83,9 +83,20 @@
           <p class="identity"> Private Company</p>
           <p >looking to </p>
           <p class="motive"> reuse <strong class="colored"> waste</strong> </p>
-        </div> <a href="privatec/pchome.html"> temp </a>
+        </div>
       </div>
   </div>
+  <script>
+  document.querySelector('.box-1').addEventListener('click', function(e) {
+      window.location.href = 'farmer/farmerprofile-personal.html';
+  }, false);
+  document.querySelector('.box-2').addEventListener('click', function(e) {
+      window.location.href = 'cc/newcc.html';
+  }, false);
+  document.querySelector('.box-3').addEventListener('click', function(e) {
+      window.location.href = 'privatec/newprivatec.html';
+  }, false);
+  </script>
 </body>
 
 </html>
