@@ -38,14 +38,58 @@
   font-family: "Montserrat", Sans-Serif;
       font-style: normal;
       font-weight: 600;
-      font-size: 22px;
+      font-size: 19px;
  margin-top: 30px;
+
+}
+
+.b-profile{
+  margin-left: 87%;
 }
 
  .buttonhover:hover{
     background-color: rgba(105, 156, 94, 0.8);
   color: white;
  }
+
+ /*Farmer-Username-Password-Reg*/
+ .farmer-unp{
+  margin-top: 80px;
+  margin-left: 500px;
+}
+
+.farmer-unp label{
+  font-family: "Montserrat", Sans-Serif;
+    font-style: normal;
+    font-weight:600;
+    color: black;
+
+}
+
+.farmer-unp input[type=text] {
+  width: 50%;
+  padding: 0;
+  margin: 0px 0;
+  box-sizing: border-box;
+  border: none;
+  border-bottom: 2px solid black;
+  font-family: "Montserrat", Sans-Serif;
+    font-style: normal;
+    font-weight:500;
+}
+
+.farmer-unp input[type=submit]{
+  border: solid rgba(105, 156, 94, 0.8);
+  color: white;
+  font-family: "Montserrat", Sans-Serif;
+    font-style: normal;
+    font-weight:500;
+    width: 150px ;
+    border-radius: 40px;
+    background-color: rgba(105, 156, 94, 0.8) ;
+    margin-top: 30px;
+    margin-left: 170px;
+}
 
  /*Request Pickup
  .card .border{
@@ -168,7 +212,7 @@ text-align:center;
   opacity: 0.85;
 }
 
-/*Navbar-Farmer-Profile*/
+/*Navbar-Farmer-Registration*/
 .f-nav {
   list-style-type: none;
   margin: 0;
@@ -217,6 +261,61 @@ text-align:center;
 }
 
 .f-nav .active{
+  background-color:white;
+  font-style: italic;
+  text-decoration:underline;
+}
+
+/*Navbar-Farmer-Profile*/
+.f-nav-view-profile {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  background-color:#faf8f854;
+  height: 2.5rem;
+  margin-top: 10px;
+  align-items: center;
+  width: 70%;
+
+}
+
+.f-nav-view-profile li {
+  float: left;
+  color: rgba(105, 156, 94, 0.8) !important;
+  font-family:"Montserrat", Sans-Serif;
+  font-style: normal;
+  font-weight: bold;
+  font-size: 30px;
+  align-items: center;
+  border-right:8px solid #faf8f854;
+}
+
+.f-nav-view-profile li:last-child {
+  border-right: none;
+}
+
+.f-nav-view-profile li a {
+  display: block;
+  color: white;
+  text-align: center;
+  padding: 9px 16px;
+  text-decoration: none;
+  color: rgba(105, 156, 94, 0.8) !important;
+  font-family:"Montserrat", Sans-Serif;
+  font-style:normal;
+  font-weight: bold;
+  font-size: 15px;
+  align-items: center;
+  background-color:white;
+}
+
+.f-nav-view-profile li a:hover {
+  background-color:white;
+  font-style: italic;
+}
+
+.f-nav-view-profile .active{
   background-color:white;
   font-style: italic;
   text-decoration:underline;

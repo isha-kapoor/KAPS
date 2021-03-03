@@ -3,7 +3,7 @@
 
 <head>
   <meta charset="utf-8">
-  <title>Farmer-Land-Details</title>
+  <title>NewReg-Farmer-Username-Password</title>
   <link rel="stylesheet" href="../css/style.css">
   <link rel="stylesheet" href="../css/stylef.css">
   <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
@@ -39,26 +39,20 @@
           </li>
          </ul>
       </div>
-    </nav> 
+    </nav>
 
-    <div class="w3-sidebar w3-light-white w3-bar-block move-down" style="width:15%">
-      <a href="farmer-viewprofile-personal.html" class="w3-bar-item  w3-button w3-hover-none w3-hover-text-green">My Profile</a>
-      <a href="requestpickup.html" class="w3-bar-item  w3-button w3-hover-none w3-hover-text-green">Request Pickup</a>
-      <a href="fpendingrequests.html" class="w3-bar-item  w3-button w3-hover-none w3-hover-text-green">Pending Requests</a>
-      <a href="fcompletedrequests.html" class="w3-bar-item  w3-button w3-hover-none w3-hover-text-green">Completed Requests</a>
-      <a href="viewinvoice.html" class="w3-bar-item  w3-button w3-hover-none w3-hover-text-green">View Invoice Details</a>
-      <a href="askquery.html" class="w3-bar-item  w3-button w3-hover-none w3-hover-text-green">Ask Query</a>
-  </div>
-
-<ul class="f-nav-view-profile">
-  <li><a  href="farmer-viewprofile-personal.html">Personal Details</a></li>
-  <li><a  href="famer-viewprofile-cc.html">Collection Centre</a></li>
-  <li><a class="active" href="farmer-viewprofile-land.html">Land Profile</a></li>
-</ul>
-
-<div>
-  <button class="button b-profile buttonhover">Notifications</button>
-</div>
+    <form class=" farmer-unp" method="get" action="home.html">
+      <label for="cc-username">Username</label>
+      <input type="text" id="cc-username" name="cc-username">
+      <br>
+      <label for="cc-password">Password</label>
+      <input type="text" id="cc-password" name="cc-password">
+      <br>
+      <label for="cc-confirm">Confirm password</label>
+      <input type="text" id="cc-confirm" name="cc-confirm">
+      <br>
+      <input type="submit" value="Submit Details">
+      </form>
 
 </body>
 </html>
