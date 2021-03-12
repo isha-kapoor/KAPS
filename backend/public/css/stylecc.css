@@ -1,0 +1,130 @@
+/* CC : HOME */
+.w3-sidebar{
+  height:82% !important;
+  /* margin-top:0.5rem; */
+  box-shadow: 6px 6px 4px rgba(0, 0, 0, 0.2);
+    font-family: "Montserrat", Sans-Serif;
+    font-style: normal;
+    font-weight: 600;
+    font-size: 24px;
+    line-height: 30px;
+    color: rgba(105, 156, 94, 0.8);
+}
+
+.centred{
+  margin-top:20rem;
+  text-align: center;
+  font-family: "Montserrat", Sans-Serif;
+}
+
+.centred .welcome{
+  font-size: 36px;
+  line-height: 44px;
+}
+.centred .started{
+  font-size: 32px;
+  line-height: 39px;
+}
+
+/* Farmer's Requests*/
+
+.farmer-req{
+    margin-left:auto;
+    margin-right:auto;
+    min-width: 400px;
+    border-radius: 8px 8px 0 0;
+    overflow: hidden;
+    box-shadow: 6px 6px 4px rgba(0, 0, 0, 0.2);
+}
+
+.farmer-req .status{
+  border-bottom-style: solid;
+  border-bottom-color: rgba(105, 156, 94, 0.8);
+}
+
+.farmer-req .status1{
+  border-right-style: solid;
+  border-right-color: rgba(105, 156, 94, 0.8);
+}
+
+.farmer-req .status2{
+  text-align:center;
+}
+.farmer-req thead tr ,
+.farmer-req tbody tr {
+    background-color: white;
+    color: black;
+    text-align: left;
+    font-size: 20px;
+    line-height: 30px;
+      /* border: 1px solid red; */
+}
+.farmer-req td{
+  text-align:center;
+}
+.farmer-req th {
+    /* border: 1px solid red; */
+     padding:10px 20px;
+     color: rgba(105, 156, 94, 0.8) ;
+     text-align: center;
+}
+
+.farmer-req tbody tr {
+    border-bottom: 1px solid grey;
+}
+.farmer-req tbody tr:last-of-type {
+    border-bottom: 1px solid grey;
+}
+
+.farmer-req tbody tr :hover {
+    cursor: pointer;
+}
+
+.farmer-req tr:hover{
+    background-color: rgb(224,225,222);
+    opacity: 0.85;
+}
+
+/*profile*/
+.editable{
+  -webkit-user-modify:read-write;
+  border-bottom: 1px solid black
+}
+
+/* Registeration */
+.new-cc{
+  margin-top: 20px;
+  margin-left: 500px;
+}
+
+.new-cc label{
+  font-family: "Montserrat", Sans-Serif;
+    font-style: normal;
+    font-weight:600;
+    color: black;
+  }
+
+.new-cc input[type=text] {
+  width: 50%;
+  padding: 0;
+  margin: 0px 0;
+  box-sizing: border-box;
+  border: none;
+  border-bottom: 2px solid black;
+  font-family: "Montserrat", Sans-Serif;
+    font-style: normal;
+    font-weight:500;
+}
+
+.new-cc input[type=submit]{
+    border: solid rgba(105, 156, 94, 0.8);
+    color: white;
+    font-family: "Montserrat", Sans-Serif;
+    font-style: normal;
+    font-weight:500;
+    width: 150px ;
+    border-radius: 40px;
+    background-color: rgba(105, 156, 94, 0.8) ;
+    margin-top: 15px;
+    margin-left: 170px;
+}

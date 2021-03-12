@@ -1,0 +1,123 @@
+
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+
+<head>
+  <meta charset="utf-8">
+  <title>Add Orders</title>
+  <link rel="stylesheet" href="../css/style.css">
+  <link rel="stylesheet" href="../css/stylecc.css">
+  <link rel="stylesheet" href="../css/stylepc.css">
+  <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.7.1/css/bootstrap-datepicker.min.css" rel="stylesheet"/>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
+  <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js" integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js" integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV" crossorigin="anonymous"></script>
+</head>
+
+<body id=body>
+   <nav class="navbar navbar-expand-lg navbar-light" style="background-color: #ffffff;">
+    <a class="navbar-brand" href="../index.html">
+      <img src="../images/logo.png" alt="" width="40px" height="40px">
+    </a>
+    <!-- <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button> -->
+
+    <div class="collapse navbar-collapse" >
+      <!-- id="navbarSupportedContent" -->
+      <ul class="navbar-nav mr-auto">
+        <li class="nav-item">
+          <a class="nav-link" href="../navbar/whyus.html">Why Us</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="../navbar/contact.html">Contact Us</a>
+        </li>
+        </ul>
+        <ul class="navbar-nav ml-auto">
+          <li class="nav-item">
+            <a class="nav-link" href="../index.html">Logout</a>
+          </li>
+         </ul>
+      </div>
+    </nav>
+    <div class="w3-sidebar w3-light-white w3-bar-block move-down w3-sidebar-private" style="width:15%">
+        <a href="pcprofile.html" class="w3-bar-item  w3-button w3-hover-none w3-hover-text-green">My Profile</a>
+        <a href="AddReq.html" class="w3-bar-item  w3-button w3-hover-none w3-hover-text-green">Add Orders</a>
+        <a href="RawCatolog.html" class="w3-bar-item  w3-button w3-hover-none  w3-hover-text-green">Raw Materials Catalogue</a>
+        <a href="PendingReq.html" class="w3-bar-item  w3-button w3-hover-none w3-hover-text-green">Pending Orders</a>
+        <a href="ClosedReq.html" class="w3-bar-item  w3-button w3-hover-none w3-hover-text-green">Closed Orders</a>
+    </div>
+    <div class="move-down" >
+      <!-- style="margin-left:16%" -->
+          <form method="post" action="/pcAddReq">
+          <div class="w3-card">
+            <div class="card-body">
+                <h6 class="card-text mb-5"> Add Order </h6>
+              <div class="row apply-margin">
+                <div class="col-sm-6 text-primarys">
+                  <h6 class="mb-2 apply-font"><label for="collection-centre">Select Collection Centre:</label></h6>
+                </div>
+                <div class="col-sm-6 text-secondary ">
+                  <select name="CollectionCentre" id="collection-centre">
+                    <optgroup label="Gujarat">
+                      <option value="Bharwala">Bharwala</option>
+                      <option value="Ranpur">Ranpur</option>
+                      <optgroup label="Rajasthan">
+                      <option value="Bharwala">Kekri</option>
+                      <option value="Ranpur">Tonk</option>
+                  </select>
+                </div>
+              </div>
+              <div class="row apply-margin">
+                <div class="col-sm-6 text-primarys">
+                  <h6 class="mb-2 apply-font"><label for="waste-needed"> Select Raw material</label></h6>
+                </div>
+                <div class="col-sm-6 text-secondary ">
+                  <select name="RawMaterial" id="waste-needed">
+                      <option value="Rice">Wheat Husk</option>
+                      <option value="Wheat">Wheat Straw</option>
+                      <option value="Rice">Rice Husk</option>
+                      <option value="Wheat">Rice Straw</option>
+                      <option value="Rice">Cotton Stalk</option>
+                      <option value="Wheat">Bagasse</option>
+                  </select>
+                </div>
+              </div>
+              <div class="row apply-margin">
+                <div class="col-sm-6 text-primarys">
+                  <h6 class="mb-2 apply-font"><label for="Quantity-needed"> Quantity needed in Kg </label></h6>
+                </div>
+                <div class="col-sm-6 text-secondary ">
+                  <input class="apply-padding"type="number" id="Quantity-needed" placeholder="placeholder" name="Quantity">
+                </div>
+              </div>
+              <div class="row apply-margin">
+                <div class="col-sm-6 text-primarys">
+                  <h6 class="mb-2 apply-font"><label for="Pickup-date"> Pickup Date </label></h6>
+                </div>
+                <div class="col-sm-6 text-secondary ">
+                      <input class="apply-padding" data-date-format="dd/mm/yyyy" id="datepicker" name="date">
+                </div>
+              </div>
+              <div class="row">
+                <button class="button-add" type="submit">Add Order</button>
+              </div>
+            </div>
+          </div>
+          </form>
+        </div>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.7.1/js/bootstrap-datepicker.min.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+        <script type="text/javascript">
+      $('#datepicker').datepicker({
+          weekStart: 1,
+          autoclose: true,
+      });
+      $('#datepicker').datepicker("setDate", new Date());
+  </script>
+  </body>
+  </html>
