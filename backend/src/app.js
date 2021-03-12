@@ -34,29 +34,29 @@ app.get("/", (req,res)=>{
 
 //collection centre
 app.get("/cchome", auth , (req,res)=>{
-  res.render("cchome");
+  res.render("cc/cchome");
 })
 app.get("/ccprofile" ,auth, (req,res) =>{
 
   const usercc = CRegister.findOne({_id: req.user._id});
   usercc.exec(function(err,data){
     if(err) throw err;
-    res.render("ccprofile", {records:data});
+    res.render("cc/ccprofile", {records:data});
   });
 })
 
 // private company
 app.get("/pcAddReq" , auth , (req,res)=>{
-  res.render("pcAddReq")
+  res.render("pc/pcAddReq")
 })
 app.get("/pchome" , auth , (req,res)=>{
-  res.render("pchome")
+  res.render("pc/pchome")
 } )
 app.get("/pcpending" , auth , async(req,res)=>{
   const orders = PCAddedReq.find({});
   orders.exec(function(err,data){
     if(err) throw err;
-    res.render("pcpending" , {order:data});
+    res.render("pc/pcpending" , {order:data});
   })
   console.log(orders);
 })
@@ -65,7 +65,7 @@ app.get("/pcprofile" ,auth, (req,res) =>{
   const usercc = CRegister.findOne({_id: req.user._id});
   usercc.exec(function(err,data){
     if(err) throw err;
-    res.render("pcprofile", {records:data});
+    res.render("pc/pcprofile", {records:data});
   });
 })
 app.post("/pcAddReq" , auth , async(req,res)=>{
@@ -79,7 +79,7 @@ app.post("/pcAddReq" , auth , async(req,res)=>{
       console.log(pcaddreq);
       const pcNewAddReq =await pcaddreq.save();
       console.log(pcNewAddReq);
-      res.status(201).render("pchome");
+      res.status(201).render("pc/pchome");
   }
   catch(e){
     res.status(400).send(e);
@@ -122,9 +122,9 @@ app.post("/newcc-username" , async(req,res) => {
         const cc =  "CollectionCentre";
         const f = "Farmer";
         const pc = "PrivateCompany";
-        if( whoAmI == cc) res.status(201).render("cchome");
+        if( whoAmI == cc) res.status(201).render("cc/cchome");
         else if(whoAmI == f) res.status(201).render("index");
-        else if(whoAmI == pc) res.status(201).render("pchome");
+        else if(whoAmI == pc) res.status(201).render("pc/pchome");
         else res.status(201).render("signed")
 
     }else{
@@ -165,13 +165,13 @@ app.post("/login" , async(req,res) => {
       console.log(`the cookie is : ${req.cookies.jwt}`);
 
       if(isMatched && user.select=="CollectionCentre"){
-        res.status(201).render("cchome")
+        res.status(201).render("cc/cchome")
       }
       else if(isMatched && user.select =="Farmer"){
         res.status(201).render("index")
       }
       else if(isMatched && user.select == "PrivateCompany"){
-        res.status(201).render("pchome")
+        res.status(201).render("pc/pchome")
       }
       else{
         res.send("Error in credentials")
