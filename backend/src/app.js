@@ -37,13 +37,29 @@ app.get("/cchome", auth , (req,res)=>{
   res.render("cc/cchome");
 })
 app.get("/ccprofile" ,auth, (req,res) =>{
-
   const usercc = CRegister.findOne({_id: req.user._id});
   usercc.exec(function(err,data){
     if(err) throw err;
     res.render("cc/ccprofile", {records:data});
   });
 })
+app.get("/pcreq" , auth , (req,res) => {
+  const privatereq = PCAddedReq.find({CollectionCentre:req.user.ccname});
+  privatereq.exec(function(err,data){
+    if(err) throw err;
+    res.render("cc/pcreq",{order:data});
+  })
+})
+// app.get("/pcreqs/:id" , auth, (req,res)=>{
+//   var id = req.params.id;
+//   const deleteorder = PCAddedReq.findByIdAndDelete({id});
+//   deleteorder.exec(function(err,data){
+//     if(err) throw err;
+//     res.render("cc/pcreq",{order:data});
+//   })
+// })
+
+
 
 // private company
 app.get("/pcAddReq" , auth , (req,res)=>{
@@ -53,7 +69,7 @@ app.get("/pchome" , auth , (req,res)=>{
   res.render("pc/pchome")
 } )
 app.get("/pcpending" , auth , async(req,res)=>{
-  const orders = PCAddedReq.find({});
+  const orders = PCAddedReq.find({Refid:req.user._id});
   orders.exec(function(err,data){
     if(err) throw err;
     res.render("pc/pcpending" , {order:data});
@@ -71,6 +87,9 @@ app.get("/pcprofile" ,auth, (req,res) =>{
 app.post("/pcAddReq" , auth , async(req,res)=>{
   try{
       const pcaddreq = new PCAddedReq({
+        Refid: req.user._id,
+        orderDate: Date(),
+        contact:req.user.cccontact,
         CollectionCentre: req.body.CollectionCentre,
         RawMaterial: req.body.RawMaterial,
         Quantity: req.body.Quantity,

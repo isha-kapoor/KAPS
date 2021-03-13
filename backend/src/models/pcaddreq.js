@@ -3,6 +3,17 @@ const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 
 const pcAddReqSchema = new mongoose.Schema({
+  Refid:{
+    type:mongoose.Schema.Types.ObjectId,
+    ref:'CRegister',
+  },
+  contact:{
+    type:mongoose.Schema.Types.String,
+    ref:'CRegister',
+  },
+  orderDate:{
+    type:Date,
+  },
   CollectionCentre:{
     type:String,
     required:true,
