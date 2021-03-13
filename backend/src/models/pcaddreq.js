@@ -12,7 +12,7 @@ const pcAddReqSchema = new mongoose.Schema({
     ref:'CRegister',
   },
   orderDate:{
-    type:Date,
+    type:String,
   },
   CollectionCentre:{
     type:String,
@@ -23,12 +23,15 @@ const pcAddReqSchema = new mongoose.Schema({
     required:true,
   },
   Quantity:{
-    type:String,
+    type:Number,
     required:true,
   },
   date:{
     type:String,
     required:true,
+  },
+  payment:{
+    type:Number,
   }
 
 })

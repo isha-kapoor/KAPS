@@ -39,11 +39,11 @@
                   <% order.forEach(function(row){%>
                     <tr>
                       <td><%= %></td>
-                      <td><%= %></td>
+                      <td><%=row.orderDate %></td>
                       <td><%= row.date %></td>
                       <td><%= row.RawMaterial %></td>
                       <td><%= row.Quantity %></td>
-                      <td><%=  %></td>
+                      <td><%= row.payment %></td>
                       <td><%= row.contact %></td>
                       <td><i class="fa fa-check" aria-hidden="true" ></i></td>
                       <td><a class="btn btn-danger btn-xs" href="/pcreqs/<%= row._id %> "><i class="fa fa-check" aria-hidden="true" ></i></a></td>

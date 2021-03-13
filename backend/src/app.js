@@ -1,4 +1,5 @@
 require("dotenv").config()
+const moment = require('moment');
 const express = require("express");
 const bcrypt = require("bcryptjs");
 const path = require("path");
@@ -88,12 +89,13 @@ app.post("/pcAddReq" , auth , async(req,res)=>{
   try{
       const pcaddreq = new PCAddedReq({
         Refid: req.user._id,
-        orderDate: Date(),
+        orderDate: moment(Date.now()).format('DD/MM/YYYY'),
         contact:req.user.cccontact,
         CollectionCentre: req.body.CollectionCentre,
         RawMaterial: req.body.RawMaterial,
         Quantity: req.body.Quantity,
-        date:req.body.date
+        date:req.body.date,
+        payment:req.body.Quantity*10,
       })
       console.log(pcaddreq);
       const pcNewAddReq =await pcaddreq.save();
