@@ -34,9 +34,11 @@ app.get("/", (req,res)=>{
 })
 
 //collection centre
+//The home page of collection Centre
 app.get("/cchome", auth , (req,res)=>{
   res.render("cc/cchome");
 })
+//THe profile page of CollectionCentre
 app.get("/ccprofile" ,auth, (req,res) =>{
   const usercc = CRegister.findOne({_id: req.user._id});
   usercc.exec(function(err,data){
@@ -44,39 +46,50 @@ app.get("/ccprofile" ,auth, (req,res) =>{
     res.render("cc/ccprofile", {records:data});
   });
 })
+//The page where the collection centre sees the requests of private companies
 app.get("/pcreq" , auth , (req,res) => {
-  const privatereq = PCAddedReq.find({CollectionCentre:req.user.ccname});
+  const privatereq = PCAddedReq.find({CollectionCentre:req.user.ccname , paid:false});
   privatereq.exec(function(err,data){
     if(err) throw err;
     res.render("cc/pcreq",{order:data});
   })
 })
-// app.get("/pcreqs/:id" , auth, (req,res)=>{
-//   var id = req.params.id;
-//   const deleteorder = PCAddedReq.findByIdAndDelete({id});
-//   deleteorder.exec(function(err,data){
-//     if(err) throw err;
-//     res.render("cc/pcreq",{order:data});
-//   })
-// })
+//The page where the collection centre will see the completed requests of private companies that is fullyy paid requests
+app.get("/pcclosedreq" , auth , (req,res) => {
+  const privateclosedreq = PCAddedReq.find({CollectionCentre:req.user.ccname , paid:true , approve:true});
+  privateclosedreq.exec(function(err,data){
+    if(err) throw err;
+    res.render("cc/pcclosereq",{order:data});
+  })
+})
+//This is a link where the request for a particular id is approved by the collection centre
+app.get("/approve/:id", auth , (req,res) => {
+  var id = req.params.id;
+  PCAddedReq.findByIdAndUpdate(id, { approve: 'true' },
+      function (err, data) {
+        if(err) throw err;
+        res.redirect("/pcreq")
+      })
+})
+//This is a link where the request for a particular id is marked paid by the collection centre
+app.get("/delete/:id" , auth, (req,res)=>{
+  var id = req.params.id;
+  PCAddedReq.findByIdAndUpdate(id, { paid: 'true' },
+      function (err, data) {
+        if(err) throw err;
+        res.redirect("/pcreq")
+  })
+})
 
 
 
 // private company
-app.get("/pcAddReq" , auth , (req,res)=>{
-  res.render("pc/pcAddReq")
-})
+
+//THis is the private company's home
 app.get("/pchome" , auth , (req,res)=>{
   res.render("pc/pchome")
-} )
-app.get("/pcpending" , auth , async(req,res)=>{
-  const orders = PCAddedReq.find({Refid:req.user._id});
-  orders.exec(function(err,data){
-    if(err) throw err;
-    res.render("pc/pcpending" , {order:data});
-  })
-  console.log(orders);
 })
+//This is the profile page for private Company
 app.get("/pcprofile" ,auth, (req,res) =>{
 
   const usercc = CRegister.findOne({_id: req.user._id});
@@ -85,6 +98,29 @@ app.get("/pcprofile" ,auth, (req,res) =>{
     res.render("pc/pcprofile", {records:data});
   });
 })
+//This is the page where the private company would add the order
+app.get("/pcAddReq" , auth , (req,res)=>{
+  res.render("pc/pcAddReq")
+})
+//This displays the pending orders of the private company
+app.get("/pcpending" , auth , async(req,res)=>{
+  const orders = PCAddedReq.find({Refid:req.user._id , paid:false});
+  orders.exec(function(err,data){
+    if(err) throw err;
+    res.render("pc/pcpending" , {order:data});
+  })
+  console.log(orders);
+})
+//This shows the orders which are fully paid collected for private company
+app.get("/pcClosed" , auth , async(req,res)=>{
+  const closedorders = PCAddedReq.find({Refid:req.user._id , paid:true , approve:true});
+  closedorders.exec(function(err,data){
+    if(err) throw err;
+    res.render("pc/pcclosed" , {order:data});
+  })
+  console.log(orders);
+})
+//This is a post request page for private company where they will add the orders and save it to database
 app.post("/pcAddReq" , auth , async(req,res)=>{
   try{
       const pcaddreq = new PCAddedReq({
@@ -108,7 +144,7 @@ app.post("/pcAddReq" , auth , async(req,res)=>{
   }
 })
 
-//registeration part
+//registeration part for farmer , collection centre , private company
 app.post("/newcc-username" , async(req,res) => {
   try{
     const password = req.body.ccpassword;
@@ -159,13 +195,15 @@ app.post("/newcc-username" , async(req,res) => {
   }
 })
 
+//This opens the registeration page
 app.get("/newcc-username" ,(req,res) =>{
   res.render("newcc-username");
 })
+//This is the login page for all three stakeholders
 app.get("/login" ,(req,res) =>{
   res.render("login");
 })
-//login part
+//login part for them
 app.post("/login" , async(req,res) => {
   try{
       const username = req.body.username;
@@ -205,7 +243,7 @@ app.post("/login" , async(req,res) => {
 })
 
 
-//logout part
+//logout part for all the users
 app.get("/logout" , auth , async(req,res)=>{
   try {
     console.log(req.user);
@@ -225,7 +263,7 @@ app.get("/logout" , auth , async(req,res)=>{
   console.log("Not Happening");
   }
 });
-
+//This is the initial connection setup
 app.listen(port ,()=>{
   console.log(`Server is connected ${port}` );
 })

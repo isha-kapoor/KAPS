@@ -30,6 +30,14 @@ const pcAddReqSchema = new mongoose.Schema({
     type:String,
     required:true,
   },
+  approve:{
+    type:Boolean,
+    default:false,
+  },
+  paid:{
+    type:Boolean,
+    default:false,
+  },
   payment:{
     type:Number,
   }

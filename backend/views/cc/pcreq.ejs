@@ -45,14 +45,21 @@
                       <td><%= row.Quantity %></td>
                       <td><%= row.payment %></td>
                       <td><%= row.contact %></td>
-                      <td><i class="fa fa-check" aria-hidden="true" ></i></td>
-                      <td><a class="btn btn-danger btn-xs" href="/pcreqs/<%= row._id %> "><i class="fa fa-check" aria-hidden="true" ></i></a></td>
+                      <td><a onclick="setApproveClass()" class="btn btn-primary btn-xs" href="/approve/<%= row._id %> "><i class="fa fa-check" aria-hidden="true" ></i></a></td>
+                      <td ><a onclick="setPaymentClass()" class="btn btn-danger btn-xs" href="/delete/<%= row._id %> "><i class="fa fa-check" aria-hidden="true" ></i></a></td>
                     </tr>
                     <% }) %>
                 </tbody>
           </table>
         </section>
       </div>
-
+<script>
+  function setApproveClass(){
+    alert("Approved Request");
+  }
+  function setPaymentClass(){
+    alert("Payment Recieved => Close the Order");
+  }
+</script>
   </body>
   </html>
