@@ -11,6 +11,7 @@ const auth = require("./middleware/auth.js")
 require("./db/conn.js");
 const CRegister = require("./models/ccregisters");
 const PCAddedReq = require("./models/pcaddreq");
+const PCProduct = require("./models/pcproduct")
 const {json} = require("express");
 const {log} = require("console");
 
@@ -85,6 +86,10 @@ app.get("/delete/:id" , auth, (req,res)=>{
 
 // private company
 
+//The product that we will make after booking the raw materials
+app.get("/whatmake" , auth , (req,res)=>{
+  res.render("pc/whatmake")
+})
 //THis is the private company's home
 app.get("/pchome" , auth , (req,res)=>{
   res.render("pc/pchome")
@@ -92,7 +97,7 @@ app.get("/pchome" , auth , (req,res)=>{
 //This is the profile page for private Company
 app.get("/pcprofile" ,auth, (req,res) =>{
 
-  const usercc = CRegister.findOne({_id: req.user._id});
+  const usercc = PCProduct.findOne({Refid: req.user._id});
   usercc.exec(function(err,data){
     if(err) throw err;
     res.render("pc/pcprofile", {records:data});
@@ -119,6 +124,25 @@ app.get("/pcClosed" , auth , async(req,res)=>{
     res.render("pc/pcclosed" , {order:data});
   })
   console.log(orders);
+})
+//To store the details of the product made
+app.post("/whatmake" , auth , async(req,res)=>{
+  try{
+      const pc = new PCProduct({
+        Refid:req.user._id,
+        pcontact:req.user.cccontact,
+        product:req.body.product,
+        pname:req.user.ccname,
+        padd:req.user.ccadd,
+        puser:req.user.ccusername,
+      })
+      const pcNew =await pc.save();
+      res.status(201).render("pc/pchome");
+  }
+  catch(e){
+    res.status(400).send(e);
+    console.log("There are some errors regarding the new request addition regarding what product" );
+  }
 })
 //This is a post request page for private company where they will add the orders and save it to database
 app.post("/pcAddReq" , auth , async(req,res)=>{
@@ -181,7 +205,7 @@ app.post("/newcc-username" , async(req,res) => {
         const pc = "PrivateCompany";
         if( whoAmI == cc) res.status(201).render("cc/cchome");
         else if(whoAmI == f) res.status(201).render("index");
-        else if(whoAmI == pc) res.status(201).render("pc/pchome");
+        else if(whoAmI == pc) res.status(201).render("pc/whatmake");
         else res.status(201).render("signed")
 
     }else{
