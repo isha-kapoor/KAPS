@@ -3,7 +3,7 @@
 #body {
   background: #ccffcc;
   /* color: rgba(105, 156, 94, 0.8); */
-  /* background-image: url("../images/bg.png"); */
+   background-image: url("../images/bg.png"); 
   height: 100%;
   background-position: center;
   background-repeat: no-repeat;
