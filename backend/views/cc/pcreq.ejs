@@ -30,6 +30,7 @@
                     <th>Quantity<br>Needed</th>
                     <th>Amount<br>Payable</th>
                     <th>Company<br>Contact</th>
+                    <th>Product<br>Made</th>
                     <th>Approve<br>Order</th>
                     <th>Payment<br>Recieved</th>
       						</tr>
@@ -38,13 +39,14 @@
                 <tbody>
                   <% order.forEach(function(row){%>
                     <tr>
-                      <td><%= %></td>
+                      <td><%=row.oid %></td>
                       <td><%=row.orderDate %></td>
                       <td><%= row.date %></td>
                       <td><%= row.RawMaterial %></td>
                       <td><%= row.Quantity %>Kg</td>
                       <td><%= row.payment %></td>
                       <td><%= row.contact %></td>
+                      <td><%= row.pid %></td>
                       <td><a onclick="setApproveClass()" class="btn btn-primary btn-xs" href="/approve/<%= row._id %> "><i class="fa fa-check" aria-hidden="true" ></i></a></td>
                       <td ><a onclick="setPaymentClass()" class="btn btn-danger btn-xs" href="/delete/<%= row._id %> "><i class="fa fa-check" aria-hidden="true" ></i></a></td>
                     </tr>

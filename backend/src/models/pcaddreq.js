@@ -7,6 +7,15 @@ const pcAddReqSchema = new mongoose.Schema({
     type:mongoose.Schema.Types.ObjectId,
     ref:'CRegister',
   },
+  oid:{
+    type:String,
+    unique:true,
+    required:true,
+  },
+  pid:{
+    type:mongoose.Schema.Types.String,
+    ref:'PCProduct',
+  },
   contact:{
     type:mongoose.Schema.Types.String,
     ref:'CRegister',

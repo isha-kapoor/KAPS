@@ -147,8 +147,11 @@ app.post("/whatmake" , auth , async(req,res)=>{
 //This is a post request page for private company where they will add the orders and save it to database
 app.post("/pcAddReq" , auth , async(req,res)=>{
   try{
+    const products = await PCProduct.findOne({Refid:req.user._id });
       const pcaddreq = new PCAddedReq({
         Refid: req.user._id,
+        oid:(Date.now().toString() + Math.floor(Math.random()*10)).slice(8,14),
+        pid: products.product,
         orderDate: moment(Date.now()).format('DD/MM/YYYY'),
         contact:req.user.cccontact,
         CollectionCentre: req.body.CollectionCentre,

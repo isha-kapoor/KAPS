@@ -37,14 +37,14 @@
                 <tbody>
                   <% order.forEach(function(row){%>
                     <tr>
-                      <td><%= %></td>
+                      <td><%=row.oid %></td>
                       <td><%=row.orderDate %></td>
                       <td><%= row.date %></td>
                       <td><%= row.RawMaterial %></td>
                       <td><%= row.Quantity %>Kg</td>
                       <td><%= row.payment %></td>
                       <td><%= row.contact %></td>
-                      <td><%=  %></td>
+                      <td><%= row.pid %></td>
                     </tr>
                     <% }) %>
                 </tbody>
