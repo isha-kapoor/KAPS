@@ -95,12 +95,19 @@ app.get("/ccwasteDB",auth,(req,res)=>{
 app.get("/wasteDB" , auth , (req,res)=>{
 res.render("cc/wasteDB")
 })
-
+// app.get("/wasteDB/:id" , auth , (req,res)=>{
+//       var id = req.params.id;
+//       const datas = Waste.findOne(id ,
+//       function(err,data){
+//           if(err) throw err;
+//           res.render("cc/wasteDB" ,{data:ddata})
+//       })
+// })
 //This is the post method for wastes
 //This is a partial implementation
 app.post("/wasteDB" , auth , async(req,res)=>{
   try {
-    Waste.findOneAndUpdate({RawMaterial:req.body.RawMaterial},{
+    Waste.findOneAndUpdate({RawMaterial:req.body.RawMaterial , Refid:req.user._id},{
         RawMaterial:req.body.RawMaterial,
         Refid:req.user._id,
         open:req.body.open,

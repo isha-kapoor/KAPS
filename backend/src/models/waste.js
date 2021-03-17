@@ -6,11 +6,12 @@ const wasteSchema = new mongoose.Schema({
   Refid:{ //Reference to registered unique id
     type:mongoose.Schema.Types.ObjectId,
     ref:'CRegister',
+    unique:false,
   },
   RawMaterial:{
     type:String,
     required:true,
-    unique:true,
+    unique:false,
   },
   open:{
     type:Number,
@@ -30,6 +31,7 @@ const wasteSchema = new mongoose.Schema({
 
 })
 //methods are used when working with instances
+wasteSchema.index({ Refid: 1, RawMaterial: 1 }, { unique: true });
 
 
 const Waste = new mongoose.model("Waste" , wasteSchema);
