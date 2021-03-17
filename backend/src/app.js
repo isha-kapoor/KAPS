@@ -11,7 +11,8 @@ const auth = require("./middleware/auth.js")
 require("./db/conn.js");
 const CRegister = require("./models/ccregisters");
 const PCAddedReq = require("./models/pcaddreq");
-const PCProduct = require("./models/pcproduct")
+const PCProduct = require("./models/pcproduct");
+const Waste = require("./models/waste");
 const {json} = require("express");
 const {log} = require("console");
 
@@ -50,6 +51,7 @@ app.get("/ccprofile" ,auth, (req,res) =>{
 //The page where the collection centre sees the requests of private companies
 app.get("/pcreq" , auth , (req,res) => {
   const privatereq = PCAddedReq.find({CollectionCentre:req.user.ccname , paid:false});
+   // date :{$gte:moment(Date.now()).format('DD/MM/YYYY')} approve:false approved and not paid
   privatereq.exec(function(err,data){
     if(err) throw err;
     res.render("cc/pcreq",{order:data});
@@ -81,7 +83,39 @@ app.get("/delete/:id" , auth, (req,res)=>{
         res.redirect("/pcreq")
   })
 })
+//This is the waste Database for collection centre where it is displayed
+app.get("/ccwasteDB",auth,(req,res)=>{
+  const waste = Waste.find({Refid: req.user._id});
+  waste.exec(function(err,data){
+    if(err) throw err;
+    res.render("cc/ccwasteDB", {records:data});
+  });
+})
+//THis is where they can edit the database
+app.get("/wasteDB" , auth , (req,res)=>{
+res.render("cc/wasteDB")
+})
 
+//This is the post method for wastes
+//This is a partial implementation
+app.post("/wasteDB" , auth , async(req,res)=>{
+  try {
+    Waste.findOneAndUpdate({RawMaterial:req.body.RawMaterial},{
+        RawMaterial:req.body.RawMaterial,
+        Refid:req.user._id,
+        open:req.body.open,
+        processing:req.body.processing,
+        ready:req.body.ready,
+      },{upsert:true},
+      function (err) {
+        if(err) throw err;
+        res.status(201).redirect("/ccwasteDB")
+  })
+  } catch (e) {
+    res.status(400).send(e);
+    console.log("There are some errors regarding initial waste" );
+  }
+})
 
 
 // private company

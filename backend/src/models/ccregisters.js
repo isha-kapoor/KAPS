@@ -3,36 +3,36 @@ const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 
 const ccSchema = new mongoose.Schema({
-  ccname:{
+  ccname:{ // the name
     type:String,
     required:true,
   },
-  ccadd:{
+  ccadd:{//the address
     type:String,
     required:true,
   },
-  cccontact:{
+  cccontact:{ //the contact no
     type:String,
     required:true,
   },
-  ccusername:{
+  ccusername:{//the unique username
     type:String,
     required:true,
     unique:true
   },
-  ccpassword:{
+  ccpassword:{//the password
     type:String,
     required:true
   },
-  ccconfirm:{
+  ccconfirm:{//the same above password
     type:String,
     required:true
   },
-  select:{
+  select:{//what are you
     type:String,
     required:true
   },
-  tokens:[{
+  tokens:[{//for login a new token is generated
     token:{
       type:String,
       required:true

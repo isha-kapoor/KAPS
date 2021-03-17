@@ -2,27 +2,27 @@ const mongoose = require("mongoose");
 
 
 const pcProductSchema = new mongoose.Schema({
-  Refid:{
+  Refid:{//same as that of CRegister
     type:mongoose.Schema.Types.ObjectId,
     ref:'CRegister',
   },
-  pcontact:{
+  pcontact:{//private's contact
     type:mongoose.Schema.Types.String,
     ref:'CRegister',
   },
-  product:{
+  product:{//what they make
     type:String,
     required:true,
   },
-  pname:{
+  pname:{//what's the name
     type:mongoose.Schema.Types.String,
     ref:'CRegister',
   },
-  padd:{
+  padd:{//address
     type:mongoose.Schema.Types.String,
     ref:'CRegister',
   },
-  puser:{
+  puser:{//username
     type:mongoose.Schema.Types.String,
     ref:'CRegister',
   }

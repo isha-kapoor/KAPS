@@ -1,0 +1,75 @@
+
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+
+<head>
+  <meta charset="utf-8">
+  <title>Edit Database</title>
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/stylecc.css">
+  <link rel="stylesheet" href="css/stylepc.css">
+  <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.7.1/css/bootstrap-datepicker.min.css" rel="stylesheet"/>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
+  <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js" integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js" integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV" crossorigin="anonymous"></script>
+</head>
+
+<body id=body>
+   <%- include('../partials/ccheader') %>
+    <div class="move-down" >
+      <!-- style="margin-left:16%" -->
+          <form method="post" action="/wasteDB">
+          <div class="w3-card">
+            <div class="card-body">
+                <h6 class="card-text mb-5"> Edit Database </h6>
+              <div class="row apply-margin">
+                <div class="col-sm-6 text-primarys">
+                  <h6 class="mb-2 apply-font"><label for="waste-needed"> Select Raw material</label></h6>
+                </div>
+                <div class="col-sm-6 text-secondary ">
+                  <select name="RawMaterial" id="waste-needed">
+                        <option value="Wheat Husk">Wheat Husk</option>
+                        <option value="Wheat Straw">Wheat Straw</option>
+                        <option value="Rice Husk">Rice Husk</option>
+                        <option value="Rice Straw">Rice Straw</option>
+                        <option value="Cotton Stalk">Cotton Stalk</option>
+                        <option value="Bagasse">Bagasse</option>
+                  </select>
+                </div>
+              </div>
+              <div class="row apply-margin">
+                <div class="col-sm-6 text-primarys">
+                  <h6 class="mb-2 apply-font"><label for="open">Open Waste </label></h6>
+                </div>
+                <div class="col-sm-6 text-secondary ">
+                  <input class="apply-padding"type="number" min="0" id="open" placeholder="placeholder" name="open" value="0">
+                </div>
+              </div>
+              <div class="row apply-margin">
+                <div class="col-sm-6 text-primarys">
+                  <h6 class="mb-2 apply-font"><label for="processing">Processing Waste </label></h6>
+                </div>
+                <div class="col-sm-6 text-secondary ">
+                  <input class="apply-padding"type="number" min="0" id="processing" placeholder="placeholder" name="processing" value="0">
+                </div>
+              </div>
+              <div class="row apply-margin">
+                <div class="col-sm-6 text-primarys">
+                  <h6 class="mb-2 apply-font"><label for="ready">Ready Waste </label></h6>
+                </div>
+                <div class="col-sm-6 text-secondary ">
+                  <input class="apply-padding"type="number" min="0" id="ready" placeholder="placeholder" name="ready" value="0">
+                </div>
+              </div>
+              <div class="row">
+                  <button class="button-add" type="submit">Save</button>
+              </div>
+            </div>
+          </div>
+          </form>
+        </div>
+  </body>
+  </html>
