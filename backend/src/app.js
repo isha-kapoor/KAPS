@@ -91,20 +91,55 @@ app.get("/ccwasteDB",auth,(req,res)=>{
     res.render("cc/ccwasteDB", {records:data});
   });
 })
-//THis is where they can edit the database
-app.get("/wasteDB" , auth , (req,res)=>{
-res.render("cc/wasteDB")
+//edit the database only on what raw material you choose
+app.get("/wasteDB/:id", auth , (req,res)=>{
+  const waste = Waste.findById(req.params.id);
+  waste.exec(function(err,doc){
+    if(err){throw err}
+      res.render("cc/wasteDB" , {
+        records:doc
+      });
+    })
 })
-// app.get("/wasteDB/:id" , auth , (req,res)=>{
-//       var id = req.params.id;
-//       const datas = Waste.findOne(id ,
-//       function(err,data){
-//           if(err) throw err;
-//           res.render("cc/wasteDB" ,{data:ddata})
-//       })
-// })
-//This is the post method for wastes
-//This is a partial implementation
+//THis is where they can add the database if already added you can only edit it.  displays only the left over raw materials to be added
+app.get("/wasteDB" , auth , (req,res)=>{
+  var arr1=["Wheat Husk" , "Wheat Straw" , "Rice Husk" ,"Rice Straw" ,"Cotton Stalk" ,"Bagasse"];
+  try{
+  const material = Waste.find({Refid: req.user._id});
+  var arr=[];
+  var common;
+  console.log(material);
+  material.exec(function(err,doc){
+      if(err) { throw err;}
+       console.log(doc);
+      if(!doc.length){
+        arr=[];
+        common=arr1.filter(x=>arr.indexOf(x)===-1);
+        res.render("cc/waste" ,{records:common});
+      }
+      else {
+           Object.entries(doc).forEach(item=>{
+           const [key,value]=item;
+           arr.push(value.RawMaterial);
+           // console.log(value.RawMaterial);
+           common = arr1.filter(x=>arr.indexOf(x)===-1); //finds the difference in elements that arr1 has but not arr
+            // console.log(typeof(common));
+         })
+          console.log(typeof(common));
+         if(common=='') {
+           res.redirect("/ccwasteDB")
+         }
+         else  res.render("cc/waste" ,{records:common})
+     }
+  })
+}
+catch(e){
+  console.log(e);
+  res.send("Error in displaying")
+}
+})
+
+//This is the post method for wastes whenever anything is updated or newly added
 app.post("/wasteDB" , auth , async(req,res)=>{
   try {
     Waste.findOneAndUpdate({RawMaterial:req.body.RawMaterial , Refid:req.user._id},{
@@ -126,7 +161,6 @@ app.post("/wasteDB" , auth , async(req,res)=>{
 
 
 // private company
-
 //The product that we will make after booking the raw materials
 app.get("/whatmake" , auth , (req,res)=>{
   res.render("pc/whatmake")

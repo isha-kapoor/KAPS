@@ -38,13 +38,13 @@
                       <td><%=row.open%>Kg</td>
                       <td><%=row.processing%>Kg</td>
                       <td><%=row.ready%>Kg</td>
-                      <td><a class="btn btn-primary btn-xs" href="/wasteDB"><i class="fa fa-edit" aria-hidden="true" ></i></a></td>
+                      <td><a class="btn btn-primary btn-xs" href="/wasteDB/<%=row._id%>"><i class="fa fa-edit" aria-hidden="true" ></i></a></td>
                     </tr>
                   <% }) %>
                 </tbody>
           </table>
           <div style="margin-left:48%">
-       <a class="btn btn-primary btn-xs" href="/wasteDB"><i class="fa fa-edit" aria-hidden="true" ></i></a>
+       <a class="btn btn-primary btn-xs" href="/wasteDB"><i class="fa fa-plus" aria-hidden="true" ></i></a>
         </section>
       </div>
 

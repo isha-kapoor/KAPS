@@ -4,7 +4,7 @@
 
 <head>
   <meta charset="utf-8">
-  <title>Edit Database</title>
+  <title>Add Database</title>
   <link rel="stylesheet" href="../css/style.css">
   <link rel="stylesheet" href="../css/stylecc.css">
   <link rel="stylesheet" href="../css/stylepc.css">
@@ -25,13 +25,22 @@
           <div class="w3-card">
             <div class="card-body">
                 <h6 class="card-text mb-5"> Edit Database </h6>
-                <input type="hidden" name="_id" value="<%=records._id%>">
               <div class="row apply-margin">
                 <div class="col-sm-6 text-primarys">
                   <h6 class="mb-2 apply-font"><label for="waste-needed"> Select Raw material</label></h6>
                 </div>
                 <div class="col-sm-6 text-secondary ">
-                  <input class="apply-padding" name="RawMaterial" id="waste-needed" value="<%=records.RawMaterial%>" readonly>
+                  <select name="RawMaterial" id="waste-needed" >
+                    <%records.forEach(function(row){%>
+                        <option value="<%=row%>"><%=row%></option>
+                        <!-- <option value="Wheat Straw">Wheat Straw</option>
+                        <option value="Rice Husk">Rice Husk</option>
+                        <option value="Rice Straw">Rice Straw</option>
+                        <option value="Cotton Stalk">Cotton Stalk</option>
+                        <option value="Bagasse">Bagasse</option> -->
+                        <% }) %>
+
+                  </select>
                 </div>
               </div>
               <div class="row apply-margin">
@@ -39,7 +48,7 @@
                   <h6 class="mb-2 apply-font"><label for="open">Open Waste </label></h6>
                 </div>
                 <div class="col-sm-6 text-secondary ">
-                  <input class="apply-padding"type="number" min="0" id="open" placeholder="placeholder" name="open" value="<%=records.open%>">
+                  <input class="apply-padding"type="number" min="0" id="open" placeholder="placeholder" name="open" value="0">
                 </div>
               </div>
               <div class="row apply-margin">
@@ -47,7 +56,7 @@
                   <h6 class="mb-2 apply-font"><label for="processing">Processing Waste </label></h6>
                 </div>
                 <div class="col-sm-6 text-secondary ">
-                  <input class="apply-padding"type="number" min="0" id="processing" placeholder="placeholder" name="processing" value="<%=records.processing%>">
+                  <input class="apply-padding"type="number" min="0" id="processing" placeholder="placeholder" name="processing" value="0">
                 </div>
               </div>
               <div class="row apply-margin">
@@ -55,7 +64,7 @@
                   <h6 class="mb-2 apply-font"><label for="ready">Ready Waste </label></h6>
                 </div>
                 <div class="col-sm-6 text-secondary ">
-                  <input class="apply-padding"type="number" min="0" id="ready" placeholder="placeholder" name="ready" value="<%=records.ready%>">
+                  <input class="apply-padding"type="number" min="0" id="ready" placeholder="placeholder" name="ready" value="0">
                 </div>
               </div>
               <div class="row">
