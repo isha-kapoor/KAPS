@@ -158,7 +158,10 @@ app.post("/wasteDB" , auth , async(req,res)=>{
     console.log("There are some errors regarding initial waste" );
   }
 })
-
+//To open the biomass Characterization page
+app.get("/biomass",auth,(req,res)=>{
+  res.render("cc/biomass")
+})
 
 // private company
 //The product that we will make after booking the raw materials
@@ -244,6 +247,34 @@ app.post("/pcAddReq" , auth , async(req,res)=>{
     res.status(400).send(e);
     console.log("There are some errors regarding the new request addition" );
   }
+})
+//Select Collection Centre to view Raw materials
+app.get("/selectcc" , auth , (req,res)=>{
+  res.render("pc/selectcc")
+})
+
+//post the selectcc to view the ready waste for the respective cc
+app.post("/selectcc" , auth ,async(req,res)=>{
+  console.log(req.body.CollectionCentre);
+  try{
+    const logindata =  await CRegister.findOne({ccname:req.body.CollectionCentre})
+    //console.log("Id" +logindata._id);
+    const wastedata =  Waste.find({Refid:logindata._id});
+    wastedata.exec(function(err,data){
+      if(err) { throw err; res.send("There is no data available for the request")}
+      //console.log(data);
+      res.render("pc/rawCatalog" , {order:data});
+    })
+  // res.status(201).redirect("/selectcc")
+}
+catch(e){
+  res.send("There is no data available for the request" + e);
+  console.log("Errors displaying the waste record")
+}
+})
+//For seeing the raw materials catalog
+app.get("/rawcatalog", auth ,(req,res)=>{
+  res.render("pc/rawCatalog")
 })
 
 //registeration part for farmer , collection centre , private company
