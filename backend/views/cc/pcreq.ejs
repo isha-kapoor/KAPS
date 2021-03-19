@@ -48,7 +48,11 @@
                       <td><%= row.contact %></td>
                       <td><%= row.pid %></td>
                       <td><a onclick="setApproveClass()" class="btn btn-primary btn-xs" href="/approve/<%= row._id %> "><i class="fa fa-check" aria-hidden="true" ></i></a></td>
-                      <td ><a onclick="setPaymentClass()" class="btn btn-danger btn-xs" href="/delete/<%= row._id %> "><i class="fa fa-check" aria-hidden="true" ></i></a></td>
+                <%    if(row.approve){ %>
+                  <td ><a onclick="setPaymentClass()" class="btn btn-danger btn-xs" href="/delete/<%= row._id %> "><i class="fa fa-check" aria-hidden="true" ></i></a></td>
+              <%  } else {%>
+                <td></td>
+              <%}%>
                     </tr>
                     <% }) %>
                 </tbody>

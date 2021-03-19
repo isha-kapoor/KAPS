@@ -278,12 +278,12 @@ app.get("/rawcatalog", auth ,(req,res)=>{
 })
 
 //registeration part for farmer , collection centre , private company
-app.post("/newcc-username" , async(req,res) => {
+app.post("/registeration" , async(req,res) => {
   try{
     const password = req.body.ccpassword;
     const confirm = req.body.ccconfirm;
     if(password === confirm){
-          const collectioncentre = new CRegister({
+          const newuser = new CRegister({
             ccname: req.body.ccname,
             ccadd:req.body.ccadd,
             cccontact:req.body.cccontact,
@@ -295,8 +295,8 @@ app.post("/newcc-username" , async(req,res) => {
 
         //here the bcrypt is used
         //to generte a createToken
-        console.log(collectioncentre);
-        const new_token = await collectioncentre.generateAuthToken();
+        console.log(newuser);
+        const new_token = await newuser.generateAuthToken();
         console.log(new_token);
 
         res.cookie("jwt" , new_token ,{
@@ -305,8 +305,8 @@ app.post("/newcc-username" , async(req,res) => {
         } );
         // console.log(cookie);
 
-        const collectioncentreRegisteration =await collectioncentre.save();
-        console.log(collectioncentreRegisteration);
+        const newuserRegisteration =await newuser.save();
+        console.log(newuserRegisteration);
         const whoAmI = req.body.select;
 
         const cc =  "CollectionCentre";
@@ -329,8 +329,8 @@ app.post("/newcc-username" , async(req,res) => {
 })
 
 //This opens the registeration page
-app.get("/newcc-username" ,(req,res) =>{
-  res.render("newcc-username");
+app.get("/registeration" ,(req,res) =>{
+  res.render("registeration");
 })
 //This is the login page for all three stakeholders
 app.get("/login" ,(req,res) =>{
