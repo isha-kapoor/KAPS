@@ -8,22 +8,22 @@ const wasteSchema = new mongoose.Schema({
     ref:'CRegister',
     unique:false,
   },
-  RawMaterial:{
+  RawMaterial:{ // which product out of wheat straw husk rice husk straw cotton stalk bagasse
     type:String,
     required:true,
     unique:false,
   },
-  open:{
+  open:{ // amount of open waste
     type:Number,
     required:true,
     default:0,
   },
-  processing:{
+  processing:{ // amount of waste under processing
     type:Number,
     required:true,
     default:0,
   },
-  ready:{
+  ready:{ // the ready waste
     type:Number,
     required:true,
     default:0,

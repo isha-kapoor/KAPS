@@ -29,8 +29,10 @@
                         <th>N<br>(%)</th>
                         <th>O<br>(%)</th>
                         <th>Ash<br>(%)</th>
-                        <th>Gross Calorific Value<br>(cal/g)</th>
+                        <th>Actual Gross Calorific Value<br>(cal/g)</th>
           						</tr>
+                    </thead>
+                    <tbody>
                       <tr>
                         <td>Wheat Husk</td>
                         <td>41.47</td>
@@ -85,11 +87,31 @@
                         <td>5.010</td>
                         <td>4172</td>
                       </tr>
-          					</thead>
+          					</tbody>
+                  </table>
+                </section>
+                <section class="move-down">
+                    <table class="farmer-req">
+                      <thead>
+              						<tr>
+              							<th>Residue<br>Type</th>
+                            <th>Obtained Gross Calorific Value<br>(cal/g)</th>
+                            <th>Edit<br>Calorific Value</th>
+              						</tr>
+                        </thead>
                     <tbody>
-
+                      <% records.forEach(function(row){%>
+                        <tr>
+                          <td><%=row.RawMaterial%></td>
+                          <td><%=row.gross%></td>
+                          <td><a class="btn btn-primary btn-xs" href="/biomassDB/<%=row._id%>"><i class="fa fa-edit" aria-hidden="true" ></i></a></td>
+                        </tr>
+                      <% }) %>
                     </tbody>
               </table>
+              <div style="margin-left:48%">
+           <a class="btn btn-primary btn-xs" href="/biomassDB"><i class="fa fa-plus" aria-hidden="true" ></i></a>
+         </div>
             </section>
           </div>
 

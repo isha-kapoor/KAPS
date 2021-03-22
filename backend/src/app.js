@@ -13,6 +13,7 @@ const CRegister = require("./models/ccregisters");
 const PCAddedReq = require("./models/pcaddreq");
 const PCProduct = require("./models/pcproduct");
 const Waste = require("./models/waste");
+const Biomass = require("./models/biomass");
 const {json} = require("express");
 const {log} = require("console");
 
@@ -160,8 +161,81 @@ app.post("/wasteDB" , auth , async(req,res)=>{
 })
 //To open the biomass Characterization page
 app.get("/biomass",auth,(req,res)=>{
-  res.render("cc/biomass")
+  const waste = Biomass.find({Refid: req.user._id});
+  waste.exec(function(err,data){
+    if(err) throw err;
+    res.render("cc/biomass", {records:data});
+  });
 })
+// Edit the Biomass database
+app.get("/biomassDB/:id", auth , (req,res)=>{
+  const waste = Biomass.findById(req.params.id);
+  waste.exec(function(err,doc){
+    if(err){throw err}
+      res.render("cc/biomassedit" , {
+        records:doc
+      });
+    })
+})
+//THis is where they can add the database BIomass if already added you can only edit it.  displays only the left over raw materials to be added
+app.get("/biomassDB" , auth , (req,res)=>{
+  var arr1=["Wheat Husk" , "Wheat Straw" , "Rice Husk" ,"Rice Straw" ,"Cotton Stalk" ,"Bagasse"];
+  try{
+  const material = Biomass.find({Refid: req.user._id});
+  var arr=[];
+  var common;
+  console.log(material);
+  material.exec(function(err,doc){
+      if(err) { throw err;}
+       console.log(doc);
+      if(!doc.length){
+        arr=[];
+        common=arr1.filter(x=>arr.indexOf(x)===-1);
+        res.render("cc/biomassadd" ,{records:common});
+      }
+      else {
+           Object.entries(doc).forEach(item=>{
+           const [key,value]=item;
+           arr.push(value.RawMaterial);
+           // console.log(value.RawMaterial);
+           common = arr1.filter(x=>arr.indexOf(x)===-1); //finds the difference in elements that arr1 has but not arr
+            // console.log(typeof(common));
+         })
+          console.log(typeof(common));
+         if(common=='') {
+           res.redirect("/biomass")
+         }
+         else  res.render("cc/biomassadd" ,{records:common})
+     }
+  })
+}
+catch(e){
+  console.log(e);
+  res.send("Error in displaying the biomass")
+}
+})
+
+//This is the post method for biomass whenever anything is updated or newly added
+app.post("/biomassDB" , auth , async(req,res)=>{
+  try {
+    Biomass.findOneAndUpdate({RawMaterial:req.body.RawMaterial , Refid:req.user._id},{
+        RawMaterial:req.body.RawMaterial,
+        Refid:req.user._id,
+        gross:req.body.gross,
+      },{upsert:true},
+      function (err) {
+        if(err) throw err;
+        res.status(201).redirect("/biomass")
+  })
+  } catch (e) {
+    res.status(400).send(e);
+    console.log("There are some errors regarding initial biomass data to be added" );
+  }
+})
+
+
+
+
 
 // private company
 //The product that we will make after booking the raw materials
