@@ -3,7 +3,7 @@
 
 <head>
   <meta charset="utf-8">
-  <title>NewReg-Farmer-Username-Password</title>
+  <title>NewReg-Farmer-Profile Details</title>
   <link rel="stylesheet" href="../css/style.css">
   <link rel="stylesheet" href="../css/stylef.css">
   <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
@@ -41,18 +41,31 @@
       </div>
     </nav>
 
-    <form class=" farmer-unp" method="get" action="home.html">
-      <label for="cc-username">Username</label>
-      <input type="text" id="cc-username" name="cc-username">
+    <form class="choose-cc"> <!---New Farmer Registration-->
+      <label for="f-cc">Choose Collection Centre</label>
+      <select class="select-cc" id="f-cc" name="f-cc">
+        <option value="cc1">Mehsana</option>
+        <option value="cc2">Jamnagar</option>
+        <option value="cc3">Porbandar</option>
+      </select>
       <br>
-      <label for="cc-password">Password</label>
-      <input type="text" id="cc-password" name="cc-password">
       <br>
-      <label for="cc-confirm">Confirm password</label>
-      <input type="text" id="cc-confirm" name="cc-confirm">
+      <label for="f-cc">Choose Khareef Crops Grown</label>
+      <select class="select-crops-k" id="select-crops" name="select-crops-k" multiple>
+        <option value="crop1">Wheat</option>
+        <option value="crop2">Rice</option>
+        <option value="crop3">Maize</option>
+      </select>
       <br>
-      <input type="submit" value="Submit Details">
-      </form>
+      <br>
+      <label for="f-cc">Choose Rabi Crops Grown</label>
+      <select class="select-crops-r" id="select-crops" name="select-crops-r" multiple>
+        <option value="crop1">Wheat</option>
+        <option value="crop2">Rice</option>
+        <option value="crop3">Maize</option>
+      </select>
+      <input type="submit" value="Save">
+    </form>
 
 </body>
 </html>

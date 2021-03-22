@@ -14,6 +14,7 @@ const PCAddedReq = require("./models/pcaddreq");
 const PCProduct = require("./models/pcproduct")
 const {json} = require("express");
 const {log} = require("console");
+const fRegDetails = require("./models/fregdetail.js");
 
 const port =process.env.PORT || 3000 ;
 
@@ -144,6 +145,31 @@ app.post("/whatmake" , auth , async(req,res)=>{
     console.log("There are some errors regarding the new request addition regarding what product" );
   }
 })
+
+//To store additional registration details of new farmer 
+app.post("/farmerregdetails" , auth , async(req,res)=>{
+  try{
+   // var cropsK= document.getElementsByName('select-crops-k');
+   // var cropsR= document.getElementsByName('select-crops-r');
+    const pc = new fRegDetails({
+        Refid:req.user._id,
+        fcontact:req.user.cccontact,
+        fname:req.user.ccname,
+        fadd:req.user.ccadd,
+        fuser:req.user.ccusername,
+        fcc:req.body.fcc,
+       fKcrops:req.body.fKcrops,
+       fRcrops:req.body.fRcrops,
+    })
+      const pcNew =await pc.save();
+      res.status(201).render("");
+  }
+  catch(e){
+    res.status(400).send(e);
+    console.log("There are some errors regarding the new request addition regarding what product" );
+  }
+})
+
 //This is a post request page for private company where they will add the orders and save it to database
 app.post("/pcAddReq" , auth , async(req,res)=>{
   try{
@@ -207,7 +233,7 @@ app.post("/newcc-username" , async(req,res) => {
         const f = "Farmer";
         const pc = "PrivateCompany";
         if( whoAmI == cc) res.status(201).render("cc/cchome");
-        else if(whoAmI == f) res.status(201).render("index");
+        else if(whoAmI == f) res.status(201).render("farmer/reg-farmer-details");
         else if(whoAmI == pc) res.status(201).render("pc/whatmake");
         else res.status(201).render("signed")
 
@@ -220,6 +246,11 @@ app.post("/newcc-username" , async(req,res) => {
     console.log("There are some errors" );
 
   }
+})
+
+//To open farmer additional reg details page
+app.get("/farmerregdetails" ,(req,res) =>{
+  res.render("farmer/reg-farmer-details");
 })
 
 //This opens the registeration page
