@@ -3,9 +3,9 @@
 
 <head>
   <meta charset="utf-8">
-  <title>Registeration</title>
-  <link rel="stylesheet" href="css/style.css">
-  <link rel="stylesheet" href="css/stylecc.css">
+  <title>NewReg-Farmer-Profile Details</title>
+  <link rel="stylesheet" href="../css/style.css">
+  <link rel="stylesheet" href="../css/stylef.css">
   <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
@@ -16,7 +16,7 @@
 
 <body id=body>
    <nav class="navbar navbar-expand-lg navbar-light" style="background-color: #ffffff;">
-    <a class="navbar-brand" href="/">
+    <a class="navbar-brand" href="../index.html">
       <img src="../images/logo.png" alt="" width="40px" height="40px">
     </a>
     <!-- <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
@@ -33,36 +33,39 @@
           <a class="nav-link" href="../navbar/contact.html">Contact Us</a>
         </li>
         </ul>
+        <ul class="navbar-nav ml-auto">
+          <li class="nav-item">
+            <a class="nav-link" href="../navbar/login.html">Logout</a>
+          </li>
+         </ul>
       </div>
     </nav>
-    <form class="new-cc" method="post" action="/registeration" autocomplete="off">
-      <label for="cc">Name</label>
-      <input type="text" id="cc" name="ccname">
-      <br>
-      <label for="cc-add">Address</label>
-      <input type="text" id="cc-add" name="ccadd">
-      <br>
-      <label for="cc-contact">Contact Number</label>
-      <input type="text" id="cc-contact" name="cccontact" pattern="[0-9]{10}"
-						maxlength="10" >
-      <br>
-      <label for="cc-username">Username</label>
-      <input type="text" id="cc-username" name="ccusername">
-      <br>
-      <label for="cc-password">Password</label>
-      <input type="text" id="cc-password" name="ccpassword">
-      <br>
-      <label for="cc-confirm">Confirm password</label>
-      <input type="text" id="cc-confirm" name="ccconfirm">
-      <br>
-      <label for="cc-confirm">Select</label>
-      <select type="text" id="cc-confirm" name="select">
-        <option value="Farmer">Farmer</option>
-        <option value="CollectionCentre">CollectionCentre</option>
-        <option value="PrivateCompany">PrivateCompany</option>
+
+    <form class="choose-cc"> <!---New Farmer Registration-->
+      <label for="f-cc">Choose Collection Centre</label>
+      <select class="select-cc" id="f-cc" name="f-cc">
+        <option value="cc1">Mehsana</option>
+        <option value="cc2">Jamnagar</option>
+        <option value="cc3">Porbandar</option>
       </select>
       <br>
-      <input type="submit" value="Submit Details">
+      <br>
+      <label for="f-cc">Choose Khareef Crops Grown</label>
+      <select class="select-crops-k" id="select-crops" name="select-crops-k" multiple>
+        <option value="crop1">Wheat</option>
+        <option value="crop2">Rice</option>
+        <option value="crop3">Maize</option>
+      </select>
+      <br>
+      <br>
+      <label for="f-cc">Choose Rabi Crops Grown</label>
+      <select class="select-crops-r" id="select-crops" name="select-crops-r" multiple>
+        <option value="crop1">Wheat</option>
+        <option value="crop2">Rice</option>
+        <option value="crop3">Maize</option>
+      </select>
+      <input type="submit" value="Save">
     </form>
+
 </body>
 </html>
