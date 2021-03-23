@@ -361,6 +361,25 @@ text-align:center;
     margin-left: 170px;
 }
 
+/*Residue Type*/
+.choose-residue{
+  margin-top: 120px;
+  margin-left: 500px;
+  font-family: "Montserrat", Sans-Serif;
+  font-style: normal;
+  font-weight:500;
+}
+
+.choose-residue .select-residue {
+  width: 100px;
+  margin-left: 55px;
+  box-sizing: border-box;
+  border: none;
+  border-bottom: 2px solid black;
+  font-family: "Montserrat", Sans-Serif;
+    font-style: normal;
+    font-weight:500;
+}
 /*Choose CC*/
 .choose-cc{
   margin-top: 120px;
