@@ -3,7 +3,7 @@
 
 <head>
   <meta charset="utf-8">
-  <title>Farmer-Request-Pickup</title>
+  <title>Farmer-Home</title>
   <link rel="stylesheet" href="../css/style.css">
   <link rel="stylesheet" href="../css/stylef.css">
   <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
@@ -42,7 +42,7 @@
     </nav>
     <div class="w3-sidebar w3-light-white w3-bar-block move-down" style="width:15%">
         <a href="farmer-viewprofile-personal.html" class="w3-bar-item  w3-button w3-hover-none w3-hover-text-green">My Profile</a>
-        <a href="requestpickup.html" class="w3-bar-item  w3-button w3-hover-none w3-hover-text-green">Request Pickup</a>
+        <a href="/requestpickup" class="w3-bar-item  w3-button w3-hover-none w3-hover-text-green">Request Pickup</a>
         <a href="fpendingrequests.html" class="w3-bar-item  w3-button w3-hover-none w3-hover-text-green">Pending Requests</a>
         <a href="fcompletedrequests.html" class="w3-bar-item  w3-button w3-hover-none w3-hover-text-green">Completed Requests</a>
         <a href="viewinvoice.html" class="w3-bar-item  w3-button w3-hover-none w3-hover-text-green">View Invoice Details</a>
@@ -51,56 +51,13 @@
     <div>
         <button class="button buttonhover">Notifications</button>
     </div>
-    <div class="w3-card">
-        <div class="card-body">
-          <h5 class="card-title">Request Pickup</h5>
-          <br>
-          <div>
-          <form id="frequest">
-            <label for="Residue">Enter Number of Residue Types</label>
-            <input type="number" placeholder="Enter Number of Residue Types" id="Residue" name="Residue" min="1" max="">
-            <input id="addr" name="Add Residue Types" type="button" value="Add Residue Types">
-            <br>
-          <div id="residue-container">
-            
-              
-            </div>
-          </div>
-      
-          <input type="submit" value="Submit Request">
-          </form>
-          <div>
-        </div>
+    <div class="move-down" >
+      <!-- style="margin-left:16%" -->
+      <div class="centred">
+      <p class="welcome">Welcome to <strong> KAPS. </strong></p>
+      <p class="started">Lets get you started.</p>
+      </div>
     </div>
 
-    <script>
-      const form = document.getElementById('frequest');
-
-form.addEventListener('click', (e) => {
-e.preventDefault(); // stop the form submission
-const input = form.querySelector('input');
-const residuenumber = input.value; // get the value
- for (let i = 0; i < residuenumber; i++) {
-   const div = document.createElement('div');
-  div.innerHTML = `
-  <form class="choose-residue">
-                <label for="f-residue">Choose Residue Type</label>
-                <select class="select-residue" id="f-residue" name="f-residue" multiple>
-                  <option value="wheathusk">Wheat Husk</option>
-                  <option value="cottonstraw">Cotton Straw</option>
-                  <option value="rice">Rice</option>
-                </select>
-              </form>
-  `;
-  
-  document.getElementById('residue-container').appendChild(div); // now append in the DOM elem
-}
-});
-
-    </script>
-
-    
-      
-    
-</body>
-</html>
+  </body>
+  </html>

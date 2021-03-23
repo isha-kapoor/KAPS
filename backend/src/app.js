@@ -319,7 +319,7 @@ app.post("/farmerregdetails" , auth , async(req,res)=>{
        fRcrops:req.body.fRcrops,
     })
       const pcNew =await pc.save();
-      res.status(201).render("");
+      res.status(201).render("farmer/fhome");
   }
   catch(e){
     res.status(400).send(e);
@@ -438,9 +438,19 @@ app.post("/registeration" , async(req,res) => {
   }
 })
 
+//Farmer home page
+app.get("/fhome" ,(req,res) =>{
+  res.render("farmer/fhome");
+})
+
 //To open farmer additional reg details page
 app.get("/farmerregdetails" ,(req,res) =>{
   res.render("farmer/reg-farmer-details");
+})
+
+//For farmer to request pickup
+app.get("/requestpickup" ,(req,res) =>{
+  res.render("farmer/requestpickup");
 })
 
 //This opens the registeration page
@@ -475,7 +485,7 @@ app.post("/login" , async(req,res) => {
         res.status(201).render("cc/cchome")
       }
       else if(isMatched && user.select =="Farmer"){
-        res.status(201).render("index")
+        res.status(201).render("farmer/fhome")
       }
       else if(isMatched && user.select == "PrivateCompany"){
         res.status(201).render("pc/pchome")

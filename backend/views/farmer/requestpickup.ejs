@@ -55,51 +55,47 @@
         <div class="card-body">
           <h5 class="card-title">Request Pickup</h5>
           <br>
-          <div>
-          <form id="frequest">
-            <label for="Residue">Enter Number of Residue Types</label>
-            <input type="number" placeholder="Enter Number of Residue Types" id="Residue" name="Residue" min="1" max="">
-            <input id="addr" name="Add Residue Types" type="button" value="Add Residue Types">
+          <form>
+            <label for="Residue">Enter Residue Type</label>
+            <input type="text" placeholder="Select Residue Type" id="Residue" name="Residue">
             <br>
-          <div id="residue-container">
-            
-              
-            </div>
-          </div>
-      
-          <input type="submit" value="Submit Request">
+            <label for="Land">Total Cultivation Area</label>
+            <input type="text" placeholder="Enter Cultivation Area" id="Land" name="Land">
+            <input type="submit" value="Submit Request">
           </form>
-          <div>
         </div>
     </div>
 
-    <script>
-      const form = document.getElementById('frequest');
+      <div class="input-container">
+        <form id="inputForm">
+          <input type="number" id="input-box" name="quantity" min="1" max="">
+          <input id="filldetails" name="submit" type="submit" value="Add 
+             boxes">
+        </form>
+      </div>
+      
+      <!--_-_-_-_BOX-Container_-_-_-_-->
+      <div class="boxes-container">
+        <div id="boxes"></div>
+      </div>
 
-form.addEventListener('click', (e) => {
-e.preventDefault(); // stop the form submission
-const input = form.querySelector('input');
-const residuenumber = input.value; // get the value
- for (let i = 0; i < residuenumber; i++) {
-   const div = document.createElement('div');
-  div.innerHTML = `
-  <form class="choose-residue">
-                <label for="f-residue">Choose Residue Type</label>
-                <select class="select-residue" id="f-residue" name="f-residue" multiple>
-                  <option value="wheathusk">Wheat Husk</option>
-                  <option value="cottonstraw">Cotton Straw</option>
-                  <option value="rice">Rice</option>
-                </select>
-              </form>
-  `;
-  
-  document.getElementById('residue-container').appendChild(div); // now append in the DOM elem
-}
+      <script>
+        const form = document.getElementById('inputForm');
+
+form.addEventListener('submit', (e) => {
+  e.preventDefault(); // stop the form submission
+  const input = form.querySelector('input');
+  const boxInput = input.value; // get the value
+  let box = document.querySelector('#boxes');
+    box.innerHTML="";
+  for (let i = 0; i < boxInput; i++) { // loop over the input value
+    let div = document.createElement('div'); // create div elem
+    div.textContent = `Box-${i}`
+    box.appendChild(div); // now append in the DOM elem
+  }
 });
 
-    </script>
-
-    
+      </script>
       
     
 </body>
