@@ -11,7 +11,9 @@ const auth = require("./middleware/auth.js")
 require("./db/conn.js");
 const CRegister = require("./models/ccregisters");
 const PCAddedReq = require("./models/pcaddreq");
-const PCProduct = require("./models/pcproduct")
+const PCProduct = require("./models/pcproduct");
+const Waste = require("./models/waste");
+const Biomass = require("./models/biomass");
 const {json} = require("express");
 const {log} = require("console");
 const fRegDetails = require("./models/fregdetail.js");
@@ -51,6 +53,7 @@ app.get("/ccprofile" ,auth, (req,res) =>{
 //The page where the collection centre sees the requests of private companies
 app.get("/pcreq" , auth , (req,res) => {
   const privatereq = PCAddedReq.find({CollectionCentre:req.user.ccname , paid:false});
+   // date :{$gte:moment(Date.now()).format('DD/MM/YYYY')} approve:false approved and not paid
   privatereq.exec(function(err,data){
     if(err) throw err;
     res.render("cc/pcreq",{order:data});
@@ -82,11 +85,160 @@ app.get("/delete/:id" , auth, (req,res)=>{
         res.redirect("/pcreq")
   })
 })
+//This is the waste Database for collection centre where it is displayed
+app.get("/ccwasteDB",auth,(req,res)=>{
+  const waste = Waste.find({Refid: req.user._id});
+  waste.exec(function(err,data){
+    if(err) throw err;
+    res.render("cc/ccwasteDB", {records:data});
+  });
+})
+//edit the database only on what raw material you choose
+app.get("/wasteDB/:id", auth , (req,res)=>{
+  const waste = Waste.findById(req.params.id);
+  waste.exec(function(err,doc){
+    if(err){throw err}
+      res.render("cc/wasteDB" , {
+        records:doc
+      });
+    })
+})
+//THis is where they can add the database if already added you can only edit it.  displays only the left over raw materials to be added
+app.get("/wasteDB" , auth , (req,res)=>{
+  var arr1=["Wheat Husk" , "Wheat Straw" , "Rice Husk" ,"Rice Straw" ,"Cotton Stalk" ,"Bagasse"];
+  try{
+  const material = Waste.find({Refid: req.user._id});
+  var arr=[];
+  var common;
+  console.log(material);
+  material.exec(function(err,doc){
+      if(err) { throw err;}
+       console.log(doc);
+      if(!doc.length){
+        arr=[];
+        common=arr1.filter(x=>arr.indexOf(x)===-1);
+        res.render("cc/waste" ,{records:common});
+      }
+      else {
+           Object.entries(doc).forEach(item=>{
+           const [key,value]=item;
+           arr.push(value.RawMaterial);
+           // console.log(value.RawMaterial);
+           common = arr1.filter(x=>arr.indexOf(x)===-1); //finds the difference in elements that arr1 has but not arr
+            // console.log(typeof(common));
+         })
+          console.log(typeof(common));
+         if(common=='') {
+           res.redirect("/ccwasteDB")
+         }
+         else  res.render("cc/waste" ,{records:common})
+     }
+  })
+}
+catch(e){
+  console.log(e);
+  res.send("Error in displaying")
+}
+})
+
+//This is the post method for wastes whenever anything is updated or newly added
+app.post("/wasteDB" , auth , async(req,res)=>{
+  try {
+    Waste.findOneAndUpdate({RawMaterial:req.body.RawMaterial , Refid:req.user._id},{
+        RawMaterial:req.body.RawMaterial,
+        Refid:req.user._id,
+        open:req.body.open,
+        processing:req.body.processing,
+        ready:req.body.ready,
+      },{upsert:true},
+      function (err) {
+        if(err) throw err;
+        res.status(201).redirect("/ccwasteDB")
+  })
+  } catch (e) {
+    res.status(400).send(e);
+    console.log("There are some errors regarding initial waste" );
+  }
+})
+//To open the biomass Characterization page
+app.get("/biomass",auth,(req,res)=>{
+  const waste = Biomass.find({Refid: req.user._id});
+  waste.exec(function(err,data){
+    if(err) throw err;
+    res.render("cc/biomass", {records:data});
+  });
+})
+// Edit the Biomass database
+app.get("/biomassDB/:id", auth , (req,res)=>{
+  const waste = Biomass.findById(req.params.id);
+  waste.exec(function(err,doc){
+    if(err){throw err}
+      res.render("cc/biomassedit" , {
+        records:doc
+      });
+    })
+})
+//THis is where they can add the database BIomass if already added you can only edit it.  displays only the left over raw materials to be added
+app.get("/biomassDB" , auth , (req,res)=>{
+  var arr1=["Wheat Husk" , "Wheat Straw" , "Rice Husk" ,"Rice Straw" ,"Cotton Stalk" ,"Bagasse"];
+  try{
+  const material = Biomass.find({Refid: req.user._id});
+  var arr=[];
+  var common;
+  console.log(material);
+  material.exec(function(err,doc){
+      if(err) { throw err;}
+       console.log(doc);
+      if(!doc.length){
+        arr=[];
+        common=arr1.filter(x=>arr.indexOf(x)===-1);
+        res.render("cc/biomassadd" ,{records:common});
+      }
+      else {
+           Object.entries(doc).forEach(item=>{
+           const [key,value]=item;
+           arr.push(value.RawMaterial);
+           // console.log(value.RawMaterial);
+           common = arr1.filter(x=>arr.indexOf(x)===-1); //finds the difference in elements that arr1 has but not arr
+            // console.log(typeof(common));
+         })
+          console.log(typeof(common));
+         if(common=='') {
+           res.redirect("/biomass")
+         }
+         else  res.render("cc/biomassadd" ,{records:common})
+     }
+  })
+}
+catch(e){
+  console.log(e);
+  res.send("Error in displaying the biomass")
+}
+})
+
+//This is the post method for biomass whenever anything is updated or newly added
+app.post("/biomassDB" , auth , async(req,res)=>{
+  try {
+    Biomass.findOneAndUpdate({RawMaterial:req.body.RawMaterial , Refid:req.user._id},{
+        RawMaterial:req.body.RawMaterial,
+        Refid:req.user._id,
+        gross:req.body.gross,
+      },{upsert:true},
+      function (err) {
+        if(err) throw err;
+        res.status(201).redirect("/biomass")
+  })
+  } catch (e) {
+    res.status(400).send(e);
+    console.log("There are some errors regarding initial biomass data to be added" );
+  }
+})
+
+
 
 
 
 // private company
-
 //The product that we will make after booking the raw materials
 app.get("/whatmake" , auth , (req,res)=>{
   res.render("pc/whatmake")
@@ -106,7 +258,12 @@ app.get("/pcprofile" ,auth, (req,res) =>{
 })
 //This is the page where the private company would add the order
 app.get("/pcAddReq" , auth , (req,res)=>{
-  res.render("pc/pcAddReq")
+  const cc = CRegister.find({select:"CollectionCentre"});
+  cc.exec(function(err,data){
+    if(err) throw err;
+    res.render("pc/pcAddReq" , {records:data})
+  })
+  // res.render("pc/pcAddReq")
 })
 //This displays the pending orders of the private company
 app.get("/pcpending" , auth , async(req,res)=>{
@@ -196,14 +353,47 @@ app.post("/pcAddReq" , auth , async(req,res)=>{
     console.log("There are some errors regarding the new request addition" );
   }
 })
+//Select Collection Centre to view Raw materials
+app.get("/selectcc" , auth , (req,res)=>{
+  const cc = CRegister.find({select:"CollectionCentre"});
+  cc.exec(function(err,data){
+    if(err) throw err;
+    res.render("pc/selectcc" , {records:data})
+  })
+  // res.render("pc/selectcc")
+})
+
+//post the selectcc to view the ready waste for the respective cc
+app.post("/selectcc" , auth ,async(req,res)=>{
+  console.log(req.body.CollectionCentre);
+  try{
+    const logindata =  await CRegister.findOne({ccname:req.body.CollectionCentre})
+    //console.log("Id" +logindata._id);
+    const wastedata =  Waste.find({Refid:logindata._id});
+    wastedata.exec(function(err,data){
+      if(err) { throw err; res.send("There is no data available for the request")}
+      //console.log(data);
+      res.render("pc/rawCatalog" , {order:data});
+    })
+  // res.status(201).redirect("/selectcc")
+}
+catch(e){
+  res.send("There is no data available for the request" + e);
+  console.log("Errors displaying the waste record")
+}
+})
+//For seeing the raw materials catalog
+app.get("/rawcatalog", auth ,(req,res)=>{
+  res.render("pc/rawCatalog")
+})
 
 //registeration part for farmer , collection centre , private company
-app.post("/newcc-username" , async(req,res) => {
+app.post("/registeration" , async(req,res) => {
   try{
     const password = req.body.ccpassword;
     const confirm = req.body.ccconfirm;
     if(password === confirm){
-          const collectioncentre = new CRegister({
+          const newuser = new CRegister({
             ccname: req.body.ccname,
             ccadd:req.body.ccadd,
             cccontact:req.body.cccontact,
@@ -215,8 +405,8 @@ app.post("/newcc-username" , async(req,res) => {
 
         //here the bcrypt is used
         //to generte a createToken
-        console.log(collectioncentre);
-        const new_token = await collectioncentre.generateAuthToken();
+        console.log(newuser);
+        const new_token = await newuser.generateAuthToken();
         console.log(new_token);
 
         res.cookie("jwt" , new_token ,{
@@ -225,8 +415,8 @@ app.post("/newcc-username" , async(req,res) => {
         } );
         // console.log(cookie);
 
-        const collectioncentreRegisteration =await collectioncentre.save();
-        console.log(collectioncentreRegisteration);
+        const newuserRegisteration =await newuser.save();
+        console.log(newuserRegisteration);
         const whoAmI = req.body.select;
 
         const cc =  "CollectionCentre";
@@ -264,8 +454,8 @@ app.get("/requestpickup" ,(req,res) =>{
 })
 
 //This opens the registeration page
-app.get("/newcc-username" ,(req,res) =>{
-  res.render("newcc-username");
+app.get("/registeration" ,(req,res) =>{
+  res.render("registeration");
 })
 //This is the login page for all three stakeholders
 app.get("/login" ,(req,res) =>{

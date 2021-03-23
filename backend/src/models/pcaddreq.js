@@ -3,51 +3,51 @@ const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 
 const pcAddReqSchema = new mongoose.Schema({
-  Refid:{
+  Refid:{ //Reference to registered unique id
     type:mongoose.Schema.Types.ObjectId,
     ref:'CRegister',
   },
-  oid:{
+  oid:{ //this is generation of new order id
     type:String,
     unique:true,
     required:true,
   },
-  pid:{
+  pid:{ // what product does the PrivateCompany makes
     type:mongoose.Schema.Types.String,
     ref:'PCProduct',
   },
-  contact:{
+  contact:{ // this is the contact of the person who makes the order private
     type:mongoose.Schema.Types.String,
     ref:'CRegister',
   },
-  orderDate:{
+  orderDate:{ //ordering date
     type:String,
   },
-  CollectionCentre:{
-    type:String,
-    required:true,
-  },
-  RawMaterial:{
+  CollectionCentre:{ //which collection centre is the order sent to
     type:String,
     required:true,
   },
-  Quantity:{
+  RawMaterial:{ // which raw material is needed
+    type:String,
+    required:true,
+  },
+  Quantity:{ // the quantity of the raw material needed
     type:Number,
     required:true,
   },
-  date:{
+  date:{ // the specified pickup date
     type:String,
     required:true,
   },
-  approve:{
+  approve:{ // approved order or not
     type:Boolean,
     default:false,
   },
-  paid:{
+  paid:{// whether the private company paid for the order or not
     type:Boolean,
     default:false,
   },
-  payment:{
+  payment:{// the amount that is to be paid by private company
     type:Number,
   }
 
