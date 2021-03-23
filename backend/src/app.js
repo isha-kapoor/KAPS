@@ -257,7 +257,12 @@ app.get("/pcprofile" ,auth, (req,res) =>{
 })
 //This is the page where the private company would add the order
 app.get("/pcAddReq" , auth , (req,res)=>{
-  res.render("pc/pcAddReq")
+  const cc = CRegister.find({select:"CollectionCentre"});
+  cc.exec(function(err,data){
+    if(err) throw err;
+    res.render("pc/pcAddReq" , {records:data})
+  })
+  // res.render("pc/pcAddReq")
 })
 //This displays the pending orders of the private company
 app.get("/pcpending" , auth , async(req,res)=>{
@@ -324,7 +329,12 @@ app.post("/pcAddReq" , auth , async(req,res)=>{
 })
 //Select Collection Centre to view Raw materials
 app.get("/selectcc" , auth , (req,res)=>{
-  res.render("pc/selectcc")
+  const cc = CRegister.find({select:"CollectionCentre"});
+  cc.exec(function(err,data){
+    if(err) throw err;
+    res.render("pc/selectcc" , {records:data})
+  })
+  // res.render("pc/selectcc")
 })
 
 //post the selectcc to view the ready waste for the respective cc

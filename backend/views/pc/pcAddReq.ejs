@@ -31,12 +31,15 @@
                 </div>
                 <div class="col-sm-6 text-secondary ">
                   <select name="CollectionCentre" id="collection-centre">
-                    <optgroup label="Gujarat">
+                    <% records.forEach(function(row){%>
+                    <option value="<%=row.ccname%>"><%=row.ccname%></option>
+                    <% }) %>
+                    <!-- <optgroup label="Gujarat">
                       <option value="Bharwala">Bharwala</option>
                       <option value="Ranpur">Ranpur</option>
                       <optgroup label="Rajasthan">
                       <option value="Kekri">Kekri</option>
-                      <option value="Tonk">Tonk</option>
+                      <option value="Tonk">Tonk</option> -->
                   </select>
                 </div>
               </div>
