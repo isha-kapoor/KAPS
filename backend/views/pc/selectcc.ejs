@@ -24,7 +24,7 @@
         <!-- style="margin-left:16%" -->
             <form method="post" action="/selectcc">
               <label for="collection-centre"><h6>Choose a collection centre:</h6></label>
-              <select name="CollectionCentre" id="collection-centre">
+              <select name="CollectionCentre" id="collection-centre" required>
                 <% records.forEach(function(row){%>
                 <option value="<%=row.ccname%>"><%=row.ccname%></option>
                 <% }) %>

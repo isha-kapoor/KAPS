@@ -16,7 +16,7 @@ const Waste = require("./models/waste");
 const Biomass = require("./models/biomass");
 const {json} = require("express");
 const {log} = require("console");
-const fRegDetails = require("./models/fregdetail.js");
+const fRegDetails = require("./models/fregdetail");
 
 const port =process.env.PORT || 3000 ;
 
@@ -234,9 +234,7 @@ app.post("/biomassDB" , auth , async(req,res)=>{
   }
 })
 
-
-
-
+// --------------------
 
 // private company
 //The product that we will make after booking the raw materials
@@ -303,30 +301,6 @@ app.post("/whatmake" , auth , async(req,res)=>{
   }
 })
 
-//To store additional registration details of new farmer 
-app.post("/farmerregdetails" , auth , async(req,res)=>{
-  try{
-   // var cropsK= document.getElementsByName('select-crops-k');
-   // var cropsR= document.getElementsByName('select-crops-r');
-    const pc = new fRegDetails({
-        Refid:req.user._id,
-        fcontact:req.user.cccontact,
-        fname:req.user.ccname,
-        fadd:req.user.ccadd,
-        fuser:req.user.ccusername,
-        fcc:req.body.fcc,
-       fKcrops:req.body.fKcrops,
-       fRcrops:req.body.fRcrops,
-    })
-      const pcNew =await pc.save();
-      res.status(201).render("farmer/fhome");
-  }
-  catch(e){
-    res.status(400).send(e);
-    console.log("There are some errors regarding the new request addition regarding what product" );
-  }
-})
-
 //This is a post request page for private company where they will add the orders and save it to database
 app.post("/pcAddReq" , auth , async(req,res)=>{
   try{
@@ -386,7 +360,65 @@ catch(e){
 app.get("/rawcatalog", auth ,(req,res)=>{
   res.render("pc/rawCatalog")
 })
+// ------------------------
+//To store additional registration details of new farmer
+app.post("/farmerregdetails" , auth , async(req,res)=>{
+  try{
+   // var cropsK= document.getElementsByName('select-crops-k');
+   // var cropsR= document.getElementsByName('select-crops-r');
+    const pc = new fRegDetails({
+        Refid:req.user._id,
+        fcontact:req.user.cccontact,
+        fname:req.user.ccname,
+        fadd:req.user.ccadd,
+        fuser:req.user.ccusername,
+        fcc:req.body.fcc,
+       fKcrops:req.body.fKcrops,
+       fRcrops:req.body.fRcrops,
+    })
+      const pcNew =await pc.save();
+      res.status(201).render("farmer/fhome");
+  }
+  catch(e){
+    res.status(400).send(e);
+    console.log("There are some errors regarding the new request addition regarding what product" );
+  }
+})
+//Farmer home page
+app.get("/fhome" ,auth , (req,res) =>{
+  res.render("farmer/fhome");
+})
 
+//To open farmer additional reg details page
+app.get("/farmerregdetails" ,auth, (req,res) =>{
+res.render("farmer/reg-farmer-details")
+})
+
+//For farmer to request pickup
+app.get("/requestpickup" ,auth,(req,res) =>{
+  res.render("farmer/requestpickup");
+})
+
+//to open the profile page of farmer
+app.get("/farmerprofile" , auth , (req,res)=>{
+  const userfarmer = fRegDetails.findOne({Refid: req.user._id});
+  userfarmer.exec(function(err,data){
+    if(err) throw err;
+    res.render("farmer/fprofile", {records:data});
+  });
+})
+app.get("/fprofilecc" , auth , (req,res)=>{
+  const userfarmer = fRegDetails.findOne({Refid: req.user._id});
+  userfarmer.exec(function(err,data){
+    if(err) throw err;
+    res.render("farmer/fprofilecc", {records:data});
+  });
+})
+// -------------------------------------
+//This opens the registeration page
+app.get("/registeration" ,(req,res) =>{
+  res.render("registeration");
+})
 //registeration part for farmer , collection centre , private company
 app.post("/registeration" , async(req,res) => {
   try{
@@ -432,31 +464,12 @@ app.post("/registeration" , async(req,res) => {
     }
   }
   catch(error){
-    res.status(400).send(error);
+    res.status(400).send("Username and the name should be unique please be careful; Incase you think everything is okay just append something behind your name");
     console.log("There are some errors" );
 
   }
 })
 
-//Farmer home page
-app.get("/fhome" ,(req,res) =>{
-  res.render("farmer/fhome");
-})
-
-//To open farmer additional reg details page
-app.get("/farmerregdetails" ,(req,res) =>{
-  res.render("farmer/reg-farmer-details");
-})
-
-//For farmer to request pickup
-app.get("/requestpickup" ,(req,res) =>{
-  res.render("farmer/requestpickup");
-})
-
-//This opens the registeration page
-app.get("/registeration" ,(req,res) =>{
-  res.render("registeration");
-})
 //This is the login page for all three stakeholders
 app.get("/login" ,(req,res) =>{
   res.render("login");
@@ -496,7 +509,7 @@ app.post("/login" , async(req,res) => {
   // res.send(user);
   // console.log(user);
   }catch(error){
-    res.status(400).send(error);
+    res.status(400).send("No such user exists or error in credentials");
   }
 })
 

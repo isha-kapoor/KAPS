@@ -33,36 +33,30 @@
           <a class="nav-link" href="../navbar/contact.html">Contact Us</a>
         </li>
         </ul>
-        <ul class="navbar-nav ml-auto">
-          <li class="nav-item">
-            <a class="nav-link" href="../navbar/login.html">Logout</a>
-          </li>
-         </ul>
       </div>
     </nav>
 
     <form class="choose-cc" method="POST" action="/farmerregdetails"> <!---New Farmer Registration-->
       <label for="f-cc">Choose Collection Centre</label>
-      <select class="select-cc" id="f-cc" name="fcc">
-        <option value="cc1">Mehsana</option>
-        <option value="cc2">Jamnagar</option>
-        <option value="cc3">Porbandar</option>
+      <select class="select-cc" id="f-cc" name="fcc" required>
+        <option value="Bharwala">Bharwala</option>
+        <option value="Jamnagar">Jamnagar</option>
+        <option value="Ranpur">Ranpur</option>
       </select>
       <br>
       <br>
-      <label for="f-cc">Choose Khareef Crops Grown</label>
-      <select class="select-crops-k" id="select-crops" name="fKcrops" multiple>
-        <option value="crop1">Wheat</option>
-        <option value="crop2">Rice</option>
-        <option value="crop3">Maize</option>
+      <label for="f-cc">Choose Kharif Crops Grown</label>
+      <select class="select-crops-k" id="select-crops" name="fKcrops" multiple required>
+        <option value="Rice">Rice</option>
+        <option value="Sugar Cane">Sugar Cane</option>
+        <option value="Cotton">Cotton</option>
       </select>
       <br>
       <br>
       <label for="f-cc">Choose Rabi Crops Grown</label>
-      <select class="select-crops-r" id="select-crops" name="fRcrops" multiple>
-        <option value="crop1">Wheat</option>
-        <option value="crop2">Rice</option>
-        <option value="crop3">Cotton</option>
+      <select class="select-crops-r" id="select-crops" name="fRcrops" multiple required>
+        <option value="Wheat">Wheat</option>
+        <option value="Sugar Cane">Sugar Cane</option>
       </select>
       <input type="submit" value="Save">
     </form>
