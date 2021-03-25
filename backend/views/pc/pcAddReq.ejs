@@ -30,7 +30,7 @@
                   <h6 class="mb-2 apply-font"><label for="collection-centre">Select Collection Centre:</label></h6>
                 </div>
                 <div class="col-sm-6 text-secondary ">
-                  <select name="CollectionCentre" id="collection-centre">
+                  <select name="CollectionCentre" id="collection-centre" required>
                     <% records.forEach(function(row){%>
                     <option value="<%=row.ccname%>"><%=row.ccname%></option>
                     <% }) %>
@@ -48,7 +48,7 @@
                   <h6 class="mb-2 apply-font"><label for="waste-needed"> Select Raw material</label></h6>
                 </div>
                 <div class="col-sm-6 text-secondary ">
-                  <select name="RawMaterial" id="waste-needed">
+                  <select name="RawMaterial" id="waste-needed" required>
                       <option value="Wheat Husk">Wheat Husk</option>
                       <option value="Wheat Straw">Wheat Straw</option>
                       <option value="Rice Husk">Rice Husk</option>
@@ -63,7 +63,7 @@
                   <h6 class="mb-2 apply-font"><label for="Quantity-needed"> Quantity needed in Kg </label></h6>
                 </div>
                 <div class="col-sm-6 text-secondary ">
-                  <input class="apply-padding"type="number" min="0" id="Quantity-needed" placeholder="placeholder" name="Quantity">
+                  <input class="apply-padding"type="number" min="0" id="Quantity-needed" placeholder="placeholder" name="Quantity" required>
                 </div>
               </div>
               <div class="row apply-margin">
@@ -71,7 +71,7 @@
                   <h6 class="mb-2 apply-font"><label for="Pickup-date"> Pickup Date </label></h6>
                 </div>
                 <div class="col-sm-6 text-secondary ">
-                      <input class="apply-padding" data-date-format="dd/mm/yyyy" id="datepicker" name="date">
+                      <input class="apply-padding" data-date-format="dd/mm/yyyy" id="datepicker" name="date" required>
                 </div>
               </div>
               <div class="row">

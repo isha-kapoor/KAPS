@@ -1,13 +1,11 @@
-
 <!DOCTYPE html>
 <html lang="en" dir="ltr">
 
 <head>
   <meta charset="utf-8">
-  <title>Pending Orders</title>
-  <link rel="stylesheet" href="css/style.css">
-  <link rel="stylesheet" href="css/stylecc.css">
-  <link rel="stylesheet" href="css/stylepc.css">
+  <title>Collection Centre: Farmer's Completed Requests</title>
+  <link rel="stylesheet" href="../css/style.css">
+  <link rel="stylesheet" href="../css/stylecc.css">
   <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
@@ -17,40 +15,37 @@
 </head>
 
 <body id=body>
-   <%- include('../partials/pcheader') %>
-    <div class="move-down" style="margin-left:16%" >
-      <!-- style="margin-left:16%" -->
+    <%- include('../partials/ccheader') %>
+      <div class="move-down" style="margin-left:16%" >
+        <!-- style="margin-left:16%" -->
 
-        <section class="move-down">
-          <table class="farmer-req">
-              <thead>
-                  <tr>
-                    <th>Order<br>ID</th>
-                    <th>Order<br>Date</th>
-                    <th>Collection<br>Centre</th>
-                    <th>Waste<br>Needed</th>
-                    <th>Quantity<br>Needed</th>
-                    <th>Pickup<br>Date</th>
-                    <th>Approved<br>Status</th>
-                    <th>Amount<br>Payable</th>
-                  </tr>
+          <section class="move-down">
+            <table class="farmer-req">
+                <thead>
 
-                </thead>
+                        						<tr>
+                        							<th>Request<br> ID</th>
+                                      <th>Request<br> Date</th>
+                        							<th>Crops<br> Residue</th>
+                                      <th>Land<br> Area</th>
+                                      <th>Pickup<br> Date</th>
+                                      <th>Contact<br> No </th>
+                                      <th>Waste<br> Weight</th>
+                        							<th>Amount<br> Paid</th>
+
+                        						</tr>
+      					</thead>
                 <tbody>
-                    <% order.forEach(function(row){%>
+                  <% order.forEach(function(row){%>
                     <tr>
                       <td><%=row.oid %></td>
-                      <td><%=row.orderDate  %></td>
-                      <td><%= row.CollectionCentre %></td>
+                      <td><%=row.orderDate %></td>
                       <td><%= row.RawMaterial %></td>
-                      <td><%= row.Quantity %>Kg</td>
-                      <td><%= row.date %></td>
-                      <%    if(row.approve){ %>
-                        <td >Approved</td>
-                    <%  } else {%>
-                      <td>Pending</td>
-                      <%}%>
-                      <td><%= row.payment %></td>
+                      <td><%= row.LandArea %>Hectare</td>
+                      <td><%= row.pickupdate %></td>
+                      <td><%= row.contact %></td>
+                      <td><%=row.wasteAmount%></td>
+                      <td><%=row.paymentAmount%></td>
                     </tr>
                     <% }) %>
                 </tbody>

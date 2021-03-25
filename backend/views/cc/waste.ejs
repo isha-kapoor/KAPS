@@ -30,7 +30,7 @@
                   <h6 class="mb-2 apply-font"><label for="waste-needed"> Select Raw material</label></h6>
                 </div>
                 <div class="col-sm-6 text-secondary ">
-                  <select name="RawMaterial" id="waste-needed" >
+                  <select name="RawMaterial" id="waste-needed" required>
                     <%records.forEach(function(row){%>
                         <option value="<%=row%>"><%=row%></option>
                         <!-- <option value="Wheat Straw">Wheat Straw</option>
@@ -48,7 +48,7 @@
                   <h6 class="mb-2 apply-font"><label for="open">Open Waste </label></h6>
                 </div>
                 <div class="col-sm-6 text-secondary ">
-                  <input class="apply-padding"type="number" min="0" id="open" placeholder="placeholder" name="open" value="0">
+                  <input class="apply-padding"type="number" min="0" id="open" placeholder="placeholder" name="open" value="0" required>
                 </div>
               </div>
               <div class="row apply-margin">
@@ -56,7 +56,7 @@
                   <h6 class="mb-2 apply-font"><label for="processing">Processing Waste </label></h6>
                 </div>
                 <div class="col-sm-6 text-secondary ">
-                  <input class="apply-padding"type="number" min="0" id="processing" placeholder="placeholder" name="processing" value="0">
+                  <input class="apply-padding"type="number" min="0" id="processing" placeholder="placeholder" name="processing" value="0" required>
                 </div>
               </div>
               <div class="row apply-margin">
@@ -64,7 +64,7 @@
                   <h6 class="mb-2 apply-font"><label for="ready">Ready Waste </label></h6>
                 </div>
                 <div class="col-sm-6 text-secondary ">
-                  <input class="apply-padding"type="number" min="0" id="ready" placeholder="placeholder" name="ready" value="0">
+                  <input class="apply-padding"type="number" min="0" id="ready" placeholder="placeholder" name="ready" value="0" required>
                 </div>
               </div>
               <div class="row">

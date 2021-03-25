@@ -6,6 +6,7 @@ const ccSchema = new mongoose.Schema({
   ccname:{ // the name
     type:String,
     required:true,
+    unique:true
   },
   ccadd:{//the address
     type:String,

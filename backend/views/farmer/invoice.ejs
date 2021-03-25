@@ -3,7 +3,7 @@
 
 <head>
   <meta charset="utf-8">
-  <title>Farmer-Home</title>
+  <title>View-Invoice-Farmer</title>
   <link rel="stylesheet" href="../css/style.css">
   <link rel="stylesheet" href="../css/stylef.css">
   <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
@@ -17,13 +17,38 @@
 <body id=body>
   <%- include('../partials/farmerheader') %>
 
-    <div class="move-down" >
-      <!-- style="margin-left:16%" -->
-      <div class="centred">
-      <p class="welcome">Welcome to <strong> KAPS. </strong></p>
-      <p class="started">Lets get you started.</p>
-      </div>
-    </div>
+    <div class="move-down" style="margin-left:16%" >
+        <!-- style="margin-left:16%" -->
 
-  </body>
-  </html>
+          <section class="move-down">
+            <table class="Farmer-Requests-Status">
+                <thead>
+
+                        <tr>
+                        <th>Request<br>ID</th>
+                        <th>Request<br>Date</th>
+                        <th>Collection<br>Centre</th>
+                        <th>Pickup<br>Date</th>
+                        <th>Payment<br>Amount</th>
+                        <th>Payment<br>Date</th>
+                        </tr>
+                        </thead>
+                  <tbody>
+                      <% order.forEach(function(row){%>
+                      <tr>
+                        <td><%=row.oid %></td>
+                        <td><%=row.orderDate  %></td>
+                        <td><%= row.fcc %></td>
+                        <td><%= row.pickupdate %></td>
+                        <td><%=row.paymentAmount%></td>
+                        <td><%=row.orderclose%></td>
+                        </tr>
+                        <% }) %>
+                  </tbody>
+            </table>
+          </section>
+        </div>
+
+
+</body>
+</html>

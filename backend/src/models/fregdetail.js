@@ -37,7 +37,7 @@ const fRegDetailsSchema = new mongoose.Schema({
     default:[],
 },
 
-  
+
 
 })
 //methods are used when working with instances

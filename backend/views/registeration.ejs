@@ -37,26 +37,26 @@
     </nav>
     <form class="new-cc" method="post" action="/registeration" autocomplete="off">
       <label for="cc">Name</label>
-      <input type="text" id="cc" name="ccname">
+      <input type="text" id="cc" name="ccname" required>
       <br>
       <label for="cc-add">Address</label>
-      <input type="text" id="cc-add" name="ccadd">
+      <input type="text" id="cc-add" name="ccadd" required>
       <br>
       <label for="cc-contact">Contact Number</label>
       <input type="text" id="cc-contact" name="cccontact" pattern="[0-9]{10}"
-						maxlength="10" >
+						maxlength="10" required>
       <br>
       <label for="cc-username">Username</label>
-      <input type="text" id="cc-username" name="ccusername">
+      <input type="text" id="cc-username" name="ccusername" required>
       <br>
       <label for="cc-password">Password</label>
-      <input type="text" id="cc-password" name="ccpassword">
+      <input type="text" id="cc-password" name="ccpassword" required>
       <br>
       <label for="cc-confirm">Confirm password</label>
-      <input type="text" id="cc-confirm" name="ccconfirm">
+      <input type="text" id="cc-confirm" name="ccconfirm" required>
       <br>
       <label for="cc-confirm">Select</label>
-      <select type="text" id="cc-confirm" name="select">
+      <select type="text" id="cc-confirm" name="select" required>
         <option value="Farmer">Farmer</option>
         <option value="CollectionCentre">CollectionCentre</option>
         <option value="PrivateCompany">PrivateCompany</option>

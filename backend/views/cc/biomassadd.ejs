@@ -30,7 +30,7 @@
                   <h6 class="mb-2 apply-font"><label for="waste-needed"> Select Raw material</label></h6>
                 </div>
                 <div class="col-sm-6 text-secondary ">
-                  <select name="RawMaterial" id="waste-needed" >
+                  <select name="RawMaterial" id="waste-needed" required>
                     <%records.forEach(function(row){%>
                         <option value="<%=row%>"><%=row%></option>
                         <!-- <option value="Wheat Straw">Wheat Straw</option>
@@ -48,7 +48,7 @@
                   <h6 class="mb-2 apply-font"><label for="gross">Gross Calorific Value </label></h6>
                 </div>
                 <div class="col-sm-6 text-secondary ">
-                  <input class="apply-padding"type="text"  id="gross" placeholder="placeholder" name="gross" value="0">
+                  <input class="apply-padding"type="text"  id="gross" placeholder="placeholder" name="gross" value="0" required>
                 </div>
               </div>
               <div class="row">
