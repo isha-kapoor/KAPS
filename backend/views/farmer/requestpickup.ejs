@@ -6,6 +6,7 @@
   <title>Farmer-Request-Pickup</title>
   <link rel="stylesheet" href="../css/style.css">
   <link rel="stylesheet" href="../css/stylef.css">
+  <link rel="stylesheet" href="../css/stylepc.css">
   <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
@@ -16,7 +17,7 @@
 
 <body id=body>
   <%- include('../partials/farmerheader') %>
-    <div class="w3-card">
+    <!-- <div class="w3-card">
         <div class="card-body">
           <h5 class="card-title">Request Pickup</h5>
           <br>
@@ -37,14 +38,10 @@
           <input id="filldetails" name="submit" type="submit" value="Add
              boxes">
         </form>
-      </div>
+      </div> -->
 
-      <!--_-_-_-_BOX-Container_-_-_-_-->
-      <div class="boxes-container">
-        <div id="boxes"></div>
-      </div>
 
-      <script>
+      <!-- <script>
         const form = document.getElementById('inputForm');
 
 form.addEventListener('submit', (e) => {
@@ -60,8 +57,59 @@ form.addEventListener('submit', (e) => {
   }
 });
 
+      </script> -->
+
+      <div class="move-down" >
+        <!-- style="margin-left:16%" -->
+            <form method="post" action="/requestpickup">
+            <div class="w3-card">
+              <div class="card-body">
+                  <h6 class="card-text mb-5"> Add Request </h6>
+                <div class="row apply-margin">
+                  <div class="col-sm-6 text-primarys">
+                    <h6 class="mb-2 apply-font"><label for="waste-needed"> Crops Waste</label></h6>
+                  </div>
+                  <div class="col-sm-6 text-secondary ">
+                    <select name="RawMaterial" id="waste-needed" required multiple>
+                        <option value="Wheat">Wheat</option>
+                        <option value="Rice">Rice</option>
+                        <option value="Cotton">Cotton</option>
+                        <option value="Sugar Cane">Sugar Cane</option>
+                    </select>
+                  </div>
+                </div>
+                <div class="row apply-margin">
+                  <div class="col-sm-6 text-primarys">
+                    <h6 class="mb-2 apply-font"><label for="land-area">Land Area in hectare </label></h6>
+                  </div>
+                  <div class="col-sm-6 text-secondary ">
+                    <input class="apply-padding"type="number" min="0" id="land-area" placeholder="placeholder" name="LandArea" required>
+                  </div>
+                </div>
+                <div class="row apply-margin">
+                  <div class="col-sm-6 text-primarys">
+                    <h6 class="mb-2 apply-font"><label for="Harvest-date"> Tentative Harvesting Date </label></h6>
+                  </div>
+                  <div class="col-sm-6 text-secondary ">
+                        <input class="apply-padding" data-date-format="dd/mm/yyyy" id="datepicker" name="date" required>
+                  </div>
+                </div>
+                <div class="row">
+                  <button class="button-add" type="submit">Add Request</button>
+                </div>
+              </div>
+            </div>
+            </form>
+          </div>
+          <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+          <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.7.1/js/bootstrap-datepicker.min.js"></script>
+          <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+          <script type="text/javascript">
+        $('#datepicker').datepicker({
+            weekStart: 1,
+            autoclose: true,
+        });
+        $('#datepicker').datepicker("setDate", new Date());
       </script>
-
-
-</body>
-</html>
+      </body>
+      </html>

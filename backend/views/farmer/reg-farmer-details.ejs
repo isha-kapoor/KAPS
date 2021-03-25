@@ -39,9 +39,12 @@
     <form class="choose-cc" method="POST" action="/farmerregdetails"> <!---New Farmer Registration-->
       <label for="f-cc">Choose Collection Centre</label>
       <select class="select-cc" id="f-cc" name="fcc" required>
-        <option value="Bharwala">Bharwala</option>
+        <% records.forEach(function(row){%>
+        <option value="<%=row.ccname%>"><%=row.ccname%></option>
+        <% }) %>
+        <!-- <option value="Bharwala">Bharwala</option>
         <option value="Jamnagar">Jamnagar</option>
-        <option value="Ranpur">Ranpur</option>
+        <option value="Ranpur">Ranpur</option> -->
       </select>
       <br>
       <br>

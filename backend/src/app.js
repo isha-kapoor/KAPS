@@ -14,6 +14,7 @@ const PCAddedReq = require("./models/pcaddreq");
 const PCProduct = require("./models/pcproduct");
 const Waste = require("./models/waste");
 const Biomass = require("./models/biomass");
+const FarmerReq= require("./models/FarmerReq");
 const {json} = require("express");
 const {log} = require("console");
 const fRegDetails = require("./models/fregdetail");
@@ -67,7 +68,7 @@ app.get("/pcclosedreq" , auth , (req,res) => {
     res.render("cc/pcclosereq",{order:data});
   })
 })
-//This is a link where the request for a particular id is approved by the collection centre
+//This is a link where the request for a particular id is approved by the collection centre of a private company
 app.get("/approve/:id", auth , (req,res) => {
   var id = req.params.id;
   PCAddedReq.findByIdAndUpdate(id, { approve: 'true' },
@@ -76,7 +77,7 @@ app.get("/approve/:id", auth , (req,res) => {
         res.redirect("/pcreq")
       })
 })
-//This is a link where the request for a particular id is marked paid by the collection centre
+//This is a link where the request for a particular id is marked paid by the collection centre of a private company
 app.get("/delete/:id" , auth, (req,res)=>{
   var id = req.params.id;
   PCAddedReq.findByIdAndUpdate(id, { paid: 'true' },
@@ -234,7 +235,75 @@ app.post("/biomassDB" , auth , async(req,res)=>{
   }
 })
 
+//Farmers Requests the incoming one to collect it
+app.get("/Farmerreq" , auth , (req,res) => {
+  const reqs = FarmerReq.find({fcc:req.user.ccname , paid:false});
+   // date :{$gte:moment(Date.now()).format('DD/MM/YYYY')} approve:false approved and not paid
+  reqs.exec(function(err,data){
+    if(err) throw err;
+    res.render("cc/Farmerreq",{order:data});
+  })
+})
+//to tell the farmer that the order is approved
+app.get("/check/:id", auth , (req,res) => {
+  var id = req.params.id;
+  FarmerReq.findByIdAndUpdate(id, { approve: 'true' , $set:{pickupdate: moment(Date.now()).add(10,'day').format('DD/MM/YYYY')} },
+      function (err, data) {
+        if(err) throw err;
+        res.redirect("/Farmerreq")
+      })
+})
+// to tell the farmer the order is in transit
+app.get("/transit/:id", auth , (req,res) => {
+  var id = req.params.id;
+  FarmerReq.findByIdAndUpdate(id, { intransit: 'true' },
+      function (err, data) {
+        if(err) throw err;
+        res.redirect("/Farmerreq")
+      })
+})
+//to tell the farmer payment is ready
+app.get("/ready/:id", auth , (req,res) => {
+  var id = req.params.id;
+  FarmerReq.findById(id,
+      function (err, data) {
+        if(err) throw err;
+        res.render("cc/farmerwaste" ,{orders:data});
+      })
+})
+//to tell the farmer about the waste
+app.post("/ready/:id", auth , (req,res) => {
+  var id = req.params.id;
+  FarmerReq.findOneAndUpdate({_id:id} ,{
+    wasteAmount:req.body.wasteAmount,
+    paymentAmount:req.body.wasteAmount*7,
+    ready:true,
+  },{upsert:true},
+  function (err) {
+    if(err) throw err;
+    res.status(201).redirect("/FarmerReq")
+})
+})
+//to mark farmers things closed
+app.get("/paid/:id", auth , (req,res) => {
+  var id = req.params.id;
+  FarmerReq.findByIdAndUpdate(id, { paid: 'true' , orderclose:moment(Date.now()).format('DD/MM/YYYY')},
+      function (err, data) {
+        if(err) throw err;
+        res.redirect("/Farmerreq")
+      })
+})
+//farmers closed requests
+app.get("/fclosedreq" , auth , (req,res) => {
+  const fcreq = FarmerReq.find({fcc:req.user.ccname , paid:true , approve:true,intransit:true,ready:true});
+  fcreq.exec(function(err,data){
+    if(err) throw err;
+    res.render("cc/fcclosereq",{order:data});
+  })
+})
 // --------------------
+
+
 
 // private company
 //The product that we will make after booking the raw materials
@@ -360,12 +429,13 @@ catch(e){
 app.get("/rawcatalog", auth ,(req,res)=>{
   res.render("pc/rawCatalog")
 })
+
+
+//Farmer
 // ------------------------
 //To store additional registration details of new farmer
 app.post("/farmerregdetails" , auth , async(req,res)=>{
   try{
-   // var cropsK= document.getElementsByName('select-crops-k');
-   // var cropsR= document.getElementsByName('select-crops-r');
     const pc = new fRegDetails({
         Refid:req.user._id,
         fcontact:req.user.cccontact,
@@ -391,15 +461,42 @@ app.get("/fhome" ,auth , (req,res) =>{
 
 //To open farmer additional reg details page
 app.get("/farmerregdetails" ,auth, (req,res) =>{
-res.render("farmer/reg-farmer-details")
+  const cc = CRegister.find({select:"CollectionCentre"});
+  cc.exec(function(err,data){
+    if(err) throw err;
+    res.render("farmer/reg-farmer-details" , {records:data})
+  })
 })
 
 //For farmer to request pickup
 app.get("/requestpickup" ,auth,(req,res) =>{
   res.render("farmer/requestpickup");
 })
-
-//to open the profile page of farmer
+//post request farmer
+app.post("/requestpickup" , auth , async(req,res)=>{
+  try{
+    const cc = await fRegDetails.findOne({Refid:req.user._id });
+      const freq = new FarmerReq({
+        Refid: req.user._id,
+        oid:(Date.now().toString() + Math.floor(Math.random()*10)).slice(8,14),
+        contact:req.user.cccontact,
+        fcc: cc.fcc,
+        orderDate: moment(Date.now()).format('DD/MM/YYYY'),
+        RawMaterial: req.body.RawMaterial,
+        LandArea: req.body.LandArea,
+        date:req.body.date,
+      })
+      console.log(freq);
+      const fnew =await freq.save();
+      console.log(fnew);
+      res.status(201).render("farmer/fhome");
+  }
+  catch(e){
+    res.status(400).send(e);
+    console.log("There are some errors regarding the new request addition" );
+  }
+})
+//to open the profile page of farmer personal
 app.get("/farmerprofile" , auth , (req,res)=>{
   const userfarmer = fRegDetails.findOne({Refid: req.user._id});
   userfarmer.exec(function(err,data){
@@ -407,6 +504,7 @@ app.get("/farmerprofile" , auth , (req,res)=>{
     res.render("farmer/fprofile", {records:data});
   });
 })
+//related to crops and collection centre
 app.get("/fprofilecc" , auth , (req,res)=>{
   const userfarmer = fRegDetails.findOne({Refid: req.user._id});
   userfarmer.exec(function(err,data){
@@ -414,6 +512,38 @@ app.get("/fprofilecc" , auth , (req,res)=>{
     res.render("farmer/fprofilecc", {records:data});
   });
 })
+//pending requests
+app.get("/fpending" , auth , (req,res)=>{
+  const orders = FarmerReq.find({Refid:req.user._id , paid:false});
+  orders.exec(function(err,data){
+    if(err) throw err;
+    res.render("farmer/fpending" , {order:data});
+  })
+  console.log(orders);
+})
+//closed requests
+app.get("/fcompleted" , auth , (req,res)=>{
+  const orders = FarmerReq.find({Refid:req.user._id , paid:true});
+  orders.exec(function(err,data){
+    if(err) throw err;
+    res.render("farmer/fclose" , {order:data});
+  })
+  console.log(orders);
+})
+//view invoice
+app.get("/viewinvoice", auth , (req,res)=>{
+  const orders = FarmerReq.find({Refid:req.user._id});
+  orders.exec(function(err,data){
+    if(err) throw err;
+    res.render("farmer/invoice" , {order:data});
+  })
+  console.log(orders);
+})
+
+
+
+
+
 // -------------------------------------
 //This opens the registeration page
 app.get("/registeration" ,(req,res) =>{
@@ -455,7 +585,7 @@ app.post("/registeration" , async(req,res) => {
         const f = "Farmer";
         const pc = "PrivateCompany";
         if( whoAmI == cc) res.status(201).render("cc/cchome");
-        else if(whoAmI == f) res.status(201).render("farmer/reg-farmer-details");
+        else if(whoAmI == f) res.status(201).redirect("/farmerregdetails");
         else if(whoAmI == pc) res.status(201).render("pc/whatmake");
         else res.status(201).render("signed")
 
