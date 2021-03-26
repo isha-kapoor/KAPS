@@ -472,6 +472,12 @@ app.get("/farmerregdetails" ,auth, (req,res) =>{
 app.get("/requestpickup" ,auth,(req,res) =>{
   res.render("farmer/requestpickup");
 })
+//For farmer to see catalog 
+app.get("/fresiduecatalog" ,auth,(req,res) =>{
+  res.render("farmer/fresiduecatalog");
+})
+
+
 //post request farmer
 app.post("/requestpickup" , auth , async(req,res)=>{
   try{
