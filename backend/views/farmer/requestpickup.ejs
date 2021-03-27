@@ -71,10 +71,23 @@ form.addEventListener('submit', (e) => {
                   </div>
                   <div class="col-sm-6 text-secondary ">
                     <select name="RawMaterial" id="waste-needed" required multiple>
-                        <option value="Wheat">Wheat</option>
+                    <%   records.forEach(function(row){%>
+                      <% if (row === "Wheat") { %>
+                    <option value="<%=row%> Husk"><%=row%> Husk</option>
+                    <option value="<%=row%> Straw"><%=row%> Straw</option>
+                     <% } else if(row === "Rice") { %>
+                       <option value="<%=row%> Husk"><%=row%> Husk</option>
+                       <option value="<%=row%> Straw"><%=row%> Straw</option>
+                    <% } else if (row === "Cotton") {%>
+                      <option value="<%=row%> Stalk"><%=row%> Stalk</option>
+                      <% } else if (row === "Sugar Cane") {%>
+                        <option value="Bagasse">Bagasse</option>
+                      <%}%>
+                    <% }) %>
+                        <!-- <option value="Wheat">Wheat</option>
                         <option value="Rice">Rice</option>
                         <option value="Cotton">Cotton</option>
-                        <option value="Sugar Cane">Sugar Cane</option>
+                        <option value="Sugar Cane">Sugar Cane</option> -->
                     </select>
                   </div>
                 </div>
