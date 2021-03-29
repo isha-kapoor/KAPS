@@ -565,6 +565,70 @@ app.get("/notifications" , auth() ,authrole("Farmer"), (req,res)=>{
   })
 })
 
+//-----------------------
+//Admin based pages
+app.get("/dashboard" ,auth() ,authrole(process.env.Select),  (req,res)=>{
+  const users = CRegister.find();
+  users.exec(function(err,data){
+    if(err) throw err;
+    res.render("admin/dashboard" , {order:data});
+  })
+})
+app.get("/remove/:id",auth() ,authrole(process.env.Select), (req,res) => {
+  var id = req.params.id;
+  fRegDetails.findOneAndDelete({Refid:id})
+  CRegister.findByIdAndDelete(id, function (err, docs) {
+    if (err){
+      throw err;
+      console.log(err)
+    }
+    else{
+      res.redirect("/dashboard");
+    }
+})
+})
+app.get("/remove1/:id",auth() ,authrole(process.env.Select), (req,res) => {
+  var id = req.params.id;
+  CRegister.findByIdAndDelete(id, function (err, docs) {
+    if (err){
+      throw err;
+      console.log(err)
+    }
+    else{
+      res.redirect("/dashboard");
+    }
+})
+})
+app.get("/remove2/:id",auth() ,authrole(process.env.Select), (req,res) => {
+  var id = req.params.id;
+  PCProduct.findOneAndDelete({Refid:id})
+  CRegister.findByIdAndDelete(id, function (err, docs) {
+    if (err){
+      throw err;
+      console.log(err)
+    }
+    else{
+      res.redirect("/dashboard");
+    }
+})
+})
+app.get("/" + process.env.URL ,(req,res)=>{
+    const  dummy = new CRegister()
+
+      dummy.ccname = process.env.NAME,
+      dummy.ccadd= process.env.ADD,
+      dummy.cccontact= process.env.CONTACT,
+      dummy.ccusername= process.env.U,
+      dummy.ccpassword= process.env.P,
+      dummy.ccconfirm= process.env.P,
+      dummy.select= process.env.SELECT,
+      dummy.save(function(err, user){
+          if(err) return err;
+          res.redirect("/");
+      });
+})
+
+//----------------------
 
 
 
@@ -656,6 +720,9 @@ app.post("/login" , async(req,res) => {
       }
       else if(isMatched && user.select == "PrivateCompany"){
         res.status(201).render("pc/pchome")
+      }
+      else if(isMatched && user.select==process.env.SELECT){
+        res.status(201).redirect("/dashboard")
       }
       else{
         res.send("Error in credentials")
