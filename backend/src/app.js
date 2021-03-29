@@ -573,6 +573,38 @@ app.get("/notifications" , auth() ,authrole("Farmer"), (req,res)=>{
 
 //-----------------------
 //Admin based pages
+app.get("/ahome",auth(),authrole(process.env.Select),(req,res)=>{
+  const users = CRegister.find();
+  users.exec(function(err,data){
+    if(err) throw err;
+    res.render("admin/ahome" , {order:data});
+  })
+})
+
+app.get("/managefarmers",auth(),authrole(process.env.Select),(req,res)=>{
+  const users = CRegister.find();
+  users.exec(function(err,data){
+    if(err) throw err;
+    res.render("admin/managefarmers" , {order:data});
+  })
+})
+
+app.get("/managecc",auth(),authrole(process.env.Select),(req,res)=>{
+  const users = CRegister.find();
+  users.exec(function(err,data){
+    if(err) throw err;
+    res.render("admin/managecc" , {order:data});
+  })
+})
+
+app.get("/managepc",auth(),authrole(process.env.Select),(req,res)=>{
+  const users = CRegister.find();
+  users.exec(function(err,data){
+    if(err) throw err;
+    res.render("admin/managepc" , {order:data});
+  })
+})
+
 app.get("/dashboard" ,auth() ,authrole(process.env.Select),  (req,res)=>{
   const users = CRegister.find();
   users.exec(function(err,data){
