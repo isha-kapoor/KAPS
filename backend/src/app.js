@@ -7,7 +7,8 @@ const app = express();
 const hbs = require("hbs");
 const jwt = require("jsonwebtoken");
 const cookieparser = require("cookie-parser")
-const auth = require("./middleware/auth.js")
+const {auth} = require("./middleware/auth.js")
+const {authrole} = require("./middleware/auth.js")
 require("./db/conn.js");
 const CRegister = require("./models/ccregisters");
 const PCAddedReq = require("./models/pcaddreq");
@@ -40,11 +41,11 @@ app.get("/", (req,res)=>{
 
 //collection centre
 //The home page of collection Centre
-app.get("/cchome", auth , (req,res)=>{
+app.get("/cchome", auth() , authrole("CollectionCentre"), (req,res)=>{
   res.render("cc/cchome");
 })
 //THe profile page of CollectionCentre
-app.get("/ccprofile" ,auth, (req,res) =>{
+app.get("/ccprofile" ,auth(),authrole("CollectionCentre"), (req,res) =>{
   const usercc = CRegister.findOne({_id: req.user._id});
   usercc.exec(function(err,data){
     if(err) throw err;
@@ -52,7 +53,7 @@ app.get("/ccprofile" ,auth, (req,res) =>{
   });
 })
 //The page where the collection centre sees the requests of private companies
-app.get("/pcreq" , auth , (req,res) => {
+app.get("/pcreq" , auth() ,authrole("CollectionCentre"), (req,res) => {
   const privatereq = PCAddedReq.find({CollectionCentre:req.user.ccname , paid:false});
    // date :{$gte:moment(Date.now()).format('DD/MM/YYYY')} approve:false approved and not paid
   privatereq.exec(function(err,data){
@@ -61,7 +62,7 @@ app.get("/pcreq" , auth , (req,res) => {
   })
 })
 //The page where the collection centre will see the completed requests of private companies that is fullyy paid requests
-app.get("/pcclosedreq" , auth , (req,res) => {
+app.get("/pcclosedreq" , auth() ,authrole("CollectionCentre"), (req,res) => {
   const privateclosedreq = PCAddedReq.find({CollectionCentre:req.user.ccname , paid:true , approve:true});
   privateclosedreq.exec(function(err,data){
     if(err) throw err;
@@ -69,7 +70,7 @@ app.get("/pcclosedreq" , auth , (req,res) => {
   })
 })
 //This is a link where the request for a particular id is approved by the collection centre of a private company
-app.get("/approve/:id", auth , (req,res) => {
+app.get("/approve/:id", auth() ,authrole("CollectionCentre"), (req,res) => {
   var id = req.params.id;
   PCAddedReq.findByIdAndUpdate(id, { approve: 'true' },
       function (err, data) {
@@ -78,7 +79,7 @@ app.get("/approve/:id", auth , (req,res) => {
       })
 })
 //This is a link where the request for a particular id is marked paid by the collection centre of a private company
-app.get("/delete/:id" , auth, (req,res)=>{
+app.get("/delete/:id" , auth(), authrole("CollectionCentre"),(req,res)=>{
   var id = req.params.id;
   PCAddedReq.findByIdAndUpdate(id, { paid: 'true' },
       function (err, data) {
@@ -87,7 +88,7 @@ app.get("/delete/:id" , auth, (req,res)=>{
   })
 })
 //This is the waste Database for collection centre where it is displayed
-app.get("/ccwasteDB",auth,(req,res)=>{
+app.get("/ccwasteDB",auth(),authrole("CollectionCentre"),(req,res)=>{
   const waste = Waste.find({Refid: req.user._id});
   waste.exec(function(err,data){
     if(err) throw err;
@@ -95,7 +96,7 @@ app.get("/ccwasteDB",auth,(req,res)=>{
   });
 })
 //edit the database only on what raw material you choose
-app.get("/wasteDB/:id", auth , (req,res)=>{
+app.get("/wasteDB/:id", auth() ,authrole("CollectionCentre"), (req,res)=>{
   const waste = Waste.findById(req.params.id);
   waste.exec(function(err,doc){
     if(err){throw err}
@@ -105,7 +106,7 @@ app.get("/wasteDB/:id", auth , (req,res)=>{
     })
 })
 //THis is where they can add the database if already added you can only edit it.  displays only the left over raw materials to be added
-app.get("/wasteDB" , auth , (req,res)=>{
+app.get("/wasteDB" , auth() ,authrole("CollectionCentre"), (req,res)=>{
   var arr1=["Wheat Husk" , "Wheat Straw" , "Rice Husk" ,"Rice Straw" ,"Cotton Stalk" ,"Bagasse"];
   try{
   const material = Waste.find({Refid: req.user._id});
@@ -143,7 +144,7 @@ catch(e){
 })
 
 //This is the post method for wastes whenever anything is updated or newly added
-app.post("/wasteDB" , auth , async(req,res)=>{
+app.post("/wasteDB" , auth() ,authrole("CollectionCentre"), async(req,res)=>{
   try {
     Waste.findOneAndUpdate({RawMaterial:req.body.RawMaterial , Refid:req.user._id},{
         RawMaterial:req.body.RawMaterial,
@@ -162,7 +163,7 @@ app.post("/wasteDB" , auth , async(req,res)=>{
   }
 })
 //To open the biomass Characterization page
-app.get("/biomass",auth,(req,res)=>{
+app.get("/biomass",auth(),authrole("CollectionCentre"),(req,res)=>{
   const waste = Biomass.find({Refid: req.user._id});
   waste.exec(function(err,data){
     if(err) throw err;
@@ -170,7 +171,7 @@ app.get("/biomass",auth,(req,res)=>{
   });
 })
 // Edit the Biomass database
-app.get("/biomassDB/:id", auth , (req,res)=>{
+app.get("/biomassDB/:id", auth() ,authrole("CollectionCentre"), (req,res)=>{
   const waste = Biomass.findById(req.params.id);
   waste.exec(function(err,doc){
     if(err){throw err}
@@ -180,7 +181,7 @@ app.get("/biomassDB/:id", auth , (req,res)=>{
     })
 })
 //THis is where they can add the database BIomass if already added you can only edit it.  displays only the left over raw materials to be added
-app.get("/biomassDB" , auth , (req,res)=>{
+app.get("/biomassDB" , auth() ,authrole("CollectionCentre"), (req,res)=>{
   var arr1=["Wheat Husk" , "Wheat Straw" , "Rice Husk" ,"Rice Straw" ,"Cotton Stalk" ,"Bagasse"];
   try{
   const material = Biomass.find({Refid: req.user._id});
@@ -218,7 +219,7 @@ catch(e){
 })
 
 //This is the post method for biomass whenever anything is updated or newly added
-app.post("/biomassDB" , auth , async(req,res)=>{
+app.post("/biomassDB" , auth() ,authrole("CollectionCentre"), async(req,res)=>{
   try {
     Biomass.findOneAndUpdate({RawMaterial:req.body.RawMaterial , Refid:req.user._id},{
         RawMaterial:req.body.RawMaterial,
@@ -236,7 +237,7 @@ app.post("/biomassDB" , auth , async(req,res)=>{
 })
 
 //Farmers Requests the incoming one to collect it
-app.get("/Farmerreq" , auth , (req,res) => {
+app.get("/Farmerreq" , auth() ,authrole("CollectionCentre"), (req,res) => {
   const reqs = FarmerReq.find({fcc:req.user.ccname , paid:false});
    // date :{$gte:moment(Date.now()).format('DD/MM/YYYY')} approve:false approved and not paid
   reqs.exec(function(err,data){
@@ -245,7 +246,7 @@ app.get("/Farmerreq" , auth , (req,res) => {
   })
 })
 //to tell the farmer that the order is approved
-app.get("/check/:id", auth , (req,res) => {
+app.get("/check/:id", auth() ,authrole("CollectionCentre"), (req,res) => {
   var id = req.params.id;
   FarmerReq.findByIdAndUpdate(id, { approve: 'true' , $set:{pickupdate: moment(Date.now()).add(10,'day').format('DD/MM/YYYY')} },
       function (err, data) {
@@ -254,7 +255,7 @@ app.get("/check/:id", auth , (req,res) => {
       })
 })
 // to tell the farmer the order is in transit
-app.get("/transit/:id", auth , (req,res) => {
+app.get("/transit/:id", auth() ,authrole("CollectionCentre"), (req,res) => {
   var id = req.params.id;
   FarmerReq.findByIdAndUpdate(id, { intransit: 'true' },
       function (err, data) {
@@ -263,7 +264,7 @@ app.get("/transit/:id", auth , (req,res) => {
       })
 })
 //to tell the farmer payment is ready
-app.get("/ready/:id", auth , (req,res) => {
+app.get("/ready/:id", auth() ,authrole("CollectionCentre"), (req,res) => {
   var id = req.params.id;
   FarmerReq.findById(id,
       function (err, data) {
@@ -272,7 +273,7 @@ app.get("/ready/:id", auth , (req,res) => {
       })
 })
 //to tell the farmer about the waste
-app.post("/ready/:id", auth , (req,res) => {
+app.post("/ready/:id", auth() ,authrole("CollectionCentre"), (req,res) => {
   var id = req.params.id;
   FarmerReq.findOneAndUpdate({_id:id} ,{
     wasteAmount:req.body.wasteAmount,
@@ -285,7 +286,7 @@ app.post("/ready/:id", auth , (req,res) => {
 })
 })
 //to mark farmers things closed
-app.get("/paid/:id", auth , (req,res) => {
+app.get("/paid/:id", auth() ,authrole("CollectionCentre"), (req,res) => {
   var id = req.params.id;
   FarmerReq.findByIdAndUpdate(id, { paid: 'true' , orderclose:moment(Date.now()).format('DD/MM/YYYY')},
       function (err, data) {
@@ -294,7 +295,7 @@ app.get("/paid/:id", auth , (req,res) => {
       })
 })
 //farmers closed requests
-app.get("/fclosedreq" , auth , (req,res) => {
+app.get("/fclosedreq" , auth() ,authrole("CollectionCentre"), (req,res) => {
   const fcreq = FarmerReq.find({fcc:req.user.ccname , paid:true , approve:true,intransit:true,ready:true});
   fcreq.exec(function(err,data){
     if(err) throw err;
@@ -307,15 +308,15 @@ app.get("/fclosedreq" , auth , (req,res) => {
 
 // private company
 //The product that we will make after booking the raw materials
-app.get("/whatmake" , auth , (req,res)=>{
+app.get("/whatmake" , auth() ,authrole("PrivateCompany"), (req,res)=>{
   res.render("pc/whatmake")
 })
 //THis is the private company's home
-app.get("/pchome" , auth , (req,res)=>{
+app.get("/pchome" , auth() ,authrole("PrivateCompany"), (req,res)=>{
   res.render("pc/pchome")
 })
 //This is the profile page for private Company
-app.get("/pcprofile" ,auth, (req,res) =>{
+app.get("/pcprofile" ,auth(),authrole("PrivateCompany"), (req,res) =>{
 
   const usercc = PCProduct.findOne({Refid: req.user._id});
   usercc.exec(function(err,data){
@@ -324,7 +325,7 @@ app.get("/pcprofile" ,auth, (req,res) =>{
   });
 })
 //This is the page where the private company would add the order
-app.get("/pcAddReq" , auth , (req,res)=>{
+app.get("/pcAddReq" , auth() ,authrole("PrivateCompany"), (req,res)=>{
   const cc = CRegister.find({select:"CollectionCentre"});
   cc.exec(function(err,data){
     if(err) throw err;
@@ -333,7 +334,7 @@ app.get("/pcAddReq" , auth , (req,res)=>{
   // res.render("pc/pcAddReq")
 })
 //This displays the pending orders of the private company
-app.get("/pcpending" , auth , async(req,res)=>{
+app.get("/pcpending" , auth() ,authrole("PrivateCompany"), (req,res)=>{
   const orders = PCAddedReq.find({Refid:req.user._id , paid:false});
   orders.exec(function(err,data){
     if(err) throw err;
@@ -342,7 +343,7 @@ app.get("/pcpending" , auth , async(req,res)=>{
   console.log(orders);
 })
 //This shows the orders which are fully paid collected for private company
-app.get("/pcClosed" , auth , async(req,res)=>{
+app.get("/pcClosed" , auth() ,authrole("PrivateCompany"), (req,res)=>{
   const closedorders = PCAddedReq.find({Refid:req.user._id , paid:true , approve:true});
   closedorders.exec(function(err,data){
     if(err) throw err;
@@ -351,7 +352,7 @@ app.get("/pcClosed" , auth , async(req,res)=>{
   console.log(orders);
 })
 //To store the details of the product made
-app.post("/whatmake" , auth , async(req,res)=>{
+app.post("/whatmake" , auth() ,authrole("PrivateCompany"), async(req,res)=>{
   try{
       const pc = new PCProduct({
         Refid:req.user._id,
@@ -371,7 +372,7 @@ app.post("/whatmake" , auth , async(req,res)=>{
 })
 
 //This is a post request page for private company where they will add the orders and save it to database
-app.post("/pcAddReq" , auth , async(req,res)=>{
+app.post("/pcAddReq" , auth() ,authrole("PrivateCompany"), async(req,res)=>{
   try{
     const products = await PCProduct.findOne({Refid:req.user._id });
       const pcaddreq = new PCAddedReq({
@@ -397,7 +398,7 @@ app.post("/pcAddReq" , auth , async(req,res)=>{
   }
 })
 //Select Collection Centre to view Raw materials
-app.get("/selectcc" , auth , (req,res)=>{
+app.get("/selectcc" , auth() ,authrole("PrivateCompany"), (req,res)=>{
   const cc = CRegister.find({select:"CollectionCentre"});
   cc.exec(function(err,data){
     if(err) throw err;
@@ -407,7 +408,7 @@ app.get("/selectcc" , auth , (req,res)=>{
 })
 
 //post the selectcc to view the ready waste for the respective cc
-app.post("/selectcc" , auth ,async(req,res)=>{
+app.post("/selectcc" , auth() , authrole("PrivateCompany"),async(req,res)=>{
   console.log(req.body.CollectionCentre);
   try{
     const logindata =  await CRegister.findOne({ccname:req.body.CollectionCentre})
@@ -426,7 +427,7 @@ catch(e){
 }
 })
 //For seeing the raw materials catalog
-app.get("/rawcatalog", auth ,(req,res)=>{
+app.get("/rawcatalog", auth() ,authrole("PrivateCompany"),(req,res)=>{
   res.render("pc/rawCatalog")
 })
 
@@ -434,7 +435,7 @@ app.get("/rawcatalog", auth ,(req,res)=>{
 //Farmer
 // ------------------------
 //To store additional registration details of new farmer
-app.post("/farmerregdetails" , auth , async(req,res)=>{
+app.post("/farmerregdetails" , auth() ,authrole("Farmer"), async(req,res)=>{
   try{
     const pc = new fRegDetails({
         Refid:req.user._id,
@@ -455,12 +456,12 @@ app.post("/farmerregdetails" , auth , async(req,res)=>{
   }
 })
 //Farmer home page
-app.get("/fhome" ,auth , (req,res) =>{
+app.get("/fhome" ,auth() ,authrole("Farmer"), (req,res) =>{
   res.render("farmer/fhome");
 })
 
 //To open farmer additional reg details page
-app.get("/farmerregdetails" ,auth, (req,res) =>{
+app.get("/farmerregdetails" ,auth(),authrole("Farmer"), (req,res) =>{
   const cc = CRegister.find({select:"CollectionCentre"});
   cc.exec(function(err,data){
     if(err) throw err;
@@ -469,11 +470,28 @@ app.get("/farmerregdetails" ,auth, (req,res) =>{
 })
 
 //For farmer to request pickup
-app.get("/requestpickup" ,auth,(req,res) =>{
-  res.render("farmer/requestpickup");
+app.get("/requestpickup" ,auth(),authrole("Farmer"),(req,res) =>{
+  const userfarmer = fRegDetails.findOne({Refid: req.user._id});
+  var cropslist = [];
+  userfarmer.exec(function(err,data){
+    if(err) throw err;
+    else{
+      console.log(typeof(data.fKcrops));
+      for (i=0 ; i< data.fKcrops.length ; i++){
+        cropslist.push(data.fKcrops[i]);
+      }
+      for (i=0 ; i< data.fRcrops.length ; i++){
+        cropslist.push(data.fRcrops[i]);
+      }
+      let crops = cropslist.filter((e, i) => cropslist.indexOf(e) === i);
+      console.log(typeof(crops));
+      console.log(crops);
+    res.render("farmer/requestpickup", {records:crops});
+  }
+  });
 })
 //post request farmer
-app.post("/requestpickup" , auth , async(req,res)=>{
+app.post("/requestpickup" , auth() ,authrole("Farmer"), async(req,res)=>{
   try{
     const cc = await fRegDetails.findOne({Refid:req.user._id });
       const freq = new FarmerReq({
@@ -497,7 +515,7 @@ app.post("/requestpickup" , auth , async(req,res)=>{
   }
 })
 //to open the profile page of farmer personal
-app.get("/farmerprofile" , auth , (req,res)=>{
+app.get("/farmerprofile" , auth() ,authrole("Farmer"), (req,res)=>{
   const userfarmer = fRegDetails.findOne({Refid: req.user._id});
   userfarmer.exec(function(err,data){
     if(err) throw err;
@@ -505,7 +523,7 @@ app.get("/farmerprofile" , auth , (req,res)=>{
   });
 })
 //related to crops and collection centre
-app.get("/fprofilecc" , auth , (req,res)=>{
+app.get("/fprofilecc" , auth() ,authrole("Farmer"), (req,res)=>{
   const userfarmer = fRegDetails.findOne({Refid: req.user._id});
   userfarmer.exec(function(err,data){
     if(err) throw err;
@@ -513,7 +531,7 @@ app.get("/fprofilecc" , auth , (req,res)=>{
   });
 })
 //pending requests
-app.get("/fpending" , auth , (req,res)=>{
+app.get("/fpending" , auth() ,authrole("Farmer"), (req,res)=>{
   const orders = FarmerReq.find({Refid:req.user._id , paid:false});
   orders.exec(function(err,data){
     if(err) throw err;
@@ -522,7 +540,7 @@ app.get("/fpending" , auth , (req,res)=>{
   console.log(orders);
 })
 //closed requests
-app.get("/fcompleted" , auth , (req,res)=>{
+app.get("/fcompleted" , auth() ,authrole("Farmer"), (req,res)=>{
   const orders = FarmerReq.find({Refid:req.user._id , paid:true});
   orders.exec(function(err,data){
     if(err) throw err;
@@ -531,7 +549,7 @@ app.get("/fcompleted" , auth , (req,res)=>{
   console.log(orders);
 })
 //view invoice
-app.get("/viewinvoice", auth , (req,res)=>{
+app.get("/viewinvoice", auth() ,authrole("Farmer"), (req,res)=>{
   const orders = FarmerReq.find({Refid:req.user._id});
   orders.exec(function(err,data){
     if(err) throw err;
@@ -539,8 +557,78 @@ app.get("/viewinvoice", auth , (req,res)=>{
   })
   console.log(orders);
 })
+app.get("/notifications" , auth() ,authrole("Farmer"), (req,res)=>{
+  const orders = FarmerReq.find({Refid:req.user._id});
+  orders.exec(function(err,data){
+    if(err) throw err;
+    res.render("farmer/notifications" , {order:data});
+  })
+})
 
+//-----------------------
+//Admin based pages
+app.get("/dashboard" ,auth() ,authrole(process.env.Select),  (req,res)=>{
+  const users = CRegister.find();
+  users.exec(function(err,data){
+    if(err) throw err;
+    res.render("admin/dashboard" , {order:data});
+  })
+})
+app.get("/remove/:id",auth() ,authrole(process.env.Select), (req,res) => {
+  var id = req.params.id;
+  fRegDetails.findOneAndDelete({Refid:id})
+  CRegister.findByIdAndDelete(id, function (err, docs) {
+    if (err){
+      throw err;
+      console.log(err)
+    }
+    else{
+      res.redirect("/dashboard");
+    }
+})
+})
+app.get("/remove1/:id",auth() ,authrole(process.env.Select), (req,res) => {
+  var id = req.params.id;
+  CRegister.findByIdAndDelete(id, function (err, docs) {
+    if (err){
+      throw err;
+      console.log(err)
+    }
+    else{
+      res.redirect("/dashboard");
+    }
+})
+})
+app.get("/remove2/:id",auth() ,authrole(process.env.Select), (req,res) => {
+  var id = req.params.id;
+  PCProduct.findOneAndDelete({Refid:id})
+  CRegister.findByIdAndDelete(id, function (err, docs) {
+    if (err){
+      throw err;
+      console.log(err)
+    }
+    else{
+      res.redirect("/dashboard");
+    }
+})
+})
+app.get("/" + process.env.URL ,(req,res)=>{
+    const  dummy = new CRegister()
 
+      dummy.ccname = process.env.NAME,
+      dummy.ccadd= process.env.ADD,
+      dummy.cccontact= process.env.CONTACT,
+      dummy.ccusername= process.env.U,
+      dummy.ccpassword= process.env.P,
+      dummy.ccconfirm= process.env.P,
+      dummy.select= process.env.SELECT,
+      dummy.save(function(err, user){
+          if(err) return err;
+          res.redirect("/");
+      });
+})
+
+//----------------------
 
 
 
@@ -633,6 +721,9 @@ app.post("/login" , async(req,res) => {
       else if(isMatched && user.select == "PrivateCompany"){
         res.status(201).render("pc/pchome")
       }
+      else if(isMatched && user.select==process.env.SELECT){
+        res.status(201).redirect("/dashboard")
+      }
       else{
         res.send("Error in credentials")
       }
@@ -645,7 +736,7 @@ app.post("/login" , async(req,res) => {
 
 
 //logout part for all the users
-app.get("/logout" , auth , async(req,res)=>{
+app.get("/logout" , auth() , async(req,res)=>{
   try {
     console.log(req.user);
     // removing only current login detail for the user
@@ -658,7 +749,7 @@ app.get("/logout" , auth , async(req,res)=>{
     res.clearCookie("jwt");
     await req.user.save();
     console.log("logged out Successful");
-    res.render("index");
+    res.redirect("/");
   } catch (e) {
   await  res.status(500).send(e);
   console.log("Not Happening");
