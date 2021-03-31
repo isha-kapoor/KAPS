@@ -667,7 +667,24 @@ app.get("/" + process.env.URL ,(req,res)=>{
 })
 
 //----------------------
-
+app.get("/Productdetails" , async(req,res)=>{
+  try{
+    let docs = await PCProduct.aggregate([
+      {
+      $group: {
+        // Each `_id` must be unique, so if there are multiple
+        // documents with the same age, MongoDB will increment `count`.
+        _id: '$product',
+        count: { $sum: 1 }
+      }
+    }
+    ]);
+    console.log(docs);
+    res.render("product", {details:docs});
+  }catch(e){
+    res.status(400).send("There is some error loading the data if there is any any " + e);
+  }
+})
 
 
 // -------------------------------------
