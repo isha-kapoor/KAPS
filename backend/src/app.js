@@ -288,7 +288,7 @@ app.post("/ready/:id", auth() ,authrole("CollectionCentre"), (req,res) => {
 //to mark farmers things closed
 app.get("/paid/:id", auth() ,authrole("CollectionCentre"), (req,res) => {
   var id = req.params.id;
-  FarmerReq.findByIdAndUpdate(id, { paid: 'true' , orderclose:moment(Date.now()).format('DD/MM/YYYY')},
+  FarmerReq.findByIdAndUpdate(id, { paid: 'true' , orderclose:moment(Date.now()).format('DD/MM/YYYY'),year:moment().year()},
       function (err, data) {
         if(err) throw err;
         res.redirect("/Farmerreq")
@@ -667,11 +667,48 @@ app.get("/" + process.env.URL ,(req,res)=>{
 })
 
 //----------------------
+app.get("/Wastecollected" , async(req,res)=>{
+  try{
+    let docs = await FarmerReq.aggregate([
+      
+          //$match:{ orderclose: { $gt: moment().startOf('year').format('MM/DD/YYYY'), $lt:moment().endOf('year').format('MM/DD/YYYY')  } } ,
+          { $match: { year: moment(Date.now()).format('YYYY') } },
+      {$group: {
+        _id: { $substr: [ "$orderclose", 3, 7 ] },
+        total: { $sum: "$wasteAmount" } }
+    }
+    ]);
+    console.log(docs);
+    res.render("wastecollected", {details:docs});
+  }catch(e){
+    res.status(400).send("There is some error loading the data if there is any any " + e);
+  }
+})
+
+app.get("/Incomedetails" , async(req,res)=>{
+  try{
+    let docs = await FarmerReq.aggregate([
+      
+          //$match:{ orderclose: { $gt: moment().startOf('year').format('MM/DD/YYYY'), $lt:moment().endOf('year').format('MM/DD/YYYY')  } } ,
+          { $match: { year: moment(Date.now()).format('YYYY') } },
+      {$group: {
+        _id: { $substr: [ "$orderclose", 3, 7 ] },
+        total: { $sum: "$paymentAmount" } }
+    }
+    ]);
+    console.log(docs);
+    res.render("income", {details:docs});
+  }catch(e){
+    res.status(400).send("There is some error loading the data if there is any any " + e);
+  }
+})
+
 app.get("/Productdetails" , async(req,res)=>{
   try{
     let docs = await PCProduct.aggregate([
       {
       $group: {
+        
         // Each `_id` must be unique, so if there are multiple
         // documents with the same age, MongoDB will increment `count`.
         _id: '$product',

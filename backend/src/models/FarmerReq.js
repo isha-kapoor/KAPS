@@ -1,6 +1,7 @@
 const mongoose = require("mongoose");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
+const moment = require("moment");
 
 const FarmerSchema = new mongoose.Schema({
   Refid:{ //Reference to registered unique id
@@ -62,6 +63,10 @@ const FarmerSchema = new mongoose.Schema({
   },
   orderclose:{ //payment date
     type:String
+  },
+  year:{
+    type: String,
+    default: ""
   }
 })
 //methods are used when working with instances
