@@ -38,7 +38,12 @@ app.set("views",some_path)
 app.get("/", (req,res)=>{
   res.render("index");
 })
-
+app.get("/whyus" , (req,res)=>{
+  res.render("whyus");
+})
+app.get("/contact" ,(req,res)=>{
+  res.render("contact");
+})
 //collection centre
 //The home page of collection Centre
 app.get("/cchome", auth() , authrole("CollectionCentre"), (req,res)=>{
@@ -269,13 +274,16 @@ app.get("/ready/:id", auth() ,authrole("CollectionCentre"), (req,res) => {
   FarmerReq.findById(id,
       function (err, data) {
         if(err) throw err;
-        res.render("cc/farmerwaste" ,{orders:data});
+        console.log(data);
+         if(data.ready) res.redirect("/Farmerreq");
+         else res.render("cc/farmerwaste" ,{orders:data});
+
       })
 })
 //to tell the farmer about the waste
 app.post("/ready/:id", auth() ,authrole("CollectionCentre"), (req,res) => {
   var id = req.params.id;
-  FarmerReq.findOneAndUpdate({_id:id} ,{
+  FarmerReq.findOneAndUpdate({_id:id  }  ,{
     wasteAmount:req.body.wasteAmount,
     paymentAmount:req.body.wasteAmount*7,
     ready:true,
@@ -288,7 +296,7 @@ app.post("/ready/:id", auth() ,authrole("CollectionCentre"), (req,res) => {
 //to mark farmers things closed
 app.get("/paid/:id", auth() ,authrole("CollectionCentre"), (req,res) => {
   var id = req.params.id;
-  FarmerReq.findByIdAndUpdate(id, { paid: 'true' , orderclose:moment(Date.now()).format('DD/MM/YYYY')},
+  FarmerReq.findByIdAndUpdate(id, { paid: 'true' , orderclose:moment(Date.now()).format('DD/MM/YYYY') , year:moment(Date.now()).year()},
       function (err, data) {
         if(err) throw err;
         res.redirect("/Farmerreq")
@@ -349,7 +357,6 @@ app.get("/pcClosed" , auth() ,authrole("PrivateCompany"), (req,res)=>{
     if(err) throw err;
     res.render("pc/pcclosed" , {order:data});
   })
-  console.log(orders);
 })
 //To store the details of the product made
 app.post("/whatmake" , auth() ,authrole("PrivateCompany"), async(req,res)=>{
@@ -629,6 +636,7 @@ app.get("/" + process.env.URL ,(req,res)=>{
 })
 
 //----------------------
+//THis shows what all are the registered products by private companies
 app.get("/Productdetails" , async(req,res)=>{
   try{
     let docs = await PCProduct.aggregate([
@@ -647,7 +655,23 @@ app.get("/Productdetails" , async(req,res)=>{
     res.status(400).send("There is some error loading the data if there is any any " + e);
   }
 })
-
+//This just shows the income raised by farmer per month
+app.get("/Incomedetails" , async(req,res)=>{
+  try{
+    let docs = await FarmerReq.aggregate([
+      {
+     $match : { year : moment(Date.now()).format("YYYY") }} ,
+    {  $group: {
+        _id: { $substr: [ "$orderclose", 3, 7 ] },
+        total: { $sum: "$paymentAmount" } }
+    }
+    ]);
+    console.log(docs);
+    res.render("income", {details:docs});
+  }catch(e){
+    res.status(400).send("There is some error loading the data if there is any any " + e);
+  }
+})
 
 // -------------------------------------
 //This opens the registeration page

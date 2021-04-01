@@ -62,6 +62,10 @@ const FarmerSchema = new mongoose.Schema({
   },
   orderclose:{ //payment date
     type:String
+  },
+  year:{
+    type:String,
+    default:""
   }
 })
 //methods are used when working with instances

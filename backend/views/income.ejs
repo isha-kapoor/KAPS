@@ -1,10 +1,14 @@
+
 <!DOCTYPE html>
 <html lang="en" dir="ltr">
 
 <head>
   <meta charset="utf-8">
-  <title>Contact Us</title>
-  <link rel="stylesheet" href="../css/style.css">
+  <title>Income Details</title>
+  <link rel="icon" type="image/ico" href="images/logo.png">
+  <script src="https://cdn.anychart.com/releases/8.9.0/js/anychart-core.min.js"></script>
+<script src="https://cdn.anychart.com/releases/8.9.0/js/anychart-cartesian.min.js"></script>
+  <link rel="stylesheet" href="css/style.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
   <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
@@ -23,35 +27,35 @@
 
     <div class="collapse navbar-collapse" >
       <!-- id="navbarSupportedContent" -->
-      <ul class="navbar-nav mr-auto">
-        <li class="nav-item">
-          <a class="nav-link" href="whyus.html">Why Us</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="contact.html">Contact Us</a>
-        </li>
-        </ul>
+      <%- include('partials/mainheader') %>
         <ul class="navbar-nav ml-auto">
           <li class="nav-item">
-            <a class="nav-link" href="/login">Login</a>
+            <a class="nav-link" href="/registeration">Sign Up </a>
           </li>
          </ul>
     </div>
   </nav>
-  <div class="main">
-    <div class="container">
-    <h2>  Contact the <a class="styled"href="">KAPS</a> team </h2>
-    <div class="move-down">
-    <h5> KAPS Helpline Number</h5>
-    <h6> DIAL: 1800 501 314 </h6>
-    </div>
-    <div class="move-down">
-      <h5>KAPS Helpline Email</h5>
-      <h6>Kapshelpline@gmail.com</h6>
-    </div>
-    </div>
-  </div>
+<div id="container" class="move-down" style="height: 500px; width: 1000px; margin:2rem auto;">
 
-</body>
-
-</html>
+</div>
+<script type="text/javascript">
+  anychart.onDocumentLoad(function() {
+  // create a chart and set the data
+  // as Array of Arrays
+ var rows =<%-JSON.stringify(details)%>;
+ var data =[];
+ for(i=0;i<rows.length ;i++){
+   if(rows[i]._id)
+   data.push([rows[i]._id , rows[i].total])
+}
+  var chart = anychart.column();
+  chart.data(data);
+  chart.title("Revenue Generated")
+  chart.isVertical(false);
+  chart.labels(true);
+  // chart.labels().position("outside");
+  chart.container("container").draw();
+});
+</script>
+  </body>
+  </html>

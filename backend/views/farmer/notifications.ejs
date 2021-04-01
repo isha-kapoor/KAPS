@@ -4,6 +4,7 @@
 <head>
   <meta charset="utf-8">
   <title>View-Notifications</title>
+  <link rel="icon" type="image/ico" href="images/logo.png">
   <link rel="stylesheet" href="../css/style.css">
   <link rel="stylesheet" href="../css/stylef.css">
   <link rel="stylesheet" href="../css/stylepc.css">
@@ -39,8 +40,6 @@
                           <td>Your order <%=row.oid%> is In-transit</td>
                           <%  } else if(row.approve) {%>
                             <td>Your order <%=row.oid%> is Approved</td>
-                            <%  } else  {%>
-                              <td>Pending</td>
                         <%}%>
                         </tr>
                         <% }) %>
