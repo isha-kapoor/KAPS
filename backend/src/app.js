@@ -498,7 +498,7 @@ app.get("/requestpickup" ,auth(),authrole("Farmer"),(req,res) =>{
   });
 })
 //For farmer to see catalog
-app.get("/fresiduecatalog" ,auth,(req,res) =>{
+app.get("/fresiduecatalog" ,auth(),authrole("Farmer"),(req,res) =>{
   res.render("farmer/fresiduecatalog");
 })
 
