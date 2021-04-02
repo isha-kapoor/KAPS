@@ -65,8 +65,8 @@ const FarmerSchema = new mongoose.Schema({
     type:String
   },
   year:{
-    type: String,
-    default: ""
+    type:String,
+    default:""
   }
 })
 //methods are used when working with instances

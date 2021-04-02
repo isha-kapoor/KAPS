@@ -4,6 +4,8 @@
 <head>
   <meta charset="utf-8">
   <title>Manage-Farmers</title>
+  <link rel="icon" type="image/ico" href="../images/logo.png">
+  <link rel="stylesheet" href="../css/stylecc.css">
   <link rel="stylesheet" href="../css/style.css">
   <link rel="stylesheet" href="../css/stylea.css">
   <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
@@ -16,15 +18,15 @@
 
 <body id=body>
   <%- include('../partials/adminheader') %>
-  <div class="move-down grid-container" >
-    <div class=" grid-item">
+  <div class="move-down" style="margin-left:10%">
+
     <table class="farmer-req " >
       <thead>
         <tr>
-          <td>Farmer Name</td>
-          <td>Contact Number</td>
-          <td>Address</td>
-          <td>Trash it</td>
+          <th>Farmer <br>Name</th>
+          <th>Contact<br> Number</th>
+          <th>Address<br></th>
+          <th>Trash it<br></th>
         </tr>
       </thead>
       <tbody>
@@ -40,7 +42,6 @@
           <% }) %>
     </tbody>
   </table>
-  </div>
   </div>
 </body>
 </html>
