@@ -1,0 +1,30 @@
+.w3-sidebar{
+    height:52% !important;
+    top: 150px;
+    /* margin-top:0.5rem; */
+    /*box-shadow: 6px 6px 4px rgba(0, 0, 0, 0.2);*/
+      font-family: "Montserrat", Sans-Serif;
+      font-style: normal;
+      font-weight: 600;
+      font-size: 22px;
+      line-height: 30px;
+      color: rgba(105, 156, 94, 0.8);
+      background: #FFFFFF;
+      box-shadow: 6px 6px 4px rgba(0, 0, 0, 0.2);
+  }
+  
+  .centred{
+    margin-top:10rem;
+    text-align: center;
+    font-family: "Montserrat", Sans-Serif;
+  }
+  
+  .centred .welcome{
+    font-size: 36px;
+    line-height: 44px;
+  }
+  .centred .started{
+    font-size: 32px;
+    line-height: 39px;
+  }
+

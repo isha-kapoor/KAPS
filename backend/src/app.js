@@ -497,6 +497,12 @@ app.get("/requestpickup" ,auth(),authrole("Farmer"),(req,res) =>{
   }
   });
 })
+//For farmer to see catalog
+app.get("/fresiduecatalog" ,auth,(req,res) =>{
+  res.render("farmer/fresiduecatalog");
+})
+
+
 //post request farmer
 app.post("/requestpickup" , auth() ,authrole("Farmer"), async(req,res)=>{
   try{
@@ -574,13 +580,41 @@ app.get("/notifications" , auth() ,authrole("Farmer"), (req,res)=>{
 
 //-----------------------
 //Admin based pages
-app.get("/dashboard" ,auth() ,authrole(process.env.Select),  (req,res)=>{
+app.get("/ahome",auth(),authrole(process.env.Select),(req,res)=>{
+res.render("admin/ahome")
+})
+
+app.get("/managefarmers",auth(),authrole(process.env.Select),(req,res)=>{
   const users = CRegister.find();
   users.exec(function(err,data){
     if(err) throw err;
-    res.render("admin/dashboard" , {order:data});
+    res.render("admin/managefarmers" , {order:data});
   })
 })
+
+app.get("/managecc",auth(),authrole(process.env.Select),(req,res)=>{
+  const users = CRegister.find();
+  users.exec(function(err,data){
+    if(err) throw err;
+    res.render("admin/managecc" , {order:data});
+  })
+})
+
+app.get("/managepc",auth(),authrole(process.env.Select),(req,res)=>{
+  const users = CRegister.find();
+  users.exec(function(err,data){
+    if(err) throw err;
+    res.render("admin/managepc" , {order:data});
+  })
+})
+
+// app.get("/dashboard" ,auth() ,authrole(process.env.Select),  (req,res)=>{
+//   const users = CRegister.find();
+//   users.exec(function(err,data){
+//     if(err) throw err;
+//     res.render("admin/dashboard" , {order:data});
+//   })
+// })
 app.get("/remove/:id",auth() ,authrole(process.env.Select), (req,res) => {
   var id = req.params.id;
   fRegDetails.findOneAndDelete({Refid:id})
@@ -636,12 +670,30 @@ app.get("/" + process.env.URL ,(req,res)=>{
 })
 
 //----------------------
+app.get("/Wastecollected" , async(req,res)=>{
+  try{
+    let docs = await FarmerReq.aggregate([
+
+          //$match:{ orderclose: { $gt: moment().startOf('year').format('MM/DD/YYYY'), $lt:moment().endOf('year').format('MM/DD/YYYY')  } } ,
+          { $match: { year: moment(Date.now()).format('YYYY') } },
+      {$group: {
+        _id: { $substr: [ "$orderclose", 3, 7 ] },
+        total: { $sum: "$wasteAmount" } }
+    }
+    ]);
+    console.log(docs);
+    res.render("wastecollected", {details:docs});
+  }catch(e){
+    res.status(400).send("There is some error loading the data if there is any any " + e);
+  }
+})
 //THis shows what all are the registered products by private companies
 app.get("/Productdetails" , async(req,res)=>{
   try{
     let docs = await PCProduct.aggregate([
       {
       $group: {
+
         // Each `_id` must be unique, so if there are multiple
         // documents with the same age, MongoDB will increment `count`.
         _id: '$product',
@@ -763,7 +815,7 @@ app.post("/login" , async(req,res) => {
         res.status(201).render("pc/pchome")
       }
       else if(isMatched && user.select==process.env.SELECT){
-        res.status(201).redirect("/dashboard")
+        res.status(201).render("admin/ahome")
       }
       else{
         res.send("Error in credentials")

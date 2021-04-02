@@ -3,10 +3,11 @@
 
 <head>
   <meta charset="utf-8">
-  <title>View-Invoice-Farmer</title>
+  <title>Farmer-Residue-Catalog</title>
   <link rel="icon" type="image/ico" href="images/logo.png">
   <link rel="stylesheet" href="../css/style.css">
   <link rel="stylesheet" href="../css/stylef.css">
+  <link rel="stylesheet" href="../css/stylepc.css">
   <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
@@ -17,39 +18,37 @@
 
 <body id=body>
   <%- include('../partials/farmerheader') %>
-
-    <div class="move-down" style="margin-left:16%" >
-        <!-- style="margin-left:16%" -->
-
-          <section class="move-down">
-            <table class="Farmer-Requests-Status">
-                <thead>
-
-                        <tr>
-                        <th>Request<br>ID</th>
-                        <th>Request<br>Date</th>
-                        <th>Collection<br>Centre</th>
-                        <th>Pickup<br>Date</th>
-                        <th>Payment<br>Amount</th>
-                        <th>Payment<br>Date</th>
-                        </tr>
-                        </thead>
-                  <tbody>
-                      <% order.forEach(function(row){%>
-                      <tr>
-                        <td><%=row.oid %></td>
-                        <td><%=row.orderDate  %></td>
-                        <td><%=row.fcc %></td>
-                        <td><%=row.pickupdate %></td>
-                        <td><%=row.paymentAmount%></td>
-                        <td><%=row.orderclose%></td>
-                        </tr>
-                        <% }) %>
-                  </tbody>
-            </table>
-          </section>
-        </div>
-
-
+  <div>
+  <table class="available-raw-materials">
+    <tr>
+      <td class="apply-images"><img src="../images/wheat-husk.jpg" alt="Wheat Husk"></td>
+      <td class="apply-images"><img src="../images/wheat-straw.jpg" alt="Wheat Straw"></td>
+      <td class="apply-images"><img src="../images/rice-husk.jpg" alt="Rice Husk"></td>
+    </tr>
+    <tr>
+      <td class="raw-materials">Wheat Husk</td>
+      <td class="raw-materials">Wheat Straw</td>
+      <td class="raw-materials">Rice Husk</td>
+    </tr>
+    <tr>
+      <td class="apply-images"><img src="../images/rice-straw.jpg" alt="Wheat Husk"></td>
+      <td class="apply-images"><img src="../images/cotton-stalks.jpg" alt="Wheat Straw"></td>
+      <td class="apply-images"><img src="../images/bagasse.jpg" alt="Rice Husk"></td>
+    </tr>
+    <tr>
+      <td class="raw-materials">Rice Straw</td>
+      <td class="raw-materials">Cotton Stalk</td>
+      <td class="raw-materials">Bagasse</td>
+    </tr>
+  </table>
+</div>
+<div class="align-centre">
+   <button onclick="goBack()" class="btn btn-outline-success btn-styled">Back</button>
+</div>
+<script>
+    function goBack(){
+        window.history.back();
+    }
+</script>
 </body>
 </html>
