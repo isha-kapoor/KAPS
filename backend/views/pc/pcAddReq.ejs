@@ -50,12 +50,12 @@
                 </div>
                 <div class="col-sm-6 text-secondary ">
                   <select name="RawMaterial" id="waste-needed" required>
-                      <option value="Wheat Husk">Wheat Husk</option>
+                      <!-- <option value="Wheat Husk">Wheat Husk</option>
                       <option value="Wheat Straw">Wheat Straw</option>
                       <option value="Rice Husk">Rice Husk</option>
                       <option value="Rice Straw">Rice Straw</option>
                       <option value="Cotton Stalk">Cotton Stalk</option>
-                      <option value="Bagasse">Bagasse</option>
+                      <option value="Bagasse">Bagasse</option> -->
                   </select>
                 </div>
               </div>
@@ -91,6 +91,17 @@
           autoclose: true,
       });
       $('#datepicker').datepicker("setDate", new Date());
+      const databases = '<%-jsonData%>'
+      const data = jQuery.parseJSON(databases)
+      const items=[];
+      for(i=0;i<data.length;i++)
+      {
+        for(j in data[i].residue)
+        items.push(data[i].residue[j])
+      }
+      for(i=0;i<items.length;i++){
+        $("#waste-needed").append('<option value="'+items[i]+'">'+items[i]+'</option>');
+      }
   </script>
   </body>
   </html>

@@ -9,6 +9,8 @@ const jwt = require("jsonwebtoken");
 const cookieparser = require("cookie-parser")
 const {auth} = require("./middleware/auth.js")
 const {authrole} = require("./middleware/auth.js")
+const statedata = require("./data/states.json");
+const cropdata = require("./data/crops.json");
 require("./db/conn.js");
 const CRegister = require("./models/ccregisters");
 const PCAddedReq = require("./models/pcaddreq");
@@ -32,9 +34,22 @@ app.use(express.static(static_path))
 app.set("view engine", "ejs")
 app.set("views",some_path)
 
+const cropresidue = JSON.stringify(cropdata)
+const residuedata = JSON.parse(cropresidue)
+// console.log(cropresidue);
+// console.log(residuedata);
+const croparray = [];
+for(i=0;i<residuedata.length;i++)
+{
+  // console.log(residuedata[i].residue);
+  for(j in residuedata[i].residue)
+  {
+    croparray.push(residuedata[i].residue[j]);
+  }
+}
+console.log(croparray);
 
-// console.log(process.env.SECRET_KEY);
-
+////General Links[open to all]
 app.get("/", (req,res)=>{
   res.render("index");
 })
@@ -112,7 +127,8 @@ app.get("/wasteDB/:id", auth() ,authrole("CollectionCentre"), (req,res)=>{
 })
 //THis is where they can add the database if already added you can only edit it.  displays only the left over raw materials to be added
 app.get("/wasteDB" , auth() ,authrole("CollectionCentre"), (req,res)=>{
-  var arr1=["Wheat Husk" , "Wheat Straw" , "Rice Husk" ,"Rice Straw" ,"Cotton Stalk" ,"Bagasse"];
+  // var arr1=["Wheat Husk" , "Wheat Straw" , "Rice Husk" ,"Rice Straw" ,"Cotton Stalk" ,"Bagasse"];
+  var arr1 = croparray;
   try{
   const material = Waste.find({Refid: req.user._id});
   var arr=[];
@@ -187,7 +203,8 @@ app.get("/biomassDB/:id", auth() ,authrole("CollectionCentre"), (req,res)=>{
 })
 //THis is where they can add the database BIomass if already added you can only edit it.  displays only the left over raw materials to be added
 app.get("/biomassDB" , auth() ,authrole("CollectionCentre"), (req,res)=>{
-  var arr1=["Wheat Husk" , "Wheat Straw" , "Rice Husk" ,"Rice Straw" ,"Cotton Stalk" ,"Bagasse"];
+  // var arr1=["Wheat Husk" , "Wheat Straw" , "Rice Husk" ,"Rice Straw" ,"Cotton Stalk" ,"Bagasse"];
+  var arr1 = croparray;
   try{
   const material = Biomass.find({Refid: req.user._id});
   var arr=[];
@@ -334,10 +351,10 @@ app.get("/pcprofile" ,auth(),authrole("PrivateCompany"), (req,res) =>{
 })
 //This is the page where the private company would add the order
 app.get("/pcAddReq" , auth() ,authrole("PrivateCompany"), (req,res)=>{
-  const cc = CRegister.find({select:"CollectionCentre"});
+  const cc = CRegister.find({select:"CollectionCentre",state:req.user.state});
   cc.exec(function(err,data){
     if(err) throw err;
-    res.render("pc/pcAddReq" , {records:data})
+    res.render("pc/pcAddReq" , {records:data ,jsonData:cropresidue})
   })
   // res.render("pc/pcAddReq")
 })
@@ -406,7 +423,7 @@ app.post("/pcAddReq" , auth() ,authrole("PrivateCompany"), async(req,res)=>{
 })
 //Select Collection Centre to view Raw materials
 app.get("/selectcc" , auth() ,authrole("PrivateCompany"), (req,res)=>{
-  const cc = CRegister.find({select:"CollectionCentre"});
+  const cc = CRegister.find({select:"CollectionCentre" , state:req.user.state});
   cc.exec(function(err,data){
     if(err) throw err;
     res.render("pc/selectcc" , {records:data})
@@ -418,7 +435,7 @@ app.get("/selectcc" , auth() ,authrole("PrivateCompany"), (req,res)=>{
 app.post("/selectcc" , auth() , authrole("PrivateCompany"),async(req,res)=>{
   console.log(req.body.CollectionCentre);
   try{
-    const logindata =  await CRegister.findOne({ccname:req.body.CollectionCentre})
+    const logindata =  await CRegister.findOne({ccname:req.body.CollectionCentre , state:req.user.state})
     //console.log("Id" +logindata._id);
     const wastedata =  Waste.find({Refid:logindata._id});
     wastedata.exec(function(err,data){
@@ -469,10 +486,10 @@ app.get("/fhome" ,auth() ,authrole("Farmer"), (req,res) =>{
 
 //To open farmer additional reg details page
 app.get("/farmerregdetails" ,auth(),authrole("Farmer"), (req,res) =>{
-  const cc = CRegister.find({select:"CollectionCentre"});
+  const cc = CRegister.find({select:"CollectionCentre" , state:req.user.state});
   cc.exec(function(err,data){
     if(err) throw err;
-    res.render("farmer/reg-farmer-details" , {records:data})
+    res.render("farmer/reg-farmer-details" , {records:data , cropsdata:JSON.stringify(cropdata)})
   })
 })
 
@@ -658,6 +675,7 @@ app.get("/" + process.env.URL ,(req,res)=>{
 
       dummy.ccname = process.env.NAME,
       dummy.ccadd= process.env.ADD,
+      dummy.state=process.env.STATE,
       dummy.cccontact= process.env.CONTACT,
       dummy.ccusername= process.env.U,
       dummy.ccpassword= process.env.P,
@@ -728,7 +746,7 @@ app.get("/Incomedetails" , async(req,res)=>{
 // -------------------------------------
 //This opens the registeration page
 app.get("/registeration" ,(req,res) =>{
-  res.render("registeration");
+  res.render("registeration" , {jsonData:JSON.stringify(statedata)});
 })
 //registeration part for farmer , collection centre , private company
 app.post("/registeration" , async(req,res) => {
@@ -739,6 +757,7 @@ app.post("/registeration" , async(req,res) => {
           const newuser = new CRegister({
             ccname: req.body.ccname,
             ccadd:req.body.ccadd,
+            state:req.body.state,
             cccontact:req.body.cccontact,
             ccusername : req.body.ccusername,
             ccpassword : req.body.ccpassword,

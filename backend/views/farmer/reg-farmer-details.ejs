@@ -50,20 +50,32 @@
       <br>
       <br>
       <label for="f-cc">Choose Kharif Crops Grown</label>
-      <select class="select-crops-k" id="select-crops" name="fKcrops" multiple required>
-        <option value="Rice">Rice</option>
+      <select class="select-crops-k" id="select-crops1" name="fKcrops" multiple required>
+        <!-- <option value="Rice">Rice</option>
         <option value="Sugar Cane">Sugar Cane</option>
-        <option value="Cotton">Cotton</option>
+        <option value="Cotton">Cotton</option> -->
       </select>
       <br>
       <br>
       <label for="f-cc">Choose Rabi Crops Grown</label>
-      <select class="select-crops-r" id="select-crops" name="fRcrops" multiple required>
-        <option value="Wheat">Wheat</option>
-        <option value="Sugar Cane">Sugar Cane</option>
+      <select class="select-crops-r" id="select-crops2" name="fRcrops" multiple required>
+        <!-- <option value="Wheat">Wheat</option>
+        <option value="Sugar Cane">Sugar Cane</option> -->
       </select>
       <input type="submit" value="Save">
     </form>
-
+    <script>
+    const databases = '<%-cropsdata%>'
+    const data = jQuery.parseJSON(databases)
+    const items=[];
+    for(i=0;i<data.length;i++)
+    {
+      items.push(data[i].name)
+    }
+    for(i=0;i<items.length;i++){
+      $("#select-crops1").append('<option value="' + items[i] + '">' + items[i] + '</option>');
+      $("#select-crops2").append('<option value="' + items[i] + '">' + items[i] + '</option>');
+    }
+    </script>
 </body>
 </html>
