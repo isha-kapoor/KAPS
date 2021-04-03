@@ -16,7 +16,7 @@
 {"name": "Silk"},
 {"name": "Hemp"},
 {"name": "Coffee"},
-{"name": "Tea"},
+{"name": "Tea" ,  "residue":["Tea Stalk"]},
 {"name": "Rubber"},
 {"name": "Tobacco"},
 {"name": "Pepper"},

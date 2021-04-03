@@ -34,11 +34,11 @@ app.use(express.static(static_path))
 app.set("view engine", "ejs")
 app.set("views",some_path)
 
-const cropresidue = JSON.stringify(cropdata)
-const residuedata = JSON.parse(cropresidue)
+var cropresidue = JSON.stringify(cropdata)
+var residuedata = JSON.parse(cropresidue)
 // console.log(cropresidue);
 // console.log(residuedata);
-const croparray = [];
+var croparray = [];
 for(i=0;i<residuedata.length;i++)
 {
   // console.log(residuedata[i].residue);
@@ -510,7 +510,7 @@ app.get("/requestpickup" ,auth(),authrole("Farmer"),(req,res) =>{
       let crops = cropslist.filter((e, i) => cropslist.indexOf(e) === i);
       console.log(typeof(crops));
       console.log(crops);
-    res.render("farmer/requestpickup", {records:crops});
+    res.render("farmer/requestpickup", {records:crops , jsonData:JSON.stringify(cropdata)});
   }
   });
 })
