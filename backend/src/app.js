@@ -270,12 +270,34 @@ app.get("/Farmerreq" , auth() ,authrole("CollectionCentre"), (req,res) => {
 //to tell the farmer that the order is approved
 app.get("/check/:id", auth() ,authrole("CollectionCentre"), (req,res) => {
   var id = req.params.id;
-  FarmerReq.findByIdAndUpdate(id, { approve: 'true' , $set:{pickupdate: moment(Date.now()).add(10,'day').format('DD/MM/YYYY')} },
+  FarmerReq.findById(id,
       function (err, data) {
         if(err) throw err;
-        res.redirect("/Farmerreq")
+        console.log(data);
+         if(data.approve) res.redirect("/Farmerreq");
+         else res.render("cc/farmerdate" ,{orders:data});
+
       })
 })
+app.post("/check/:id", auth() ,authrole("CollectionCentre"), (req,res) => {
+  var id = req.params.id;
+  FarmerReq.findOneAndUpdate({_id:id  }  ,{
+    pickupdate:req.body.pickupdate,
+    approve:true,
+  },{upsert:true},
+  function (err) {
+    if(err) throw err;
+    res.status(201).redirect("/FarmerReq")
+})
+})
+// app.get("/check/:id", auth() ,authrole("CollectionCentre"), (req,res) => {
+//   var id = req.params.id;
+//   FarmerReq.findByIdAndUpdate(id, { approve: 'true' , $set:{pickupdate: moment(Date.now()).add(10,'day').format('DD/MM/YYYY')} },
+//       function (err, data) {
+//         if(err) throw err;
+//         res.redirect("/Farmerreq")
+//       })
+// })
 // to tell the farmer the order is in transit
 app.get("/transit/:id", auth() ,authrole("CollectionCentre"), (req,res) => {
   var id = req.params.id;
@@ -828,10 +850,42 @@ app.post("/login" , async(req,res) => {
         res.status(201).render("cc/cchome")
       }
       else if(isMatched && user.select =="Farmer"){
-        res.status(201).render("farmer/fhome")
+        fRegDetails.find({ Refid:user._id }, function(err, result) {
+            if (err) {
+              res.send("There was an error fetching it"+ err);
+            } else {
+              if(!result.length) {
+                CRegister.deleteOne({_id:user._id }).then(function(){
+                  res.send("You have incomplete login details the account is deleted")
+                  console.log("Data deleted"); // Success
+              }).catch(function(error){
+                res.send("We incurred some errors while deleting your data")
+                  console.log(error); // Failure
+              });
+              }
+              else res.status(201).render("farmer/fhome")
+            }
+          });
+          // res.status(201).render("farmer/fhome")
       }
       else if(isMatched && user.select == "PrivateCompany"){
-        res.status(201).render("pc/pchome")
+        PCProduct.find({ Refid:user._id }, function(err, result) {
+            if (err) {
+              res.send("There was an error fetching it"+ err);
+            } else {
+              if(!result.length) {
+                CRegister.deleteOne({_id:user._id }).then(function(){
+                  res.send("You have incomplete login details the account is deleted")
+                  console.log("Data deleted"); // Success
+              }).catch(function(error){
+                res.send("We incurred some errors while deleting your data")
+                  console.log(error); // Failure
+              });
+              }
+              else res.status(201).render("pc/pchome")
+            }
+          });
+        //res.status(201).render("pc/pchome")
       }
       else if(isMatched && user.select==process.env.SELECT){
         res.status(201).render("admin/ahome")
