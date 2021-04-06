@@ -24,7 +24,8 @@
         <tr>
           <th>Collection Centre <br>Name</th>
           <th>Contact <br>Number</th>
-          <th>Address  <br></th>
+          <th>Address<br></th>
+          <th>State<br></th>
           <th>Trash it  <br></th>
         </tr>
       </thead>
@@ -35,6 +36,7 @@
               <td><%=row.ccname%></td>
               <td><%=row.cccontact%></td>
               <td><%=row.ccadd%></td>
+              <td><%=row.state%></td>
               <td><a  class="btn btn-danger btn-xs" href="/remove1/<%= row._id %> "><i class="fa fa-trash" aria-hidden="true" ></i></a></td>
             <%}%>
           </tr>

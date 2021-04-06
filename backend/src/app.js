@@ -34,11 +34,11 @@ app.use(express.static(static_path))
 app.set("view engine", "ejs")
 app.set("views",some_path)
 
-var cropresidue = JSON.stringify(cropdata)
-var residuedata = JSON.parse(cropresidue)
+var cropresidue = JSON.stringify(cropdata) // All crops data
+var residuedata = JSON.parse(cropresidue) // All crops data
 // console.log(cropresidue);
 // console.log(residuedata);
-var croparray = [];
+var croparray = []; // to store all the residues
 for(i=0;i<residuedata.length;i++)
 {
   // console.log(residuedata[i].residue);
@@ -47,15 +47,18 @@ for(i=0;i<residuedata.length;i++)
     croparray.push(residuedata[i].residue[j]);
   }
 }
-console.log(croparray);
+console.log(croparray); // All the residues
 
 ////General Links[open to all]
+//this is the home route
 app.get("/", (req,res)=>{
   res.render("index");
 })
+//This is the why us page
 app.get("/whyus" , (req,res)=>{
   res.render("whyus");
 })
+//This is the contact us
 app.get("/contact" ,(req,res)=>{
   res.render("contact");
 })
@@ -279,6 +282,7 @@ app.get("/check/:id", auth() ,authrole("CollectionCentre"), (req,res) => {
 
       })
 })
+//to fill in the pickup date for the farmer
 app.post("/check/:id", auth() ,authrole("CollectionCentre"), (req,res) => {
   var id = req.params.id;
   FarmerReq.findOneAndUpdate({_id:id  }  ,{
@@ -609,6 +613,7 @@ app.get("/viewinvoice", auth() ,authrole("Farmer"), (req,res)=>{
   })
   console.log(orders);
 })
+//To see the notifications
 app.get("/notifications" , auth() ,authrole("Farmer"), (req,res)=>{
   const orders = FarmerReq.find({Refid:req.user._id});
   orders.exec(function(err,data){
@@ -623,6 +628,7 @@ app.get("/ahome",auth(),authrole(process.env.Select),(req,res)=>{
 res.render("admin/ahome")
 })
 
+//TO see all the farmers
 app.get("/managefarmers",auth(),authrole(process.env.Select),(req,res)=>{
   const users = CRegister.find();
   users.exec(function(err,data){
@@ -631,6 +637,7 @@ app.get("/managefarmers",auth(),authrole(process.env.Select),(req,res)=>{
   })
 })
 
+//TO see all the collection Centre
 app.get("/managecc",auth(),authrole(process.env.Select),(req,res)=>{
   const users = CRegister.find();
   users.exec(function(err,data){
@@ -639,6 +646,7 @@ app.get("/managecc",auth(),authrole(process.env.Select),(req,res)=>{
   })
 })
 
+//To see all the private companies
 app.get("/managepc",auth(),authrole(process.env.Select),(req,res)=>{
   const users = CRegister.find();
   users.exec(function(err,data){
@@ -647,26 +655,27 @@ app.get("/managepc",auth(),authrole(process.env.Select),(req,res)=>{
   })
 })
 
-// app.get("/dashboard" ,auth() ,authrole(process.env.Select),  (req,res)=>{
-//   const users = CRegister.find();
-//   users.exec(function(err,data){
-//     if(err) throw err;
-//     res.render("admin/dashboard" , {order:data});
-//   })
-// })
+//TO delete the farmer
 app.get("/remove/:id",auth() ,authrole(process.env.Select), (req,res) => {
   var id = req.params.id;
-  fRegDetails.findOneAndDelete({Refid:id})
   CRegister.findByIdAndDelete(id, function (err, docs) {
     if (err){
       throw err;
       console.log(err)
     }
     else{
-      res.redirect("/dashboard");
-    }
+      try{
+        fRegDetails.findOneAndDelete({Refid:id} , function(error, doc){
+          if(error) throw error;
+          else res.redirect("/managefarmers");
+        })}catch(e){
+          res.send("There was some error deleting the Farmer")
+        }
+     }
 })
 })
+
+//To delete the collecction centre
 app.get("/remove1/:id",auth() ,authrole(process.env.Select), (req,res) => {
   var id = req.params.id;
   CRegister.findByIdAndDelete(id, function (err, docs) {
@@ -674,24 +683,30 @@ app.get("/remove1/:id",auth() ,authrole(process.env.Select), (req,res) => {
       throw err;
       console.log(err)
     }
-    else{
-      res.redirect("/dashboard");
-    }
+      res.redirect("/managecc");
 })
 })
+
+//To delete the private Companies
 app.get("/remove2/:id",auth() ,authrole(process.env.Select), (req,res) => {
   var id = req.params.id;
-  PCProduct.findOneAndDelete({Refid:id})
   CRegister.findByIdAndDelete(id, function (err, docs) {
     if (err){
       throw err;
       console.log(err)
     }
     else{
-      res.redirect("/dashboard");
-    }
+      try{
+        PCProduct.findOneAndDelete({Refid:id} , function(error, doc){
+          if(error) throw error;
+          else res.redirect("/managepc");
+        })}catch(e){
+          res.send("There was some error deleting the Private Company")
+        }
+     }
 })
 })
+//Initial setup to get the Admin Registered
 app.get("/" + process.env.URL ,(req,res)=>{
     const  dummy = new CRegister()
 
@@ -709,7 +724,8 @@ app.get("/" + process.env.URL ,(req,res)=>{
       });
 })
 
-//----------------------
+//---------------------- The Graphs
+//This is the waste collected statistics of the current year month wise
 app.get("/Wastecollected" , async(req,res)=>{
   try{
     let docs = await FarmerReq.aggregate([
@@ -747,7 +763,7 @@ app.get("/Productdetails" , async(req,res)=>{
     res.status(400).send("There is some error loading the data if there is any any " + e);
   }
 })
-//This just shows the income raised by farmer per month
+//This just shows the income raised by farmer per month for the current year
 app.get("/Incomedetails" , async(req,res)=>{
   try{
     let docs = await FarmerReq.aggregate([
@@ -789,28 +805,72 @@ app.post("/registeration" , async(req,res) => {
 
         //here the bcrypt is used
         //to generte a createToken
-        console.log(newuser);
-        const new_token = await newuser.generateAuthToken();
-        console.log(new_token);
 
-        res.cookie("jwt" , new_token ,{
-          expires: new Date(Date.now() + 3000000),
-          httpOnly:true
-        } );
         // console.log(cookie);
 
-        const newuserRegisteration =await newuser.save();
-        console.log(newuserRegisteration);
-        const whoAmI = req.body.select;
 
+        const whoAmI = req.body.select;
         const cc =  "CollectionCentre";
         const f = "Farmer";
         const pc = "PrivateCompany";
-        if( whoAmI == cc) res.status(201).render("cc/cchome");
-        else if(whoAmI == f) res.status(201).redirect("/farmerregdetails");
-        else if(whoAmI == pc) res.status(201).render("pc/whatmake");
-        else res.status(201).render("signed")
+        if( whoAmI == cc) {
+          console.log(newuser);
+          const new_token = await newuser.generateAuthToken();
+          console.log(new_token);
 
+          res.cookie("jwt" , new_token ,{
+            expires: new Date(Date.now() + 3000000),
+            httpOnly:true
+          } );
+          const newuserRegisteration =await newuser.save();
+          console.log(newuserRegisteration);
+          res.status(201).render("cc/cchome");
+        }
+        else if(whoAmI == f) {
+          CRegister.exists({state:req.body.state , select:"CollectionCentre"},async(err, doc)=> {
+            if (err){
+                console.log(err)
+            }else{
+                if(doc === false) {res.send("There is no collection centre in the region specified");}
+                else if(doc === true) {
+                  console.log("I am going here to save");
+                  console.log(newuser);
+                  const new_token = await newuser.generateAuthToken();
+                  console.log(new_token);
+
+                  res.cookie("jwt" , new_token ,{
+                    expires: new Date(Date.now() + 3000000),
+                    httpOnly:true
+                  } );
+                  const newuserRegisteration = await newuser.save();
+                  console.log(newuserRegisteration);
+                  res.status(201).redirect("/farmerregdetails");
+                }
+            }
+        });
+        }
+        else if(whoAmI == pc){
+           CRegister.exists({state:req.body.state , select:"CollectionCentre"}, async(err, doc)=> {
+            if (err){
+                console.log(err)
+            }else{
+                if(doc === false) res.send("There is no collection centre in the region specified");
+                else if(doc === true) {
+                  console.log(newuser);
+                  const new_token = await newuser.generateAuthToken();
+                  console.log(new_token);
+
+                  res.cookie("jwt" , new_token ,{
+                    expires: new Date(Date.now() + 3000000),
+                    httpOnly:true
+                  } );
+                  const newuserRegisteration = await newuser.save();
+                  console.log(newuserRegisteration);
+                  res.status(201).render("pc/whatmake");
+                }
+            }
+        });
+        }
     }else{
       res.send("Passwords Do Not Match");
     }
