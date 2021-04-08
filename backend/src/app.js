@@ -9,6 +9,8 @@ const jwt = require("jsonwebtoken");
 const cookieparser = require("cookie-parser")
 const {auth} = require("./middleware/auth.js")
 const {authrole} = require("./middleware/auth.js")
+const statedata = require("./data/states.json");
+const cropdata = require("./data/crops.json");
 require("./db/conn.js");
 const CRegister = require("./models/ccregisters");
 const PCAddedReq = require("./models/pcaddreq");
@@ -32,15 +34,31 @@ app.use(express.static(static_path))
 app.set("view engine", "ejs")
 app.set("views",some_path)
 
+var cropresidue = JSON.stringify(cropdata) // All crops data
+var residuedata = JSON.parse(cropresidue) // All crops data
+// console.log(cropresidue);
+// console.log(residuedata);
+var croparray = []; // to store all the residues
+for(i=0;i<residuedata.length;i++)
+{
+  // console.log(residuedata[i].residue);
+  for(j in residuedata[i].residue)
+  {
+    croparray.push(residuedata[i].residue[j]);
+  }
+}
+console.log(croparray); // All the residues
 
-// console.log(process.env.SECRET_KEY);
-
+////General Links[open to all]
+//this is the home route
 app.get("/", (req,res)=>{
   res.render("index");
 })
+//This is the why us page
 app.get("/whyus" , (req,res)=>{
   res.render("whyus");
 })
+//This is the contact us
 app.get("/contact" ,(req,res)=>{
   res.render("contact");
 })
@@ -112,7 +130,8 @@ app.get("/wasteDB/:id", auth() ,authrole("CollectionCentre"), (req,res)=>{
 })
 //THis is where they can add the database if already added you can only edit it.  displays only the left over raw materials to be added
 app.get("/wasteDB" , auth() ,authrole("CollectionCentre"), (req,res)=>{
-  var arr1=["Wheat Husk" , "Wheat Straw" , "Rice Husk" ,"Rice Straw" ,"Cotton Stalk" ,"Bagasse"];
+  // var arr1=["Wheat Husk" , "Wheat Straw" , "Rice Husk" ,"Rice Straw" ,"Cotton Stalk" ,"Bagasse"];
+  var arr1 = croparray;
   try{
   const material = Waste.find({Refid: req.user._id});
   var arr=[];
@@ -187,7 +206,8 @@ app.get("/biomassDB/:id", auth() ,authrole("CollectionCentre"), (req,res)=>{
 })
 //THis is where they can add the database BIomass if already added you can only edit it.  displays only the left over raw materials to be added
 app.get("/biomassDB" , auth() ,authrole("CollectionCentre"), (req,res)=>{
-  var arr1=["Wheat Husk" , "Wheat Straw" , "Rice Husk" ,"Rice Straw" ,"Cotton Stalk" ,"Bagasse"];
+  // var arr1=["Wheat Husk" , "Wheat Straw" , "Rice Husk" ,"Rice Straw" ,"Cotton Stalk" ,"Bagasse"];
+  var arr1 = croparray;
   try{
   const material = Biomass.find({Refid: req.user._id});
   var arr=[];
@@ -253,12 +273,35 @@ app.get("/Farmerreq" , auth() ,authrole("CollectionCentre"), (req,res) => {
 //to tell the farmer that the order is approved
 app.get("/check/:id", auth() ,authrole("CollectionCentre"), (req,res) => {
   var id = req.params.id;
-  FarmerReq.findByIdAndUpdate(id, { approve: 'true' , $set:{pickupdate: moment(Date.now()).add(10,'day').format('DD/MM/YYYY')} },
+  FarmerReq.findById(id,
       function (err, data) {
         if(err) throw err;
-        res.redirect("/Farmerreq")
+        console.log(data);
+         if(data.approve) res.redirect("/Farmerreq");
+         else res.render("cc/farmerdate" ,{orders:data});
+
       })
 })
+//to fill in the pickup date for the farmer
+app.post("/check/:id", auth() ,authrole("CollectionCentre"), (req,res) => {
+  var id = req.params.id;
+  FarmerReq.findOneAndUpdate({_id:id  }  ,{
+    pickupdate:req.body.pickupdate,
+    approve:true,
+  },{upsert:true},
+  function (err) {
+    if(err) throw err;
+    res.status(201).redirect("/FarmerReq")
+})
+})
+// app.get("/check/:id", auth() ,authrole("CollectionCentre"), (req,res) => {
+//   var id = req.params.id;
+//   FarmerReq.findByIdAndUpdate(id, { approve: 'true' , $set:{pickupdate: moment(Date.now()).add(10,'day').format('DD/MM/YYYY')} },
+//       function (err, data) {
+//         if(err) throw err;
+//         res.redirect("/Farmerreq")
+//       })
+// })
 // to tell the farmer the order is in transit
 app.get("/transit/:id", auth() ,authrole("CollectionCentre"), (req,res) => {
   var id = req.params.id;
@@ -334,10 +377,10 @@ app.get("/pcprofile" ,auth(),authrole("PrivateCompany"), (req,res) =>{
 })
 //This is the page where the private company would add the order
 app.get("/pcAddReq" , auth() ,authrole("PrivateCompany"), (req,res)=>{
-  const cc = CRegister.find({select:"CollectionCentre"});
+  const cc = CRegister.find({select:"CollectionCentre",state:req.user.state});
   cc.exec(function(err,data){
     if(err) throw err;
-    res.render("pc/pcAddReq" , {records:data})
+    res.render("pc/pcAddReq" , {records:data ,jsonData:cropresidue})
   })
   // res.render("pc/pcAddReq")
 })
@@ -406,7 +449,7 @@ app.post("/pcAddReq" , auth() ,authrole("PrivateCompany"), async(req,res)=>{
 })
 //Select Collection Centre to view Raw materials
 app.get("/selectcc" , auth() ,authrole("PrivateCompany"), (req,res)=>{
-  const cc = CRegister.find({select:"CollectionCentre"});
+  const cc = CRegister.find({select:"CollectionCentre" , state:req.user.state});
   cc.exec(function(err,data){
     if(err) throw err;
     res.render("pc/selectcc" , {records:data})
@@ -418,7 +461,7 @@ app.get("/selectcc" , auth() ,authrole("PrivateCompany"), (req,res)=>{
 app.post("/selectcc" , auth() , authrole("PrivateCompany"),async(req,res)=>{
   console.log(req.body.CollectionCentre);
   try{
-    const logindata =  await CRegister.findOne({ccname:req.body.CollectionCentre})
+    const logindata =  await CRegister.findOne({ccname:req.body.CollectionCentre , state:req.user.state})
     //console.log("Id" +logindata._id);
     const wastedata =  Waste.find({Refid:logindata._id});
     wastedata.exec(function(err,data){
@@ -469,10 +512,10 @@ app.get("/fhome" ,auth() ,authrole("Farmer"), (req,res) =>{
 
 //To open farmer additional reg details page
 app.get("/farmerregdetails" ,auth(),authrole("Farmer"), (req,res) =>{
-  const cc = CRegister.find({select:"CollectionCentre"});
+  const cc = CRegister.find({select:"CollectionCentre" , state:req.user.state});
   cc.exec(function(err,data){
     if(err) throw err;
-    res.render("farmer/reg-farmer-details" , {records:data})
+    res.render("farmer/reg-farmer-details" , {records:data , cropsdata:JSON.stringify(cropdata)})
   })
 })
 
@@ -493,7 +536,7 @@ app.get("/requestpickup" ,auth(),authrole("Farmer"),(req,res) =>{
       let crops = cropslist.filter((e, i) => cropslist.indexOf(e) === i);
       console.log(typeof(crops));
       console.log(crops);
-    res.render("farmer/requestpickup", {records:crops});
+    res.render("farmer/requestpickup", {records:crops , jsonData:JSON.stringify(cropdata)});
   }
   });
 })
@@ -570,6 +613,7 @@ app.get("/viewinvoice", auth() ,authrole("Farmer"), (req,res)=>{
   })
   console.log(orders);
 })
+//To see the notifications
 app.get("/notifications" , auth() ,authrole("Farmer"), (req,res)=>{
   const orders = FarmerReq.find({Refid:req.user._id});
   orders.exec(function(err,data){
@@ -581,13 +625,10 @@ app.get("/notifications" , auth() ,authrole("Farmer"), (req,res)=>{
 //-----------------------
 //Admin based pages
 app.get("/ahome",auth(),authrole(process.env.Select),(req,res)=>{
-  const users = CRegister.find();
-  users.exec(function(err,data){
-    if(err) throw err;
-    res.render("admin/ahome" , {order:data});
-  })
+res.render("admin/ahome")
 })
 
+//TO see all the farmers
 app.get("/managefarmers",auth(),authrole(process.env.Select),(req,res)=>{
   const users = CRegister.find();
   users.exec(function(err,data){
@@ -596,6 +637,7 @@ app.get("/managefarmers",auth(),authrole(process.env.Select),(req,res)=>{
   })
 })
 
+//TO see all the collection Centre
 app.get("/managecc",auth(),authrole(process.env.Select),(req,res)=>{
   const users = CRegister.find();
   users.exec(function(err,data){
@@ -604,6 +646,7 @@ app.get("/managecc",auth(),authrole(process.env.Select),(req,res)=>{
   })
 })
 
+//To see all the private companies
 app.get("/managepc",auth(),authrole(process.env.Select),(req,res)=>{
   const users = CRegister.find();
   users.exec(function(err,data){
@@ -612,34 +655,27 @@ app.get("/managepc",auth(),authrole(process.env.Select),(req,res)=>{
   })
 })
 
-app.get("/dashboard" ,auth() ,authrole(process.env.Select),  (req,res)=>{
-  const users = CRegister.find();
-  users.exec(function(err,data){
-    if(err) throw err;
-    res.render("admin/managepc" , {order:data});
-  })
-})
-
-// app.get("/dashboard" ,auth() ,authrole(process.env.Select),  (req,res)=>{
-//   const users = CRegister.find();
-//   users.exec(function(err,data){
-//     if(err) throw err;
-//     res.render("admin/dashboard" , {order:data});
-//   })
-// })
+//TO delete the farmer
 app.get("/remove/:id",auth() ,authrole(process.env.Select), (req,res) => {
   var id = req.params.id;
-  fRegDetails.findOneAndDelete({Refid:id})
   CRegister.findByIdAndDelete(id, function (err, docs) {
     if (err){
       throw err;
       console.log(err)
     }
     else{
-      res.redirect("/dashboard");
-    }
+      try{
+        fRegDetails.findOneAndDelete({Refid:id} , function(error, doc){
+          if(error) throw error;
+          else res.redirect("/managefarmers");
+        })}catch(e){
+          res.send("There was some error deleting the Farmer")
+        }
+     }
 })
 })
+
+//To delete the collecction centre
 app.get("/remove1/:id",auth() ,authrole(process.env.Select), (req,res) => {
   var id = req.params.id;
   CRegister.findByIdAndDelete(id, function (err, docs) {
@@ -647,29 +683,36 @@ app.get("/remove1/:id",auth() ,authrole(process.env.Select), (req,res) => {
       throw err;
       console.log(err)
     }
-    else{
-      res.redirect("/dashboard");
-    }
+      res.redirect("/managecc");
 })
 })
+
+//To delete the private Companies
 app.get("/remove2/:id",auth() ,authrole(process.env.Select), (req,res) => {
   var id = req.params.id;
-  PCProduct.findOneAndDelete({Refid:id})
   CRegister.findByIdAndDelete(id, function (err, docs) {
     if (err){
       throw err;
       console.log(err)
     }
     else{
-      res.redirect("/dashboard");
-    }
+      try{
+        PCProduct.findOneAndDelete({Refid:id} , function(error, doc){
+          if(error) throw error;
+          else res.redirect("/managepc");
+        })}catch(e){
+          res.send("There was some error deleting the Private Company")
+        }
+     }
 })
 })
+//Initial setup to get the Admin Registered
 app.get("/" + process.env.URL ,(req,res)=>{
     const  dummy = new CRegister()
 
       dummy.ccname = process.env.NAME,
       dummy.ccadd= process.env.ADD,
+      dummy.state=process.env.STATE,
       dummy.cccontact= process.env.CONTACT,
       dummy.ccusername= process.env.U,
       dummy.ccpassword= process.env.P,
@@ -681,11 +724,12 @@ app.get("/" + process.env.URL ,(req,res)=>{
       });
 })
 
-//----------------------
+//---------------------- The Graphs
+//This is the waste collected statistics of the current year month wise
 app.get("/Wastecollected" , async(req,res)=>{
   try{
     let docs = await FarmerReq.aggregate([
-      
+
           //$match:{ orderclose: { $gt: moment().startOf('year').format('MM/DD/YYYY'), $lt:moment().endOf('year').format('MM/DD/YYYY')  } } ,
           { $match: { year: moment(Date.now()).format('YYYY') } },
       {$group: {
@@ -699,31 +743,12 @@ app.get("/Wastecollected" , async(req,res)=>{
     res.status(400).send("There is some error loading the data if there is any any " + e);
   }
 })
-
-app.get("/Incomedetails" , async(req,res)=>{
-  try{
-    let docs = await FarmerReq.aggregate([
-      
-          //$match:{ orderclose: { $gt: moment().startOf('year').format('MM/DD/YYYY'), $lt:moment().endOf('year').format('MM/DD/YYYY')  } } ,
-          { $match: { year: moment(Date.now()).format('YYYY') } },
-      {$group: {
-        _id: { $substr: [ "$orderclose", 3, 7 ] },
-        total: { $sum: "$paymentAmount" } }
-    }
-    ]);
-    console.log(docs);
-    res.render("income", {details:docs});
-  }catch(e){
-    res.status(400).send("There is some error loading the data if there is any any " + e);
-  }
-})
-
+//THis shows what all are the registered products by private companies
 app.get("/Productdetails" , async(req,res)=>{
   try{
     let docs = await PCProduct.aggregate([
       {
       $group: {
-        
         // Each `_id` must be unique, so if there are multiple
         // documents with the same age, MongoDB will increment `count`.
         _id: '$product',
@@ -737,7 +762,6 @@ app.get("/Productdetails" , async(req,res)=>{
     res.status(400).send("There is some error loading the data if there is any any " + e);
   }
 })
-//This just shows the income raised by farmer per month
 app.get("/Incomedetails" , async(req,res)=>{
   try{
     let docs = await FarmerReq.aggregate([
@@ -755,10 +779,11 @@ app.get("/Incomedetails" , async(req,res)=>{
   }
 })
 
+
 // -------------------------------------
 //This opens the registeration page
 app.get("/registeration" ,(req,res) =>{
-  res.render("registeration");
+  res.render("registeration" , {jsonData:JSON.stringify(statedata)});
 })
 //registeration part for farmer , collection centre , private company
 app.post("/registeration" , async(req,res) => {
@@ -769,6 +794,7 @@ app.post("/registeration" , async(req,res) => {
           const newuser = new CRegister({
             ccname: req.body.ccname,
             ccadd:req.body.ccadd,
+            state:req.body.state,
             cccontact:req.body.cccontact,
             ccusername : req.body.ccusername,
             ccpassword : req.body.ccpassword,
@@ -778,28 +804,72 @@ app.post("/registeration" , async(req,res) => {
 
         //here the bcrypt is used
         //to generte a createToken
-        console.log(newuser);
-        const new_token = await newuser.generateAuthToken();
-        console.log(new_token);
 
-        res.cookie("jwt" , new_token ,{
-          expires: new Date(Date.now() + 3000000),
-          httpOnly:true
-        } );
         // console.log(cookie);
 
-        const newuserRegisteration =await newuser.save();
-        console.log(newuserRegisteration);
-        const whoAmI = req.body.select;
 
+        const whoAmI = req.body.select;
         const cc =  "CollectionCentre";
         const f = "Farmer";
         const pc = "PrivateCompany";
-        if( whoAmI == cc) res.status(201).render("cc/cchome");
-        else if(whoAmI == f) res.status(201).redirect("/farmerregdetails");
-        else if(whoAmI == pc) res.status(201).render("pc/whatmake");
-        else res.status(201).render("signed")
+        if( whoAmI == cc) {
+          console.log(newuser);
+          const new_token = await newuser.generateAuthToken();
+          console.log(new_token);
 
+          res.cookie("jwt" , new_token ,{
+            expires: new Date(Date.now() + 3000000),
+            httpOnly:true
+          } );
+          const newuserRegisteration =await newuser.save();
+          console.log(newuserRegisteration);
+          res.status(201).render("cc/cchome");
+        }
+        else if(whoAmI == f) {
+          CRegister.exists({state:req.body.state , select:"CollectionCentre"},async(err, doc)=> {
+            if (err){
+                console.log(err)
+            }else{
+                if(doc === false) {res.send("There is no collection centre in the region specified");}
+                else if(doc === true) {
+                  console.log("I am going here to save");
+                  console.log(newuser);
+                  const new_token = await newuser.generateAuthToken();
+                  console.log(new_token);
+
+                  res.cookie("jwt" , new_token ,{
+                    expires: new Date(Date.now() + 3000000),
+                    httpOnly:true
+                  } );
+                  const newuserRegisteration = await newuser.save();
+                  console.log(newuserRegisteration);
+                  res.status(201).redirect("/farmerregdetails");
+                }
+            }
+        });
+        }
+        else if(whoAmI == pc){
+           CRegister.exists({state:req.body.state , select:"CollectionCentre"}, async(err, doc)=> {
+            if (err){
+                console.log(err)
+            }else{
+                if(doc === false) res.send("There is no collection centre in the region specified");
+                else if(doc === true) {
+                  console.log(newuser);
+                  const new_token = await newuser.generateAuthToken();
+                  console.log(new_token);
+
+                  res.cookie("jwt" , new_token ,{
+                    expires: new Date(Date.now() + 3000000),
+                    httpOnly:true
+                  } );
+                  const newuserRegisteration = await newuser.save();
+                  console.log(newuserRegisteration);
+                  res.status(201).render("pc/whatmake");
+                }
+            }
+        });
+        }
     }else{
       res.send("Passwords Do Not Match");
     }
@@ -839,10 +909,42 @@ app.post("/login" , async(req,res) => {
         res.status(201).render("cc/cchome")
       }
       else if(isMatched && user.select =="Farmer"){
-        res.status(201).render("farmer/fhome")
+        fRegDetails.find({ Refid:user._id }, function(err, result) {
+            if (err) {
+              res.send("There was an error fetching it"+ err);
+            } else {
+              if(!result.length) {
+                CRegister.deleteOne({_id:user._id }).then(function(){
+                  res.send("You have incomplete login details the account is deleted")
+                  console.log("Data deleted"); // Success
+              }).catch(function(error){
+                res.send("We incurred some errors while deleting your data")
+                  console.log(error); // Failure
+              });
+              }
+              else res.status(201).render("farmer/fhome")
+            }
+          });
+          // res.status(201).render("farmer/fhome")
       }
       else if(isMatched && user.select == "PrivateCompany"){
-        res.status(201).render("pc/pchome")
+        PCProduct.find({ Refid:user._id }, function(err, result) {
+            if (err) {
+              res.send("There was an error fetching it"+ err);
+            } else {
+              if(!result.length) {
+                CRegister.deleteOne({_id:user._id }).then(function(){
+                  res.send("You have incomplete login details the account is deleted")
+                  console.log("Data deleted"); // Success
+              }).catch(function(error){
+                res.send("We incurred some errors while deleting your data")
+                  console.log(error); // Failure
+              });
+              }
+              else res.status(201).render("pc/pchome")
+            }
+          });
+        //res.status(201).render("pc/pchome")
       }
       else if(isMatched && user.select==process.env.SELECT){
         res.status(201).render("admin/ahome")

@@ -32,7 +32,6 @@
           </form>
         </div>
     </div>
-
       <div class="input-container">
         <form id="inputForm">
           <input type="number" id="input-box" name="quantity" min="1" max="">
@@ -44,7 +43,6 @@
 
       <!-- <script>
         const form = document.getElementById('inputForm');
-
 form.addEventListener('submit', (e) => {
   e.preventDefault(); // stop the form submission
   const input = form.querySelector('input');
@@ -57,7 +55,6 @@ form.addEventListener('submit', (e) => {
     box.appendChild(div); // now append in the DOM elem
   }
 });
-
       </script> -->
 
       <div class="move-down" >
@@ -73,7 +70,7 @@ form.addEventListener('submit', (e) => {
                   </div>
                   <div class="col-sm-6 text-secondary ">
                     <select name="RawMaterial" id="waste-needed" required multiple>
-                    <%   records.forEach(function(row){%>
+                    <!-- <%   records.forEach(function(row){%>
                       <% if (row === "Wheat") { %>
                     <option value="<%=row%> Husk"><%=row%> Husk</option>
                     <option value="<%=row%> Straw"><%=row%> Straw</option>
@@ -85,7 +82,7 @@ form.addEventListener('submit', (e) => {
                       <% } else if (row === "Sugar Cane") {%>
                         <option value="Bagasse">Bagasse</option>
                       <%}%>
-                    <% }) %>
+                    <% }) %> -->
                         <!-- <option value="Wheat">Wheat</option>
                         <option value="Rice">Rice</option>
                         <option value="Cotton">Cotton</option>
@@ -125,8 +122,29 @@ form.addEventListener('submit', (e) => {
             autoclose: true,
         });
         $('#datepicker').datepicker("setDate", new Date());
+        var data = '<%-records%>';
+        data = data.split(',');
+        var crop= '<%-jsonData%>';
+        var cdata = jQuery.parseJSON(crop);
+        const items=[];
+        console.log(data.length)
+       data.forEach(function(row){
+        for(i=0;i<cdata.length;i++){
+            if(cdata[i].name==row)
+            {
+                for(j in cdata[i].residue)
+                {
+                  items.push(cdata[i].residue[j]);
+                }
+              }
+            }
+          })
+          console.log(items)
+        for(i=0;i<items.length;i++){
+          $("#waste-needed").append('<option value="' + items[i] + '">' + items[i] + '</option>');
+        }
       </script>
       </div>
-     
+
       </body>
       </html>

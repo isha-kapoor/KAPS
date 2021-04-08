@@ -1,5 +1,5 @@
 .w3-sidebar{
-    height:52% !important;
+    height:30% !important;
     top: 150px;
     /* margin-top:0.5rem; */
     /*box-shadow: 6px 6px 4px rgba(0, 0, 0, 0.2);*/
@@ -12,13 +12,11 @@
       background: #FFFFFF;
       box-shadow: 6px 6px 4px rgba(0, 0, 0, 0.2);
   }
-  
   .centred{
     margin-top:10rem;
     text-align: center;
     font-family: "Montserrat", Sans-Serif;
   }
-  
   .centred .welcome{
     font-size: 36px;
     line-height: 44px;
@@ -85,4 +83,3 @@ text-align:center;
   background-color: rgb(224,225,222);
   opacity: 0.85;
 }
-

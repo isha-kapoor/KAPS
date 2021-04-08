@@ -12,6 +12,10 @@ const ccSchema = new mongoose.Schema({
     type:String,
     required:true,
   },
+  state:{
+    type:String,
+    required:true
+  },
   cccontact:{ //the contact no
     type:String,
     required:true,

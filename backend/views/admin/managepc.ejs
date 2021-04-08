@@ -3,12 +3,9 @@
 
 <head>
   <meta charset="utf-8">
-  <title>Manage-Farmers</title>
-<<<<<<< HEAD
-=======
+  <title>Manage-PC</title>
   <link rel="icon" type="image/ico" href="../images/logo.png">
   <link rel="stylesheet" href="../css/stylecc.css">
->>>>>>> b06b8f0d68089cc1f00ae92957d8d7dcd88a2fef
   <link rel="stylesheet" href="../css/style.css">
   <link rel="stylesheet" href="../css/stylea.css">
   <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
@@ -28,6 +25,7 @@
           <th>Private Company<br> Name</th>
           <th>Contact <br>Number</th>
           <th>Address<br></th>
+          <th>State<br></th>
           <th>Trash it<br></th>
         </tr>
       </thead>
@@ -38,6 +36,7 @@
               <td><%=row.ccname%></td>
               <td><%=row.cccontact%></td>
               <td><%=row.ccadd%></td>
+              <td><%=row.state%></td>
               <td><a  class="btn btn-danger btn-xs" href="/remove2/<%= row._id %> "><i class="fa fa-trash" aria-hidden="true" ></i></a></td>
             <%}%>
           </tr>
@@ -47,3 +46,4 @@
   </div>
 </body>
 </html>
+
