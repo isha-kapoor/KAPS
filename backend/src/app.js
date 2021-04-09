@@ -763,7 +763,7 @@ app.get("/Productdetails" , async(req,res)=>{
     res.status(400).send("There is some error loading the data if there is any any " + e);
   }
 })
-//This just shows the income raised by farmer per month for the current year
+
 app.get("/Incomedetails" , async(req,res)=>{
   try{
     let docs = await FarmerReq.aggregate([
@@ -780,6 +780,7 @@ app.get("/Incomedetails" , async(req,res)=>{
     res.status(400).send("There is some error loading the data if there is any any " + e);
   }
 })
+
 
 // -------------------------------------
 //This opens the registeration page
