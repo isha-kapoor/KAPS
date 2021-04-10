@@ -749,6 +749,7 @@ app.get("/Productdetails" , async(req,res)=>{
     let docs = await PCProduct.aggregate([
       {
       $group: {
+
         // Each `_id` must be unique, so if there are multiple
         // documents with the same age, MongoDB will increment `count`.
         _id: '$product',
@@ -762,6 +763,7 @@ app.get("/Productdetails" , async(req,res)=>{
     res.status(400).send("There is some error loading the data if there is any any " + e);
   }
 })
+
 app.get("/Incomedetails" , async(req,res)=>{
   try{
     let docs = await FarmerReq.aggregate([
