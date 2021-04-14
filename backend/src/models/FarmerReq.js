@@ -25,7 +25,7 @@ const FarmerSchema = new mongoose.Schema({
     ref:'fRegDetails'
   },
   RawMaterial:{ // which raw material is needed
-    type:Array,
+    type:String,
     required:true,
   },
   LandArea:{ // land area

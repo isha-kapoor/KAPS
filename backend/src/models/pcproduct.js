@@ -13,6 +13,7 @@ const pcProductSchema = new mongoose.Schema({
   product:{//what they make
     type:String,
     required:true,
+    uppercase:true
   },
   pname:{//what's the name
     type:mongoose.Schema.Types.String,

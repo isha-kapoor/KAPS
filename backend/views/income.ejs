@@ -50,6 +50,8 @@
 }
   var chart = anychart.column();
   chart.data(data);
+  chart.xAxis().title('Month');
+  chart.yAxis().title('Income in Rs');
   chart.title("Revenue Generated")
   chart.isVertical(false);
   chart.labels(true);

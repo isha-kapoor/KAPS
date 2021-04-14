@@ -25,7 +25,7 @@
           <form method="post" action="/wasteDB">
           <div class="w3-card">
             <div class="card-body">
-                <h6 class="card-text mb-5"> Edit Database </h6>
+                <h6 class="card-text mb-5"> Edit Waste Database </h6>
                 <input type="hidden" name="_id" value="<%=records._id%>">
               <div class="row apply-margin">
                 <div class="col-sm-6 text-primarys">
@@ -37,26 +37,26 @@
               </div>
               <div class="row apply-margin">
                 <div class="col-sm-6 text-primarys">
-                  <h6 class="mb-2 apply-font"><label for="open">Open Waste </label></h6>
+                  <h6 class="mb-2 apply-font"><label for="open">Open Waste in Kg </label></h6>
                 </div>
                 <div class="col-sm-6 text-secondary ">
-                  <input class="apply-padding"type="number" min="0" id="open" placeholder="placeholder" name="open" value="<%=records.open%>">
+                  <input class="apply-padding"type="number" min="0" id="open" placeholder="placeholder" name="open" value="<%=records.open%>" readonly>
                 </div>
               </div>
               <div class="row apply-margin">
                 <div class="col-sm-6 text-primarys">
-                  <h6 class="mb-2 apply-font"><label for="processing">Processing Waste </label></h6>
+                  <h6 class="mb-2 apply-font"><label for="processing">Processing Waste in Kg</label></h6>
                 </div>
                 <div class="col-sm-6 text-secondary ">
-                  <input class="apply-padding"type="number" min="0" id="processing" placeholder="placeholder" name="processing" value="<%=records.processing%>">
+                  <input class="apply-padding"type="number" = id="processing" placeholder="placeholder" name="processing" value="<%=records.processing%>" max ="<%=value%>"   min="0">
                 </div>
               </div>
               <div class="row apply-margin">
                 <div class="col-sm-6 text-primarys">
-                  <h6 class="mb-2 apply-font"><label for="ready">Ready Waste </label></h6>
+                  <h6 class="mb-2 apply-font"><label for="ready">Ready Waste in Kg</label></h6>
                 </div>
                 <div class="col-sm-6 text-secondary ">
-                  <input class="apply-padding"type="number" min="0" id="ready" placeholder="placeholder" name="ready" value="<%=records.ready%>">
+                  <input class="apply-padding"type="number" min="0" id="ready" placeholder="placeholder" name="ready" value="<%=records.ready%>" readonly>
                 </div>
               </div>
               <div class="row">

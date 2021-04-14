@@ -14,7 +14,7 @@ const biomassSchema = new mongoose.Schema({
     unique:false,
   },
   gross:{ // this is the gross calorific value
-    type:String,
+    type:Number,
     required:true,
   }
 

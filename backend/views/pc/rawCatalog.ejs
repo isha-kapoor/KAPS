@@ -21,7 +21,7 @@
 
     <div class="move-down" style="margin-left:16%" >
       <!-- style="margin-left:16%" -->
-
+<h3>Available Raw Materials</h3>
   <table class="available-raw-materials">
     <!-- <tr>
       <td class="apply-images"><img src="../images/wheat-husk.jpg" alt="Wheat Husk"></td>
@@ -73,6 +73,17 @@
     </tr>
     <% }) %>
   </table>
+  <h3>Biomass Characterization</h3>
+
+  <table class="available-raw-materials">
+    <% request.forEach(function(row){%>
+      <tr>
+        <td class="apply-images"><img src="../images/<%=row.RawMaterial%>.jpg"></td>
+        <td class="raw-materials"><%=row.RawMaterial%></td>
+        <td class="available-quantity">Gross Calorific Value(cal/g):<%=row.gross%>(cal/g)</td>
+      </tr>
+      <% }) %>
+    </table>
       </div>
 
   </body>
