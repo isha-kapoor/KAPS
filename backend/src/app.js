@@ -641,6 +641,7 @@ app.post("/requestpickup" , auth() ,authrole("Farmer"), async(req,res)=>{
         Refid: req.user._id,
         oid:(Date.now().toString() + Math.floor(Math.random()*10)).slice(8,14),
         contact:req.user.cccontact,
+        add:req.user.ccadd,
         fcc: cc.fcc,
         orderDate: moment(Date.now()).format('DD/MM/YYYY'),
         RawMaterial: req.body.RawMaterial,
@@ -812,6 +813,60 @@ app.get("/" + process.env.URL ,(req,res)=>{
 })
 
 //---------------------- The Graphs
+//Registered Collection Centers
+app.get("/ccreg" , async(req,res)=>{
+  try{
+    let docs = await CRegister.aggregate([
+
+          //$match:{ orderclose: { $gt: moment().startOf('year').format('MM/DD/YYYY'), $lt:moment().endOf('year').format('MM/DD/YYYY')  } } ,
+          { $match: { select:"CollectionCentre" } },
+      {$group: {
+        _id: "$state" ,
+        total: { $sum: 1 } }
+    }
+    ]);
+    console.log(docs);
+    res.render("ccreg", {details:docs , jsonData:JSON.stringify(statedata)});
+  }catch(e){
+    res.status(400).send("There is some error loading the data if there is any any " + e);
+  }
+})
+//Registered Farmer
+app.get("/ffreg" , async(req,res)=>{
+  try{
+    let docs = await CRegister.aggregate([
+
+          //$match:{ orderclose: { $gt: moment().startOf('year').format('MM/DD/YYYY'), $lt:moment().endOf('year').format('MM/DD/YYYY')  } } ,
+          { $match: { select:"Farmer" } },
+      {$group: {
+        _id: "$state" ,
+        total: { $sum: 1 } }
+    }
+    ]);
+    console.log(docs);
+    res.render("ffreg", {details:docs , jsonData:JSON.stringify(statedata)});
+  }catch(e){
+    res.status(400).send("There is some error loading the data if there is any any " + e);
+  }
+})
+//Registered PC
+app.get("/ppreg" , async(req,res)=>{
+  try{
+    let docs = await CRegister.aggregate([
+
+          //$match:{ orderclose: { $gt: moment().startOf('year').format('MM/DD/YYYY'), $lt:moment().endOf('year').format('MM/DD/YYYY')  } } ,
+          { $match: { select:"PrivateCompany" } },
+      {$group: {
+        _id: "$state" ,
+        total: { $sum: 1 } }
+    }
+    ]);
+    console.log(docs);
+    res.render("ppreg", {details:docs , jsonData:JSON.stringify(statedata)});
+  }catch(e){
+    res.status(400).send("There is some error loading the data if there is any any " + e);
+  }
+})
 //This is the waste collected statistics of the current year month wise
 app.get("/Wastecollected" , async(req,res)=>{
   try{

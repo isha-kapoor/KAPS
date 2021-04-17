@@ -17,6 +17,10 @@ const FarmerSchema = new mongoose.Schema({
     type:mongoose.Schema.Types.String,
     ref:'CRegister',
   },
+  add:{ // this is the contact of the person who makes the order farmer
+    type:mongoose.Schema.Types.String,
+    ref:'CRegister',
+  },
   orderDate:{ //ordering date
     type:String,
   },
