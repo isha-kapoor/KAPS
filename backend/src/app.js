@@ -21,6 +21,7 @@ const FarmerReq= require("./models/FarmerReq");
 const {json} = require("express");
 const {log} = require("console");
 const fRegDetails = require("./models/fregdetail");
+const Prices = require("./models/prices");
 
 const port =process.env.PORT || 3000 ;
 
@@ -48,6 +49,7 @@ for(i=0;i<residuedata.length;i++)
   }
 }
 console.log(croparray); // All the residues
+
 
 ////General Links[open to all]
 //this is the home route
@@ -294,6 +296,7 @@ app.post("/check/:id", auth() ,authrole("CollectionCentre"), (req,res) => {
     res.status(201).redirect("/FarmerReq")
 })
 })
+
 // app.get("/check/:id", auth() ,authrole("CollectionCentre"), (req,res) => {
 //   var id = req.params.id;
 //   FarmerReq.findByIdAndUpdate(id, { approve: 'true' , $set:{pickupdate: moment(Date.now()).add(10,'day').format('DD/MM/YYYY')} },
@@ -323,19 +326,41 @@ app.get("/ready/:id", auth() ,authrole("CollectionCentre"), (req,res) => {
 
       })
 })
+// const logindata =  await CRegister.findOne({ccname:req.body.CollectionCentre , state:req.user.state})
+// //console.log("Id" +logindata._id);
+// const wastedata =  Waste.find({Refid:logindata._id});
+// wastedata.exec(function(err,data){
+//   if(err) { throw err; res.send("There is no data available for the request")}
+//   //console.log(data);
+//   const biomassdata = Biomass.find({Refid:logindata._id});
+//   biomassdata.exec(function(error,datas){
+//     if(error){throw err; res.send("There is no data available for the request")}
+//     res.render("pc/rawCatalog" , {order:data , request:datas});
+//   })
 //to tell the farmer about the waste
 app.post("/ready/:id", auth() ,authrole("CollectionCentre"), (req,res) => {
-  var id = req.params.id;
+  const ppk = Prices.findOne({});
+  var farmerppk = 0;
+  ppk.exec(function(error,data){
+    if(error){throw err; res.send("There is no data available for the request")}
+    farmerppk = data.Farmerppk;
+    console.log(farmerppk);
+    var id = req.params.id;
   FarmerReq.findOneAndUpdate({_id:id  }  ,{
     wasteAmount:req.body.wasteAmount,
-    paymentAmount:req.body.wasteAmount*7,
+    paymentAmount:req.body.wasteAmount*farmerppk,
     ready:true,
   },{upsert:true},
   function (err) {
     if(err) throw err;
     res.status(201).redirect("/FarmerReq")
 })
+  })
+  // var ppkf = JSON.stringify(ppk);
+  // console.log(ppk);
+  
 })
+
 //to mark farmers things closed
 app.get("/paid/:id", auth() ,authrole("CollectionCentre"), (req,res) => {
   var id = req.params.id;
@@ -424,6 +449,7 @@ app.post("/whatmake" , auth() ,authrole("PrivateCompany"), async(req,res)=>{
 //This is a post request page for private company where they will add the orders and save it to database
 app.post("/pcAddReq" , auth() ,authrole("PrivateCompany"), async(req,res)=>{
   try{
+    const ppk =await Prices.findOne({});
     const products = await PCProduct.findOne({Refid:req.user._id });
       const pcaddreq = new PCAddedReq({
         Refid: req.user._id,
@@ -435,7 +461,7 @@ app.post("/pcAddReq" , auth() ,authrole("PrivateCompany"), async(req,res)=>{
         RawMaterial: req.body.RawMaterial,
         Quantity: req.body.Quantity,
         date:req.body.date,
-        payment:req.body.Quantity*10,
+        payment:req.body.Quantity*ppk.PCppk,
       })
       console.log(pcaddreq);
       const pcNewAddReq =await pcaddreq.save();
@@ -628,6 +654,10 @@ app.get("/ahome",auth(),authrole(process.env.Select),(req,res)=>{
 res.render("admin/ahome")
 })
 
+app.get("/setprices",auth(),authrole(process.env.Select),(req,res)=>{
+  res.render("admin/setprices")
+  })
+
 //TO see all the farmers
 app.get("/managefarmers",auth(),authrole(process.env.Select),(req,res)=>{
   const users = CRegister.find();
@@ -636,6 +666,24 @@ app.get("/managefarmers",auth(),authrole(process.env.Select),(req,res)=>{
     res.render("admin/managefarmers" , {order:data});
   })
 })
+
+app.post("/setprices", auth(),authrole(process.env.Select),async(req,res)=>{
+ 
+  Prices.findOneAndUpdate({Refid: req.user._id},{$set: {"Farmerppk": req.body.farmerppk, "PCppk":req.body.pcppk}},
+    {upsert:true},
+      function (err, data) {
+        if(err) throw err;
+        res.redirect("/ahome")
+      })
+  // Prices.findOneAndUpdate({Refid: req.user._id},{ PCppk: req.body.pcppk },
+  //       {upsert:true},
+  //         function (err, data) {
+  //           if(err) throw err;
+  //           res.redirect("/ahome")
+  //         })
+})
+
+
 
 //TO see all the collection Centre
 app.get("/managecc",auth(),authrole(process.env.Select),(req,res)=>{
