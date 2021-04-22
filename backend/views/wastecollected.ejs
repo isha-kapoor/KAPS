@@ -49,6 +49,8 @@
 }
   var chart = anychart.column();
   chart.data(data);
+  chart.xAxis().title('Month');
+  chart.yAxis().title('Waste Collected in Kg');
   chart.title("Waste Collected")
   chart.isVertical(false);
   chart.labels(true);

@@ -25,7 +25,7 @@
           <form method="post" action="/biomassDB" autocomplete="off">
           <div class="w3-card">
             <div class="card-body">
-                <h6 class="card-text mb-5"> Edit Database </h6>
+                <h6 class="card-text mb-5"> Edit Biomass Characterization </h6>
                 <input type="hidden" name="_id" value="<%=records._id%>">
               <div class="row apply-margin">
                 <div class="col-sm-6 text-primarys">
@@ -37,10 +37,10 @@
               </div>
               <div class="row apply-margin">
                 <div class="col-sm-6 text-primarys">
-                  <h6 class="mb-2 apply-font"><label for="gross">Gross Calorific Value </label></h6>
+                  <h6 class="mb-2 apply-font"><label for="gross">Gross Calorific Value(cal/g) </label></h6>
                 </div>
                 <div class="col-sm-6 text-secondary ">
-                  <input class="apply-padding"type="text"  id="gross" placeholder="placeholder" name="gross" value="<%=records.gross%>">
+                  <input class="apply-padding"type="number"  id="gross" placeholder="placeholder" name="gross" min ="3000" max="5000" value="<%=records.gross%>">
                 </div>
               </div>
               <div class="row">
