@@ -7,9 +7,6 @@ const pricesSchema = new mongoose.Schema({
         type:mongoose.Schema.Types.ObjectId,
         ref:'CRegister',
       },
-   Name:{
-       type:String,
-   },
     Farmerppk:{ // which product out of wheat straw husk rice husk straw cotton stalk bagasse
         type:Number,
         required:true,

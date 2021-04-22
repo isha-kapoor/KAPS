@@ -20,26 +20,12 @@
   <%- include('../partials/farmerheader') %>
   <div style="margin:0 15%;">
   <table class="available-raw-materials">
-    <tr>
-      <td class="apply-images"><img src="images/Wheat Husk.jpg" alt="Wheat Husk"></td>
-      <td class="apply-images"><img src="images/Wheat Straw.jpg" alt="Wheat Straw"></td>
-      <td class="apply-images"><img src="images/Rice Husk.jpg" alt="Rice Husk"></td>
-    </tr>
-    <tr>
-      <td class="raw-materials">Wheat Husk</td>
-      <td class="raw-materials">Wheat Straw</td>
-      <td class="raw-materials">Rice Husk</td>
-    </tr>
-    <tr>
-      <td class="apply-images"><img src="images/Rice Straw.jpg" alt="Rice Straw"></td>
-      <td class="apply-images"><img src="images/Cotton Stalk.jpg" alt="Cotton Stalks"></td>
-      <td class="apply-images"><img src="images/Bagasse.jpg" alt="Bagasse"></td>
-    </tr>
-    <tr>
-      <td class="raw-materials">Rice Straw</td>
-      <td class="raw-materials">Cotton Stalk</td>
-      <td class="raw-materials">Bagasse</td>
-    </tr>
+    <% order.forEach(function(row){%>
+      <tr>
+        <td class="apply-images"><img src="images/<%=row%>.jpg" alt="<%=row%>"></td>
+        <td class="raw-materials"><%=row%></td>
+      </tr>
+      <% }) %>
   </table>
   <div class="row">
     <button onclick="goBack()" class="button-add" >Go back</button>
