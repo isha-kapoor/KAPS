@@ -42,7 +42,7 @@
 
 
           <div class="floating-label">
-            <input id="product" type="text" placeholder="placeholder" name="product" required>
+            <input id="product" type="text"  pattern="[a-zA-Z]+" oninvalid="setCustomValidity('Please enter alphabets only. ')" placeholder="placeholder" name="product" required>
             <label for="product">Product </label>
           </div>
 

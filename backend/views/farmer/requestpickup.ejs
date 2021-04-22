@@ -18,44 +18,7 @@
 
 <body id=body>
   <%- include('../partials/farmerheader') %>
-    <!-- <div class="w3-card">
-        <div class="card-body">
-          <h5 class="card-title">Request Pickup</h5>
-          <br>
-          <form>
-            <label for="Residue">Enter Residue Type</label>
-            <input type="text" placeholder="Select Residue Type" id="Residue" name="Residue">
-            <br>
-            <label for="Land">Total Cultivation Area</label>
-            <input type="text" placeholder="Enter Cultivation Area" id="Land" name="Land">
-            <input type="submit" value="Submit Request">
-          </form>
-        </div>
-    </div>
-      <div class="input-container">
-        <form id="inputForm">
-          <input type="number" id="input-box" name="quantity" min="1" max="">
-          <input id="filldetails" name="submit" type="submit" value="Add
-             boxes">
-        </form>
-      </div> -->
 
-
-      <!-- <script>
-        const form = document.getElementById('inputForm');
-form.addEventListener('submit', (e) => {
-  e.preventDefault(); // stop the form submission
-  const input = form.querySelector('input');
-  const boxInput = input.value; // get the value
-  let box = document.querySelector('#boxes');
-    box.innerHTML="";
-  for (let i = 0; i < boxInput; i++) { // loop over the input value
-    let div = document.createElement('div'); // create div elem
-    div.textContent = `Box-${i}`
-    box.appendChild(div); // now append in the DOM elem
-  }
-});
-      </script> -->
 
       <div class="move-down" >
         <!-- style="margin-left:16%" -->
@@ -69,7 +32,7 @@ form.addEventListener('submit', (e) => {
                     <a href="/fresiduecatalog" style="color: rgba(53, 145, 33, 0.8);">Click to see Residue Catalog</a>
                   </div>
                   <div class="col-sm-6 text-secondary ">
-                    <select name="RawMaterial" id="waste-needed" required multiple>
+                    <select name="RawMaterial" id="waste-needed" required>
                     <!-- <%   records.forEach(function(row){%>
                       <% if (row === "Wheat") { %>
                     <option value="<%=row%> Husk"><%=row%> Husk</option>

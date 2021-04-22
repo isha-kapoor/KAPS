@@ -28,10 +28,10 @@
                         							<th>Request<br> ID</th>
                                       <th>Request<br> Date</th>
                         							<th>Crops<br> Residue</th>
-                                      <th>Land<br> Area</th>
+                                      <th>Land<br> Area(Hectare)</th>
                                       <th>Pickup<br> Date</th>
                                       <th>Contact<br> No </th>
-                                      <th>Waste<br> Weight</th>
+                                      <th>Waste<br> Weight(Kg)</th>
                         							<th>Amount<br> Paid(Given)</th>
 
                         						</tr>
@@ -42,10 +42,10 @@
                       <td><%=row.oid %></td>
                       <td><%=row.orderDate %></td>
                       <td><%= row.RawMaterial %></td>
-                      <td><%= row.LandArea %>Hectare</td>
+                      <td><%= row.LandArea %></td>
                       <td><%= row.pickupdate %></td>
                       <td><%= row.contact %></td>
-                      <td><%=row.wasteAmount%></td>
+                      <td><%=row.wasteAmount%>Kg</td>
                       <td><%=row.paymentAmount%></td>
                     </tr>
                     <% }) %>

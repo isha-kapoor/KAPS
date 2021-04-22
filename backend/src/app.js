@@ -100,7 +100,7 @@ app.get("/approve/:id", auth() ,authrole("CollectionCentre"), (req,res) => {
   PCAddedReq.findByIdAndUpdate(id, { approve: 'true' },
       function (err, data) {
         if(err) throw err;
-        res.redirect("/pcreq")
+        res.redirect("/pcreq");
       })
 })
 //This is a link where the request for a particular id is marked paid by the collection centre of a private company
@@ -109,7 +109,18 @@ app.get("/delete/:id" , auth(), authrole("CollectionCentre"),(req,res)=>{
   PCAddedReq.findByIdAndUpdate(id, { paid: 'true' },
       function (err, data) {
         if(err) throw err;
-        res.redirect("/pcreq")
+        else{
+        const cc = CRegister.findOne({ccname:data.CollectionCentre})
+        cc.exec(function(e,datas){
+          if(e) throw e;
+            Waste.findOneAndUpdate({RawMaterial:data.RawMaterial , Refid:datas._id},
+            {$inc:{ready: -data.Quantity}},
+            function(error){
+            if(error) throw error;
+            res.redirect("/pcreq")
+          })
+        })
+        }
   })
 })
 //This is the waste Database for collection centre where it is displayed
@@ -126,7 +137,7 @@ app.get("/wasteDB/:id", auth() ,authrole("CollectionCentre"), (req,res)=>{
   waste.exec(function(err,doc){
     if(err){throw err}
       res.render("cc/wasteDB" , {
-        records:doc
+        records:doc , value : doc.processing + doc.open
       });
     })
 })
@@ -172,17 +183,50 @@ catch(e){
 //This is the post method for wastes whenever anything is updated or newly added
 app.post("/wasteDB" , auth() ,authrole("CollectionCentre"), async(req,res)=>{
   try {
-    Waste.findOneAndUpdate({RawMaterial:req.body.RawMaterial , Refid:req.user._id},{
-        RawMaterial:req.body.RawMaterial,
-        Refid:req.user._id,
-        open:req.body.open,
-        processing:req.body.processing,
-        ready:req.body.ready,
-      },{upsert:true},
-      function (err) {
-        if(err) throw err;
-        res.status(201).redirect("/ccwasteDB")
-  })
+    const wasteval =Waste.findOne({RawMaterial:req.body.RawMaterial , Refid:req.user._id}); // saves old data
+    wasteval.exec(function(error, docs){
+      if(!docs){
+        Waste.findOneAndUpdate({RawMaterial:req.body.RawMaterial , Refid:req.user._id},{
+            RawMaterial:req.body.RawMaterial,
+            Refid:req.user._id,
+            processing:req.body.processing,
+          },{upsert:true},
+          function (err) {
+            if(err) throw err;
+            res.status(201).redirect("/ccwasteDB")
+    } )} else{const processed = docs.processing;
+    const opened = docs.open;
+      Waste.findOneAndUpdate({RawMaterial:req.body.RawMaterial , Refid:req.user._id},{
+          RawMaterial:req.body.RawMaterial,
+          Refid:req.user._id,
+          processing:req.body.processing,
+        },{upsert:true},
+        function (err) {
+          if(err) throw err;
+          else {
+        if(req.body.processing>= processed) {
+          const diff = req.body.processing - processed;
+          console.log(diff);
+          Waste.findOneAndUpdate({RawMaterial:req.body.RawMaterial , Refid:req.user._id},{
+            $inc:{open: -diff}
+          },{upsert:true},
+          function(er){
+            if(er) throw er;
+            res.status(201).redirect("/ccwasteDB")
+          })
+        }
+        else {
+          const diff =   processed - req.body.processing;
+          console.log(diff);
+          Waste.findOneAndUpdate({RawMaterial:req.body.RawMaterial , Refid:req.user._id},{
+            $inc:{ready: diff}
+          },{upsert:true},
+          function(er){
+            if(er) throw er;
+            res.status(201).redirect("/ccwasteDB")
+          })
+        }
+      }}) } })
   } catch (e) {
     res.status(400).send(e);
     console.log("There are some errors regarding initial waste" );
@@ -338,14 +382,8 @@ app.get("/ready/:id", auth() ,authrole("CollectionCentre"), (req,res) => {
 //     res.render("pc/rawCatalog" , {order:data , request:datas});
 //   })
 //to tell the farmer about the waste
-app.post("/ready/:id", auth() ,authrole("CollectionCentre"), (req,res) => {
-  const ppk = Prices.findOne({});
-  var farmerppk = 0;
-  ppk.exec(function(error,data){
-    if(error){throw err; res.send("There is no data available for the request")}
-    farmerppk = data.Farmerppk;
-    console.log(farmerppk);
-    var id = req.params.id;
+app.post("/ready/:id", auth() ,authrole("CollectionCentre"),  (req,res) => {
+  var id = req.params.id;
   FarmerReq.findOneAndUpdate({_id:id  }  ,{
     wasteAmount:req.body.wasteAmount,
     paymentAmount:req.body.wasteAmount*farmerppk,
@@ -353,12 +391,31 @@ app.post("/ready/:id", auth() ,authrole("CollectionCentre"), (req,res) => {
   },{upsert:true},
   function (err) {
     if(err) throw err;
-    res.status(201).redirect("/FarmerReq")
-})
-  })
-  // var ppkf = JSON.stringify(ppk);
-  // console.log(ppk);
-  
+    else{
+      try {
+        const f =  FarmerReq.findOne({_id:id});
+        f.exec(function(error,data){
+          if(error) throw error;
+          const cc = CRegister.findOne({ccname: data.fcc});
+          cc.exec(function(errors,datas){
+            if(errors) throw errors;
+                Waste.findOneAndUpdate({Refid:datas._id, RawMaterial:data.RawMaterial },
+                   { Refid:datas._id,
+                     RawMaterial:data.RawMaterial,
+                     $inc: {"open":req.body.wasteAmount }
+                },{upsert:true},
+                            function(errorer){
+                              if(errorer) throw errorer;
+                              res.status(201).redirect("/FarmerReq")
+                            })
+        }) })
+      }
+         catch (e) {
+            res.send(" Something was errored while saving the Waste Database")
+          }
+        }
+      })
+
 })
 
 //to mark farmers things closed
@@ -464,9 +521,25 @@ app.post("/pcAddReq" , auth() ,authrole("PrivateCompany"), async(req,res)=>{
         payment:req.body.Quantity*ppk.PCppk,
       })
       console.log(pcaddreq);
-      const pcNewAddReq =await pcaddreq.save();
-      console.log(pcNewAddReq);
-      res.status(201).render("pc/pchome");
+      const cc = await CRegister.findOne({ccname:req.body.CollectionCentre});
+      const wastedb =  Waste.findOne({Refid:cc._id , RawMaterial:req.body.RawMaterial});
+      wastedb.exec(function (er,d){
+        if(er) throw er;
+        else{
+          if(d){
+          if(d.ready>=req.body.Quantity){
+            const pcNewAddReq = pcaddreq.save();
+            console.log(pcNewAddReq);
+            res.status(201).render("pc/pchome");
+          }
+          else {
+            res.send("Please visit the raw material Catalogue Page to see the item details")
+          }
+        }
+        else  res.send("Please visit the raw material Catalogue Page to see the item details")
+      }
+      })
+
   }
   catch(e){
     res.status(400).send(e);
@@ -493,7 +566,11 @@ app.post("/selectcc" , auth() , authrole("PrivateCompany"),async(req,res)=>{
     wastedata.exec(function(err,data){
       if(err) { throw err; res.send("There is no data available for the request")}
       //console.log(data);
-      res.render("pc/rawCatalog" , {order:data});
+      const biomassdata = Biomass.find({Refid:logindata._id});
+      biomassdata.exec(function(error,datas){
+        if(error){throw err; res.send("There is no data available for the request")}
+        res.render("pc/rawCatalog" , {order:data , request:datas});
+      })
     })
   // res.status(201).redirect("/selectcc")
 }
@@ -580,6 +657,7 @@ app.post("/requestpickup" , auth() ,authrole("Farmer"), async(req,res)=>{
         Refid: req.user._id,
         oid:(Date.now().toString() + Math.floor(Math.random()*10)).slice(8,14),
         contact:req.user.cccontact,
+        add:req.user.ccadd,
         fcc: cc.fcc,
         orderDate: moment(Date.now()).format('DD/MM/YYYY'),
         RawMaterial: req.body.RawMaterial,
@@ -773,6 +851,60 @@ app.get("/" + process.env.URL ,(req,res)=>{
 })
 
 //---------------------- The Graphs
+//Registered Collection Centers
+app.get("/ccreg" , async(req,res)=>{
+  try{
+    let docs = await CRegister.aggregate([
+
+          //$match:{ orderclose: { $gt: moment().startOf('year').format('MM/DD/YYYY'), $lt:moment().endOf('year').format('MM/DD/YYYY')  } } ,
+          { $match: { select:"CollectionCentre" } },
+      {$group: {
+        _id: "$state" ,
+        total: { $sum: 1 } }
+    }
+    ]);
+    console.log(docs);
+    res.render("ccreg", {details:docs , jsonData:JSON.stringify(statedata)});
+  }catch(e){
+    res.status(400).send("There is some error loading the data if there is any any " + e);
+  }
+})
+//Registered Farmer
+app.get("/ffreg" , async(req,res)=>{
+  try{
+    let docs = await CRegister.aggregate([
+
+          //$match:{ orderclose: { $gt: moment().startOf('year').format('MM/DD/YYYY'), $lt:moment().endOf('year').format('MM/DD/YYYY')  } } ,
+          { $match: { select:"Farmer" } },
+      {$group: {
+        _id: "$state" ,
+        total: { $sum: 1 } }
+    }
+    ]);
+    console.log(docs);
+    res.render("ffreg", {details:docs , jsonData:JSON.stringify(statedata)});
+  }catch(e){
+    res.status(400).send("There is some error loading the data if there is any any " + e);
+  }
+})
+//Registered PC
+app.get("/ppreg" , async(req,res)=>{
+  try{
+    let docs = await CRegister.aggregate([
+
+          //$match:{ orderclose: { $gt: moment().startOf('year').format('MM/DD/YYYY'), $lt:moment().endOf('year').format('MM/DD/YYYY')  } } ,
+          { $match: { select:"PrivateCompany" } },
+      {$group: {
+        _id: "$state" ,
+        total: { $sum: 1 } }
+    }
+    ]);
+    console.log(docs);
+    res.render("ppreg", {details:docs , jsonData:JSON.stringify(statedata)});
+  }catch(e){
+    res.status(400).send("There is some error loading the data if there is any any " + e);
+  }
+})
 //This is the waste collected statistics of the current year month wise
 app.get("/Wastecollected" , async(req,res)=>{
   try{

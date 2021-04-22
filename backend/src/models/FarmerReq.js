@@ -17,6 +17,10 @@ const FarmerSchema = new mongoose.Schema({
     type:mongoose.Schema.Types.String,
     ref:'CRegister',
   },
+  add:{ // this is the contact of the person who makes the order farmer
+    type:mongoose.Schema.Types.String,
+    ref:'CRegister',
+  },
   orderDate:{ //ordering date
     type:String,
   },
@@ -25,7 +29,7 @@ const FarmerSchema = new mongoose.Schema({
     ref:'fRegDetails'
   },
   RawMaterial:{ // which raw material is needed
-    type:Array,
+    type:String,
     required:true,
   },
   LandArea:{ // land area
