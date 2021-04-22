@@ -384,6 +384,12 @@ app.get("/ready/:id", auth() ,authrole("CollectionCentre"), (req,res) => {
 //to tell the farmer about the waste
 app.post("/ready/:id", auth() ,authrole("CollectionCentre"),  (req,res) => {
   var id = req.params.id;
+  const ppk = Prices.findOne({});
+  var farmerppk = 0;
+  ppk.exec(function(error,data){
+    if(error){throw err; res.send("There is no data available for the request")}
+    farmerppk = data.Farmerppk;
+    console.log(farmerppk);
   FarmerReq.findOneAndUpdate({_id:id  }  ,{
     wasteAmount:req.body.wasteAmount,
     paymentAmount:req.body.wasteAmount*farmerppk,
@@ -416,6 +422,7 @@ app.post("/ready/:id", auth() ,authrole("CollectionCentre"),  (req,res) => {
         }
       })
 
+})
 })
 
 //to mark farmers things closed
@@ -560,6 +567,7 @@ app.get("/selectcc" , auth() ,authrole("PrivateCompany"), (req,res)=>{
 app.post("/selectcc" , auth() , authrole("PrivateCompany"),async(req,res)=>{
   console.log(req.body.CollectionCentre);
   try{
+    const ppk =await Prices.findOne({});
     const logindata =  await CRegister.findOne({ccname:req.body.CollectionCentre , state:req.user.state})
     //console.log("Id" +logindata._id);
     const wastedata =  Waste.find({Refid:logindata._id});
@@ -569,7 +577,7 @@ app.post("/selectcc" , auth() , authrole("PrivateCompany"),async(req,res)=>{
       const biomassdata = Biomass.find({Refid:logindata._id});
       biomassdata.exec(function(error,datas){
         if(error){throw err; res.send("There is no data available for the request")}
-        res.render("pc/rawCatalog" , {order:data , request:datas});
+        res.render("pc/rawCatalog" , {order:data , request:datas, prices: ppk.PCppk});
       })
     })
   // res.status(201).redirect("/selectcc")
