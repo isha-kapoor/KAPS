@@ -27,14 +27,11 @@ Ejs
 * Run npm install and npm run dev in the /backend folder.
 * Go to https://localhost:3000 in your web browser.
 
-## Logo
-The Logo represents the 3R's (reuse,reduce,recycle) of the farm waste.\
-\
-<img src="../KAPS/backend/public/images/logo.png" width="100" height = "100">
+
 ## Website Demo
 **Home Page** \
 \
-<img src="../KAPS/backend/public/images/Home.jpg" >\
+![Home.jpg](../KAPS/backend/public/images/Home.jpg)\
 **Signup** \
 \
 Token is stored as a cookie on the client side\
