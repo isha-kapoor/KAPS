@@ -908,6 +908,24 @@ app.get("/Wastecollected" , async(req,res)=>{
     res.status(400).send("There is some error loading the data if there is any any " + e);
   }
 })
+//THis is the CO2 emission
+app.get("/CO2emission" , async(req,res)=>{
+  try{
+    let docs = await FarmerReq.aggregate([
+
+          //$match:{ orderclose: { $gt: moment().startOf('year').format('MM/DD/YYYY'), $lt:moment().endOf('year').format('MM/DD/YYYY')  } } ,
+          { $match: { year: moment(Date.now()).format('YYYY') } },
+      {$group: {
+        _id: { $substr: [ "$orderclose", 3, 7 ] },
+        total: { $sum: {$multiply : ["$wasteAmount",1.2] } },
+    } }
+    ]);
+    console.log(docs);
+    res.render("CO2", {details:docs});
+  }catch(e){
+    res.status(400).send("There is some error loading the data if there is any any " + e);
+  }
+})
 //THis shows what all are the registered products by private companies
 app.get("/Productdetails" , async(req,res)=>{
   try{
