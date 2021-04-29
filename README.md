@@ -51,6 +51,8 @@ This shows the Pending requests of farmer\
 \
 ![FPend](https://user-images.githubusercontent.com/53380110/116394831-02e78500-a841-11eb-8e1e-6178fe60b2b5.jpg)
 \
+**Collection Center's View of Farmers Requests**\
+\
 When a request arrives the collection center approves it, marks the order in transit when it is on the way, Gives the waste information and finally when it pays to the farmer the request is moved to the Completed Requests.\
 \
 ![CFR](https://user-images.githubusercontent.com/53380110/116394882-0f6bdd80-a841-11eb-8926-79a5ac717f1d.jpg)
