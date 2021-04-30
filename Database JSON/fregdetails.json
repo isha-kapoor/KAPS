@@ -1,0 +1,98 @@
+[{
+  "_id": {
+    "$oid": "606ec1ba4b57ca35f8de4c8e"
+  },
+  "fKcrops": [
+    "Rice",
+    "Cotton"
+  ],
+  "fRcrops": [
+    "Mustard"
+  ],
+  "Refid": {
+    "$oid": "606ec1574b57ca35f8de4c8c"
+  },
+  "fcontact": "9876543215",
+  "fname": "Ganga Singh",
+  "fadd": "Village Fatehpur, Subtehsil Adampur, Tehsil Jalandhar",
+  "fuser": "Gangasingh",
+  "fcc": "Adampur,Jalandhar",
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "606ec29d4b57ca35f8de4c91"
+  },
+  "fKcrops": [
+    "Cotton"
+  ],
+  "fRcrops": [
+    "Wheat",
+    "Barley"
+  ],
+  "Refid": {
+    "$oid": "606ec2394b57ca35f8de4c8f"
+  },
+  "fcontact": "9876543216",
+  "fname": "Seva Singh",
+  "fadd": "Village Arjanwal, Subtehsil Adampur, Tehsil Jalandhar",
+  "fuser": "Sevasingh",
+  "fcc": "Adampur,Jalandhar",
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "606ec3da4b57ca35f8de4c94"
+  },
+  "fKcrops": [
+    "Sugar Cane"
+  ],
+  "fRcrops": [
+    "Wheat"
+  ],
+  "Refid": {
+    "$oid": "606ec34b4b57ca35f8de4c92"
+  },
+  "fcontact": "9876543217",
+  "fname": "Bheem Chand",
+  "fadd": "Village Kuddowal, Subtehsil Kartarpur, Tehsil Jalandhar",
+  "fuser": "Bheemchand",
+  "fcc": "Kartarpur,Jalandhar",
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "606ec5004b57ca35f8de4c97"
+  },
+  "fKcrops": [
+    "Jute"
+  ],
+  "fRcrops": [
+    "Cotton"
+  ],
+  "Refid": {
+    "$oid": "606ec4e84b57ca35f8de4c95"
+  },
+  "fcontact": "9876543218",
+  "fname": "Sundar Sharma ",
+  "fadd": "Village Bankner, Subtehsil Narela, Tehsil North Delhi",
+  "fuser": "Sundarsharma",
+  "fcc": "Narela, North Delhi",
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "606ec5f64b57ca35f8de4c9a"
+  },
+  "fKcrops": [
+    "Wheat"
+  ],
+  "fRcrops": [
+    "Rice"
+  ],
+  "Refid": {
+    "$oid": "606ec5e84b57ca35f8de4c98"
+  },
+  "fcontact": "9876543219",
+  "fname": "Darshan Pal",
+  "fadd": "Village Bakoli, Subtehsil Alipur, Tehsil North Delhi",
+  "fuser": "Darshanpal",
+  "fcc": "Alipur, North Delhi",
+  "__v": 0
+}]

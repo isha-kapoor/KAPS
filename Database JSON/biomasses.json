@@ -1,0 +1,21 @@
+[{
+  "_id": {
+    "$oid": "608bef1394e5635daa3f43f1"
+  },
+  "RawMaterial": "Cotton Stalk",
+  "Refid": {
+    "$oid": "606ebf2e4b57ca35f8de4c81"
+  },
+  "__v": 0,
+  "gross": 3600
+},{
+  "_id": {
+    "$oid": "608bef2194e5635daa3f4401"
+  },
+  "RawMaterial": "Wheat Husk",
+  "Refid": {
+    "$oid": "606ebf2e4b57ca35f8de4c81"
+  },
+  "__v": 0,
+  "gross": 3710
+}]

@@ -1,0 +1,37 @@
+[{
+  "_id": {
+    "$oid": "608beeb494e5635daa3f4374"
+  },
+  "RawMaterial": "Cotton Stalk",
+  "Refid": {
+    "$oid": "606ebf2e4b57ca35f8de4c81"
+  },
+  "__v": 0,
+  "open": 23,
+  "processing": 8,
+  "ready": 11
+},{
+  "_id": {
+    "$oid": "608beeef94e5635daa3f43cc"
+  },
+  "RawMaterial": "Wheat Husk",
+  "Refid": {
+    "$oid": "606ebf2e4b57ca35f8de4c81"
+  },
+  "__v": 0,
+  "open": 13,
+  "processing": 17,
+  "ready": 8
+},{
+  "_id": {
+    "$oid": "608bef8294e5635daa3f4463"
+  },
+  "RawMaterial": "Rice Straw",
+  "Refid": {
+    "$oid": "606ec0474b57ca35f8de4c8a"
+  },
+  "__v": 0,
+  "open": 4,
+  "processing": 8,
+  "ready": 32
+}]

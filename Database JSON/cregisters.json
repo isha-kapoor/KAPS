@@ -1,0 +1,197 @@
+[{
+  "_id": {
+    "$oid": "606ebf2e4b57ca35f8de4c81"
+  },
+  "ccname": "Adampur,Jalandhar",
+  "ccadd": "Adampur,Jalandhar",
+  "state": "Punjab",
+  "cccontact": "9876543210",
+  "ccusername": "Adampur",
+  "ccpassword": "$2a$08$zxLhTQgz3z.V4BSnwzQZ2es9YFvzSKBmch.sWEBMnc8E2EN.sTvxe",
+  "ccconfirm": "$2a$08$zxLhTQgz3z.V4BSnwzQZ2es9YFvzSKBmch.sWEBMnc8E2EN.sTvxe",
+  "select": "CollectionCentre",
+  "tokens": [],
+  "__v": 28
+},{
+  "_id": {
+    "$oid": "606ebf6b4b57ca35f8de4c83"
+  },
+  "ccname": "Kartarpur,Jalandhar",
+  "ccadd": "Kartarpur,Jalandhar",
+  "state": "Punjab",
+  "cccontact": "9876543211",
+  "ccusername": "Kartarpur",
+  "ccpassword": "$2a$08$JNkyHMyI.yqwWm87.nkoguNFlqdg96L46FqdWQ0zj1uNn6lp/jDLa",
+  "ccconfirm": "$2a$08$JNkyHMyI.yqwWm87.nkoguNFlqdg96L46FqdWQ0zj1uNn6lp/jDLa",
+  "select": "CollectionCentre",
+  "tokens": [],
+  "__v": 1
+},{
+  "_id": {
+    "$oid": "606ebfb24b57ca35f8de4c85"
+  },
+  "ccname": "Attari,Amritsar",
+  "ccadd": "Attari,Amritsar",
+  "state": "Punjab",
+  "cccontact": "9876543212",
+  "ccusername": "Attari",
+  "ccpassword": "$2a$08$pBxV7bd6SrZX1kSr5Ok59etuiZQRSOGbeV7KUyW5Ya7EFSYQ9RKW6",
+  "ccconfirm": "$2a$08$pBxV7bd6SrZX1kSr5Ok59etuiZQRSOGbeV7KUyW5Ya7EFSYQ9RKW6",
+  "select": "CollectionCentre",
+  "tokens": [],
+  "__v": 3
+},{
+  "_id": {
+    "$oid": "606ec0054b57ca35f8de4c88"
+  },
+  "ccname": "Narela, North Delhi",
+  "ccadd": "Narela, North Delhi",
+  "state": "Delhi",
+  "cccontact": "9876543213",
+  "ccusername": "Narela",
+  "ccpassword": "$2a$08$gjY1s9asfXKzSYoSdaOPa.rBXP4UoFwsqxQUZAiANrM593QeaqLMe",
+  "ccconfirm": "$2a$08$gjY1s9asfXKzSYoSdaOPa.rBXP4UoFwsqxQUZAiANrM593QeaqLMe",
+  "select": "CollectionCentre",
+  "tokens": [],
+  "__v": 1
+},{
+  "_id": {
+    "$oid": "606ec0474b57ca35f8de4c8a"
+  },
+  "ccname": "Alipur, North Delhi",
+  "ccadd": "Alipur, North Delhi",
+  "state": "Delhi",
+  "cccontact": "9876543214",
+  "ccusername": "Alipur",
+  "ccpassword": "$2a$08$M/y2MJHaI/KR33dY680rHeNHO.8Dn1RYalpLG2ZLNdwvJ4lkgrE0O",
+  "ccconfirm": "$2a$08$M/y2MJHaI/KR33dY680rHeNHO.8Dn1RYalpLG2ZLNdwvJ4lkgrE0O",
+  "select": "CollectionCentre",
+  "tokens": [],
+  "__v": 1
+},{
+  "_id": {
+    "$oid": "606ec1574b57ca35f8de4c8c"
+  },
+  "ccname": "Ganga Singh",
+  "ccadd": "Village Fatehpur, Subtehsil Adampur, Tehsil Jalandhar",
+  "state": "Punjab",
+  "cccontact": "9876543215",
+  "ccusername": "Gangasingh",
+  "ccpassword": "$2a$08$7pIpabsRXTxzHGqHa7E8kuh0KjIXxQsqt6dIU5M7GzKvkCPoBn6vq",
+  "ccconfirm": "$2a$08$7pIpabsRXTxzHGqHa7E8kuh0KjIXxQsqt6dIU5M7GzKvkCPoBn6vq",
+  "select": "Farmer",
+  "tokens": [],
+  "__v": 3
+},{
+  "_id": {
+    "$oid": "606ec2394b57ca35f8de4c8f"
+  },
+  "ccname": "Seva Singh",
+  "ccadd": "Village Arjanwal, Subtehsil Adampur, Tehsil Jalandhar",
+  "state": "Punjab",
+  "cccontact": "9876543216",
+  "ccusername": "Sevasingh",
+  "ccpassword": "$2a$08$ORPIsLecG6w6W8xASzoj/eGrdP6TdY.THs0ihV62mucGB7WqZRzsS",
+  "ccconfirm": "$2a$08$ORPIsLecG6w6W8xASzoj/eGrdP6TdY.THs0ihV62mucGB7WqZRzsS",
+  "select": "Farmer",
+  "tokens": [],
+  "__v": 23
+},{
+  "_id": {
+    "$oid": "606ec34b4b57ca35f8de4c92"
+  },
+  "ccname": "Bheem Chand",
+  "ccadd": "Village Kuddowal, Subtehsil Kartarpur, Tehsil Jalandhar",
+  "state": "Punjab",
+  "cccontact": "9876543217",
+  "ccusername": "Bheemchand",
+  "ccpassword": "$2a$08$16k9oVz2vM7u.UX5p7RcWeWMwwrm4LJY4KOA5moR6YJUipAkSOyxC",
+  "ccconfirm": "$2a$08$16k9oVz2vM7u.UX5p7RcWeWMwwrm4LJY4KOA5moR6YJUipAkSOyxC",
+  "select": "Farmer",
+  "tokens": [],
+  "__v": 3
+},{
+  "_id": {
+    "$oid": "606ec4e84b57ca35f8de4c95"
+  },
+  "ccname": "Sundar Sharma ",
+  "ccadd": "Village Bankner, Subtehsil Narela, Tehsil North Delhi",
+  "state": "Delhi",
+  "cccontact": "9876543218",
+  "ccusername": "Sundarsharma",
+  "ccpassword": "$2a$08$Agmf2NgbGFFJWod0rpi96et5u2vJJdZU11r5VwpaEwo8Atg1qj9cO",
+  "ccconfirm": "$2a$08$Agmf2NgbGFFJWod0rpi96et5u2vJJdZU11r5VwpaEwo8Atg1qj9cO",
+  "select": "Farmer",
+  "tokens": [],
+  "__v": 5
+},{
+  "_id": {
+    "$oid": "606ec5e84b57ca35f8de4c98"
+  },
+  "ccname": "Darshan Pal",
+  "ccadd": "Village Bakoli, Subtehsil Alipur, Tehsil North Delhi",
+  "state": "Delhi",
+  "cccontact": "9876543219",
+  "ccusername": "Darshanpal",
+  "ccpassword": "$2a$08$bBrko5V2.C4t6izN/TolxObJn6z5IUJcVfgBlbArrb3sVdvhEtH6S",
+  "ccconfirm": "$2a$08$bBrko5V2.C4t6izN/TolxObJn6z5IUJcVfgBlbArrb3sVdvhEtH6S",
+  "select": "Farmer",
+  "tokens": [],
+  "__v": 1
+},{
+  "_id": {
+    "$oid": "606ec6bf4b57ca35f8de4c9b"
+  },
+  "ccname": "PRESPL",
+  "ccadd": "Chandigarh",
+  "state": "Punjab",
+  "cccontact": "9876543220",
+  "ccusername": "Prespl",
+  "ccpassword": "$2a$08$WwdtF1fiqeHkjNv2EqrQFO4Jlpk5.q16FZO1KAqVq4GNEJ83jmpWS",
+  "ccconfirm": "$2a$08$WwdtF1fiqeHkjNv2EqrQFO4Jlpk5.q16FZO1KAqVq4GNEJ83jmpWS",
+  "select": "PrivateCompany",
+  "tokens": [],
+  "__v": 14
+},{
+  "_id": {
+    "$oid": "606ec7a34b57ca35f8de4c9e"
+  },
+  "ccname": "Indian Farmers Fertiliser Cooperative Ltd",
+  "ccadd": "Saket, Delhi",
+  "state": "Delhi",
+  "cccontact": "9876543221",
+  "ccusername": "IFFCO",
+  "ccpassword": "$2a$08$6VvG1KHJTXo0kq.t.XNMLuDlbUUWxAv25cDb66lF6NBiqDtZFlEeO",
+  "ccconfirm": "$2a$08$6VvG1KHJTXo0kq.t.XNMLuDlbUUWxAv25cDb66lF6NBiqDtZFlEeO",
+  "select": "PrivateCompany",
+  "tokens": [
+    {
+      "_id": {
+        "$oid": "607ac001053ee82f2871b6a5"
+      },
+      "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MDZlYzdhMzRiNTdjYTM1ZjhkZTRjOWUiLCJpYXQiOjE2MTg2NTcyODF9.gYGLN05CHfn3bRWmPOQKfQ5ZK037UGf8A_iMTqrSn3g"
+    }
+  ],
+  "__v": 2
+},{
+  "_id": {
+    "$oid": "6079a4464b43a7029c8f565d"
+  },
+  "tokens": [
+    {
+      "_id": {
+        "$oid": "608262f52372f839dc7c229b"
+      },
+      "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MDc5YTQ0NjRiNDNhNzAyOWM4ZjU2NWQiLCJpYXQiOjE2MTkxNTc3NDl9.3sZDc0-lzENccBwnsRM6339tZZe3k4pZnWsTr58LMA4"
+    }
+  ],
+  "ccname": "Admin",
+  "ccadd": "Main-Office",
+  "state": "Gujarat",
+  "cccontact": "9876543210",
+  "ccusername": "AdminKAPS",
+  "ccpassword": "$2a$08$hJIrePHbERIVxNmVuNkedeT.o8G98PpCstkpmLHZbvF0qAGgpA19y",
+  "ccconfirm": "$2a$08$hJIrePHbERIVxNmVuNkedeT.o8G98PpCstkpmLHZbvF0qAGgpA19y",
+  "select": "Admin",
+  "__v": 22
+}]
