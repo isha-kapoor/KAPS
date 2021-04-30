@@ -1,0 +1,27 @@
+[{
+  "_id": {
+    "$oid": "606ec6e14b57ca35f8de4c9d"
+  },
+  "Refid": {
+    "$oid": "606ec6bf4b57ca35f8de4c9b"
+  },
+  "pcontact": "9876543220",
+  "product": "Bio-Energy",
+  "pname": "PRESPL",
+  "padd": "Chandigarh",
+  "puser": "Prespl",
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "606ec7ae4b57ca35f8de4ca0"
+  },
+  "Refid": {
+    "$oid": "606ec7a34b57ca35f8de4c9e"
+  },
+  "pcontact": "9876543221",
+  "product": "Bio-Fertilizer",
+  "pname": "Indian Farmers Fertiliser Cooperative Ltd",
+  "padd": "Saket, Delhi",
+  "puser": "IFFCO",
+  "__v": 0
+}]
