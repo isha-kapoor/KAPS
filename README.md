@@ -24,8 +24,18 @@ Ejs
 * Clone repository.
 * Install Node Js from [https://nodejs.org/en/](https://nodejs.org/en/) .
 * Setup MongoDB [https://www.mongodb.com/](https://www.mongodb.com/)
-* Run npm install and npm run dev in the /backend folder.
-* Go to https://localhost:3000 in your web browser.
+* Please ensure you download and install MongoDB Compass
+* Open MongoDB compass tool
+  * The DB_URL is mentioned in the .env file
+  * The sample database is present in Database JSON folder.
+  * All of the collections present inside the database(mentioned in .env file) can be imported to MongoDB Compass.
+  * Click the Add Data dropdown and select Import File.
+  * Select the location of the source data file under Select File.
+  * Choose the appropriate file type which is JSON.
+  * Click Import and data will be imported.
+* Run npm install in the /backend folder.
+* After all the installations are successful hit, npm run dev on the command prompt/terminal in the /backend folder.
+* Go to https://localhost:3000 in your web browser. 
 
 
 ## Website Demo
