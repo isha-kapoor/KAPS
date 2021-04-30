@@ -341,14 +341,7 @@ app.post("/check/:id", auth() ,authrole("CollectionCentre"), (req,res) => {
 })
 })
 
-// app.get("/check/:id", auth() ,authrole("CollectionCentre"), (req,res) => {
-//   var id = req.params.id;
-//   FarmerReq.findByIdAndUpdate(id, { approve: 'true' , $set:{pickupdate: moment(Date.now()).add(10,'day').format('DD/MM/YYYY')} },
-//       function (err, data) {
-//         if(err) throw err;
-//         res.redirect("/Farmerreq")
-//       })
-// })
+
 // to tell the farmer the order is in transit
 app.get("/transit/:id", auth() ,authrole("CollectionCentre"), (req,res) => {
   var id = req.params.id;
@@ -370,17 +363,7 @@ app.get("/ready/:id", auth() ,authrole("CollectionCentre"), (req,res) => {
 
       })
 })
-// const logindata =  await CRegister.findOne({ccname:req.body.CollectionCentre , state:req.user.state})
-// //console.log("Id" +logindata._id);
-// const wastedata =  Waste.find({Refid:logindata._id});
-// wastedata.exec(function(err,data){
-//   if(err) { throw err; res.send("There is no data available for the request")}
-//   //console.log(data);
-//   const biomassdata = Biomass.find({Refid:logindata._id});
-//   biomassdata.exec(function(error,datas){
-//     if(error){throw err; res.send("There is no data available for the request")}
-//     res.render("pc/rawCatalog" , {order:data , request:datas});
-//   })
+
 //to tell the farmer about the waste
 app.post("/ready/:id", auth() ,authrole("CollectionCentre"),  (req,res) => {
   var id = req.params.id;
@@ -653,7 +636,7 @@ app.get("/requestpickup" ,auth(),authrole("Farmer"),(req,res) =>{
 })
 //For farmer to see catalog
 app.get("/fresiduecatalog" ,auth(),authrole("Farmer"),(req,res) =>{
-  res.render("farmer/fresiduecatalog");
+  res.render("farmer/fresiduecatalog" ,{order:croparray});
 })
 
 
@@ -754,19 +737,13 @@ app.get("/managefarmers",auth(),authrole(process.env.Select),(req,res)=>{
 })
 
 app.post("/setprices", auth(),authrole(process.env.Select),async(req,res)=>{
- 
+
   Prices.findOneAndUpdate({Refid: req.user._id},{$set: {"Farmerppk": req.body.farmerppk, "PCppk":req.body.pcppk}},
     {upsert:true},
       function (err, data) {
         if(err) throw err;
         res.redirect("/ahome")
       })
-  // Prices.findOneAndUpdate({Refid: req.user._id},{ PCppk: req.body.pcppk },
-  //       {upsert:true},
-  //         function (err, data) {
-  //           if(err) throw err;
-  //           res.redirect("/ahome")
-  //         })
 })
 
 
@@ -927,6 +904,24 @@ app.get("/Wastecollected" , async(req,res)=>{
     ]);
     console.log(docs);
     res.render("wastecollected", {details:docs});
+  }catch(e){
+    res.status(400).send("There is some error loading the data if there is any any " + e);
+  }
+})
+//THis is the CO2 emission
+app.get("/CO2emission" , async(req,res)=>{
+  try{
+    let docs = await FarmerReq.aggregate([
+
+          //$match:{ orderclose: { $gt: moment().startOf('year').format('MM/DD/YYYY'), $lt:moment().endOf('year').format('MM/DD/YYYY')  } } ,
+          { $match: { year: moment(Date.now()).format('YYYY') } },
+      {$group: {
+        _id: { $substr: [ "$orderclose", 3, 7 ] },
+        total: { $sum: {$multiply : ["$wasteAmount",1.2] } },
+    } }
+    ]);
+    console.log(docs);
+    res.render("CO2", {details:docs});
   }catch(e){
     res.status(400).send("There is some error loading the data if there is any any " + e);
   }
